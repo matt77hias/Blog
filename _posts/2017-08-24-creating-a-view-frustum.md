@@ -14,6 +14,7 @@ The fixed-function Rasterizer Stage (`RS`) of the graphics pipeline receives ind
 5. Fragment Generation
 6. Scissor Test
 7. Attribute Interpolation
+
 The first operation, Primitive Culling, implies both back face culling (if enabled) and view frustum culling. From here on, we will only focus on the latter. 
 
 If view frustum culling takes place after the homogeneous divide, the associated culling space corresponds to the Normalized Device Coordinate (NDC) space (denoted as \mathrm{n}). In this space, the following equations need to be satisfied:
