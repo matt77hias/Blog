@@ -5,9 +5,20 @@ date:   2017-08-24
 categories: culling
 ---
 
-$$\mathrm{p_{p}} = \left( x_{\mathrm{p}}, y_{\mathrm{p}}, z_{\mathrm{p}}, w_{\mathrm{p}} \right) = \left( x_{s}, y_{s}, z_{s}, w_{s} \right) \mathrm{T}_{i \rightarrow \mathrm{p}} = \mathrm{p}_{s}$$ with $$s \in \{\mathrm{l}, \mathrm{w}, \mathrm{c}\}$$
+\begin{align}
+\mathrm{p_{p}} 
+&= \left( x_{\mathrm{p}}, y_{\mathrm{p}}, z_{\mathrm{p}}, w_{\mathrm{p}} \right) \\
+&= \left( x_{s}, y_{s}, z_{s}, w_{s} \right) \mathrm{T}_{i \rightarrow \mathrm{p}} \\
+&= \mathrm{p}_{s} \mathrm{T}_{i \rightarrow \mathrm{p}},
+\end{align}
+with $$s \in \{\mathrm{l}, \mathrm{w}, \mathrm{c}\}$$.
 
-$$\mathrm{p_{n}} = \left( x_{\mathrm{n}}, y_{\mathrm{n}}, z_{\mathrm{n}}, w_{\mathrm{n}} \right) = \mathrm{p_{p}} / w_{\mathrm{p}} = \left( x_{\mathrm{p}}/w_{\mathrm{p}}, y_{\mathrm{p}}/w_{\mathrm{p}}, z_{\mathrm{p}}/w_{\mathrm{p}}, 1 \right)$$
+\begin{align}
+\mathrm{p_{n}} 
+&= \left( x_{\mathrm{n}}, y_{\mathrm{n}}, z_{\mathrm{n}}, w_{\mathrm{n}} \right) \\
+&= \mathrm{p_{p}} / w_{\mathrm{p}} \\
+&= \left( x_{\mathrm{p}}/w_{\mathrm{p}}, y_{\mathrm{p}}/w_{\mathrm{p}}, z_{\mathrm{p}}/w_{\mathrm{p}}, 1 \right).
+\end{align}
 
 ```c++
 ViewFrustum::ViewFrustum(CXMMATRIX transform) {
