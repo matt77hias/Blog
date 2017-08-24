@@ -17,7 +17,7 @@ The fixed-function Rasterizer Stage (`RS`) of the graphics pipeline receives ind
 
 The first operation, Primitive Culling, implies both back face culling (if enabled) and view frustum culling. From here on, we will only focus on the latter type of culling. 
 
-If view frustum culling takes place after the homogeneous divide, the associated culling space corresponds to the Normalized Device Coordinate (NDC) space (denoted as $$\mathrm{n}$$). In this space, the following equations need to be satisfied:
+If view frustum culling takes place after the homogeneous divide, the associated culling space corresponds to the `Normalized Device Coordinate` (NDC) space (denoted as $$\mathrm{n}$$). In this space, the following equations need to be satisfied:
 
 $$\begin{align}
 -1 &\le x_{\mathrm{n}} \le 1\\
@@ -27,7 +27,7 @@ $$\begin{align}
 
 A point primitive is culled if its vertex does not satisfy these equations and thus is positioned outside the view frustum. A triangle primitive is culled if all three of its vertices do not satisy these equations. If at most two vertices do not satisy these equations, triangle clipping will take place as well.
 
-By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to projection space (denoted as $$\mathrm{p}$$). In this space, the following equations need to be satisfied:
+By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to `projection space` (denoted as $$\mathrm{p}$$). In this space, the following equations need to be satisfied:
 
 $$\begin{align}
 -z_{\mathrm{w}} &\le x_{\mathrm{p}} \le z_{\mathrm{w}}\\
@@ -38,7 +38,7 @@ $$\begin{align}
 We will use the same equations to perform culling outside of the graphics pipeline, on the CPU. This way we can decrease the number of draw calls and decrease the number of wasted (*the primitives will be culled anyway*) VS, DS, TS, HS and GS invocations on the GPU. Instead of culling individual primitives themselves, culling will be performed on a coarser (e.g. (sub)model) level. Furthermore, we can even cull entities which only have an associated volume, but no associated geometry (e.g. lights).
 
 # CPU - View Frustum Culling
-Typically, a Bounding Volume (BV) is associated with and expressed in the local space of each submodel. All kinds of BVs can be used for this purpose as long as they fully contain the associated submodel, are tight to this submodel, and are cheap to cull. Note that the tightest BV of a submodel is the submodel itself, but this BV is in general very expensive to cull directly. Frequently used BVs include Bounding Spheres (BSs),  Axis-Aligned Bounding Boxes (AABBs) and Oriented Bounding Boxes (OBBs).
+Typically, a `Bounding Volume` (BV) is associated with and expressed in the local space of each submodel. All kinds of BVs can be used for this purpose as long as they fully contain the associated submodel, are tight to this submodel, and are cheap to cull. Note that the tightest BV of a submodel is the submodel itself, but this BV is in general very expensive to cull directly. Frequently used BVs include `Bounding Spheres` (BSs),  `Axis-Aligned Bounding Boxes` (AABBs) and `Oriented Bounding Boxes` (OBBs).
 
 $$\begin{align}
 \mathrm{p_{p}} 
