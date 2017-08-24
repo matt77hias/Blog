@@ -10,6 +10,7 @@ My personal [blog](http://matt77hias.github.io/blog).
 
 ### Additional licenses:
 * [Hagura](https://github.com/sharu725/hagura/blob/gh-pages/LICENCE.md)
+* [Jekyll](https://github.com/jekyll/jekyll/blob/master/LICENSE)
 * [Jekyll Pygments Themes](https://github.com/jwarby/jekyll-pygments-themes/blob/master/UNLICENSE.txt)
 * [MathJax](https://github.com/mathjax/MathJax/blob/master/LICENSE)
 
