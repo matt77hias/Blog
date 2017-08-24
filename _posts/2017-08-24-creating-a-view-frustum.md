@@ -30,9 +30,9 @@ A point primitive is culled if its vertex does not satisfy these equations and t
 By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to `projection space` (denoted as $$\mathrm{p}$$). In this space, the following equations need to be satisfied:
 
 $$\begin{align}
--z_{\mathrm{w}} &\le x_{\mathrm{p}} \le z_{\mathrm{w}}\\
--z_{\mathrm{w}} &\le y_{\mathrm{p}} \le z_{\mathrm{w}}\\
-0 &\le z_{\mathrm{p}} \le z_{\mathrm{w}}
+-z_{\mathrm{p}} &\le x_{\mathrm{p}} \le z_{\mathrm{p}}\\
+-z_{\mathrm{p}} &\le y_{\mathrm{p}} \le z_{\mathrm{p}}\\
+0 &\le z_{\mathrm{p}} \le z_{\mathrm{p}}
 \end{align}$$
 
 We will use the same equations to perform culling outside of the graphics pipeline, on the CPU. This way we can decrease the number of draw calls and decrease the number of wasted (*the primitives will be culled anyway*) VS, DS, TS, HS and GS invocations on the GPU. Instead of culling individual primitives themselves, culling will be performed on a coarser (e.g. (sub)model) level. Furthermore, we can even cull entities which only have an associated volume, but no associated geometry (e.g. lights).
