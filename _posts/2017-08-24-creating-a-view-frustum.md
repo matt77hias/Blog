@@ -14,8 +14,8 @@ categories: culling
 with $$s \in \{\mathrm{l}, \mathrm{w}, \mathrm{c}\}$$.
 
 \begin{align}
-\mathrm{p_{n}} 
-&= \left( x_{\mathrm{n}}, y_{\mathrm{n}}, z_{\mathrm{n}}, w_{\mathrm{n}} \right) \\
+\mathrm{p_{ndc}} 
+&= \left( x_{\mathrm{ndc}}, y_{\mathrm{ndc}}, z_{\mathrm{ndc}}, w_{\mathrm{ndc}} \right) \\
 &= \mathrm{p_{p}} / w_{\mathrm{p}} \\
 &= \left( x_{\mathrm{p}}/w_{\mathrm{p}}, y_{\mathrm{p}}/w_{\mathrm{p}}, z_{\mathrm{p}}/w_{\mathrm{p}}, 1 \right).
 \end{align}
