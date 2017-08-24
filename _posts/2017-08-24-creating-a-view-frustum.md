@@ -50,7 +50,7 @@ ViewFrustum::ViewFrustum(CXMMATRIX transform) {
 
 	// Normalize the view frustum planes.
 	for (size_t i = 0; i < 6; ++i) {
-		m_planes[i] = XMPlaneNormalize(m_planes[i]);
+	    m_planes[i] = XMPlaneNormalize(m_planes[i]);
 	}
 }
 ```
