@@ -5,7 +5,7 @@ date:   2017-08-24
 categories: culling
 ---
 
-# GPU View Frustum Culling
+# GPU - View Frustum Culling
 The fixed-function Rasterizer Stage (`RS`) of the graphics pipeline receives individual primitives as input and generates fragments as output. In order to generate these fragments, multiple functional operations are performed:
 1. Primitive Culling
 2. Primitive Clipping
@@ -36,7 +36,7 @@ $$\begin{align}
 
 We will use the same equations to perform culling outside of the graphics pipeline, on the CPU. This way we can decrease the number of draw calls and decrease the number of wasted (*the primitives will be culled anyway*) VS, DS, TS, HS and GS invocations on the GPU. Instead of culling individual primitives themselves, culling will be performed on a coarser (e.g. (sub)model) level. Furthermore, we can even cull entities which only have an associated volume, but no associated geometry (e.g. lights).
 
-# CPU View Frustum Culling
+# CPU - View Frustum Culling
 Typically, a Bounding Volume (BV) is associated with and expressed in the local space of each submodel. All kinds of BVs can be used for this purpose as long as they fully contain the associated submodel, are tight to this submodel, and are cheap to cull. Note that the tightest BV of a submodel is the submodel itself, but this BV is in general very expensive to cull directly. Frequently used BVs include Bounding Spheres (BSs),  Axis-Aligned Bounding Boxes (AABBs) and Oriented Bounding Boxes (OBBs).
 
 $$\begin{align}
