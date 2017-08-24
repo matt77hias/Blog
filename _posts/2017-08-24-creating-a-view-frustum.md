@@ -40,6 +40,8 @@ We will use the same equations to perform culling outside of the graphics pipeli
 # CPU - View Frustum Culling
 Typically, a `Bounding Volume` (BV) is associated with and expressed in the local space of each submodel. Since a submodel is completely contained in its BV, culling the BV is equivalent to culling the submodel: if the BV is completely positioned outside a view frustum, the contained submodel is also completely positioned outside that view frustum. All kinds of BVs can be used for this purpose as long as they fit the submodel tightly, and are cheap to cull against a view frustum. Note that the tightest BV of a submodel is the submodel itself, but this BV is in general very expensive to cull directly. Frequently used BVs include `Bounding Spheres` (BSs),  `Axis-Aligned Bounding Boxes` (AABBs) and `Oriented Bounding Boxes` (OBBs).
 
+TODO
+
 $$\begin{align}
 \mathrm{p_{p}} 
 &= \left( x_{\mathrm{p}}, y_{\mathrm{p}}, z_{\mathrm{p}}, w_{\mathrm{p}} \right) \\
