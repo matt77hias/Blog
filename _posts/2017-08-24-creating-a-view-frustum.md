@@ -5,9 +5,9 @@ date:   2017-08-24
 categories: culling
 ---
 
-$$\mathrm{p_{proj}} = \left( x', y', z', w' \right) = \left( x, y, z, w \right) \mathrm{T}_{i \rightarrow \mathrm{proj}} = \mathrm{p}_{s}$$ with $$s \in \{\mathrm{local}, \mathrm{world}, \mathrm{camera}\}$$
+$$\mathrm{p_{p}} = \left( x_{\mathrm{p}}, y_{\mathrm{p}}, z_{\mathrm{p}}, w_{\mathrm{p}} \right) = \left( x_{s}, y_{s}, z_{s}, w_{s} \right) \mathrm{T}_{i \rightarrow \mathrm{p}} = \mathrm{p}_{s}$$ with $$s \in \{\mathrm{l}, \mathrm{w}, \mathrm{c}\}$$
 
-$$\mathrm{p_{NDC}} = \left( x'', y'', z'', w'' \right) = \mathrm{p_{proj}} / w' = \left( x'/w', y'/w', z'/w', 1 \right)$$
+$$\mathrm{p_{n}} = \left( x_{\mathrm{n}}, y_{\mathrm{n}}, z_{\mathrm{n}}, w_{\mathrm{n}} \right) = \mathrm{p_{p}} / w_{\mathrm{p}} = \left( x_{\mathrm{p}}/w_{\mathrm{p}}, y_{\mathrm{p}}/w_{\mathrm{p}}, z_{\mathrm{p}}/w_{\mathrm{p}}, 1 \right)$$
 
 ```c++
 ViewFrustum::ViewFrustum(CXMMATRIX transform) {
