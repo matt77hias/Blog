@@ -5,9 +5,9 @@ date:   2017-08-24
 categories: culling
 ---
 
-$\mathrm{p_{proj}} = \left( x', y', z', w' \right) = \left( x, y, z, w \right) \mathrm{T}_{i \rightarrow \mathrm{proj}} = \mathrm{p}_{s}$ with $s \in \{\mathrm{local}, \mathrm{world}, \mathrm{camera}\} $
+$$\mathrm{p_{proj}} = \left( x', y', z', w' \right) = \left( x, y, z, w \right) \mathrm{T}_{i \rightarrow \mathrm{proj}} = \mathrm{p}_{s}$ with $s \in \{\mathrm{local}, \mathrm{world}, \mathrm{camera}\}$$
 
-$\mathrm{p_{NDC}} = \left( x'', y'', z'', w'' \right) = \mathrm{p_{proj}} / w' = \left( x'/w', y'/w', z'/w', 1 \right)$
+$$\mathrm{p_{NDC}} = \left( x'', y'', z'', w'' \right) = \mathrm{p_{proj}} / w' = \left( x'/w', y'/w', z'/w', 1 \right)$$
 
 ```c++
 ViewFrustum::ViewFrustum(CXMMATRIX transform) {
