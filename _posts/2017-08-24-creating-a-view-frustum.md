@@ -5,7 +5,7 @@ date:   2017-08-24
 categories: culling
 ---
 
-{% highlight c++ %}
+```
 ViewFrustum::ViewFrustum(CXMMATRIX transform) {
 	const XMMATRIX C = XMMatrixTranspose(transform);
 
@@ -53,4 +53,4 @@ ViewFrustum::ViewFrustum(CXMMATRIX transform) {
 		m_planes[i] = XMPlaneNormalize(m_planes[i]);
 	}
 }
-{% endhighlight %}
+```
