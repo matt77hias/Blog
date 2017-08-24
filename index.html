@@ -45,11 +45,17 @@
 			<a href="https://twitter.com/matt77hias"               			class="icon-twitter"  target="_blank"></a>
 		</div>
 		
-		<script src="{{site.baseurl}}/js/theme.min.js"></script>
+		 <article>
+            <h1>Posts</h1>
+            <div id="posts"></div>
+        
+			<script src="{{site.baseurl}}/js/theme.min.js"></script>
 
-		{% for post in site.posts %}
-			<h3><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h3>
-		{% endfor %}
+			{% for post in site.posts %}
+				<h3><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h3>
+			{% endfor %}
+		
+		</article>
         
 		<footer>
 			<div class="container">
