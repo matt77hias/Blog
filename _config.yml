@@ -1,0 +1,15 @@
+title: Matthias Moulin's Blog
+baseurl: \
+
+highlighter: rouge
+markdown: kramdown
+
+sass:
+ style: compressed
+
+exclude:
+- README.md
+
+plugins: 
+ - jekyll-seo-tag
+ - jekyll-paginate

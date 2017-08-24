@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<h1 class="headline">Matthias Moulin's Blog</h1>
+
+<header>
+	<a href="http://matt77hias.github.io/"><div class="home"></div></a>
+</header>
+
+{% for post in site.posts %}
+<h3><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h3>
+{% endfor %}
