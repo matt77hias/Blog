@@ -5,7 +5,7 @@ date:   2017-08-24
 categories: culling
 ---
 
-```
+```c++
 ViewFrustum::ViewFrustum(CXMMATRIX transform) {
 	const XMMATRIX C = XMMatrixTranspose(transform);
 
