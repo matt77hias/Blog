@@ -10,6 +10,7 @@ My personal [blog](http://matt77hias.github.io/blog).
 
 ### Additional licenses:
 * [Hagura](https://github.com/sharu725/hagura/blob/gh-pages/LICENCE.md)
+* [Jekyll Pygments Themes](https://github.com/jwarby/jekyll-pygments-themes/blob/master/UNLICENSE.txt)
 * [MathJax](https://github.com/mathjax/MathJax/blob/master/LICENSE)
 
 <p align="center">Copyright © 2015-2017 Matthias Moulin. All Rights Reserved.</p>
