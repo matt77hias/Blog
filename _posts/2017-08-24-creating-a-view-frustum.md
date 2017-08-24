@@ -9,9 +9,10 @@ $$\begin{align}
 \mathrm{p_{p}} 
 &= \left( x_{\mathrm{p}}, y_{\mathrm{p}}, z_{\mathrm{p}}, w_{\mathrm{p}} \right) \\
 &= \left( x_{s}, y_{s}, z_{s}, w_{s} \right) \mathrm{T}_{i \rightarrow \mathrm{p}} \\
-&= \mathrm{p}_{s} \mathrm{T}_{i \rightarrow \mathrm{p}},
+&= \mathrm{p}_{s} \mathrm{T}_{i \rightarrow \mathrm{p}}.
 \end{align}$$
-with $$s \in \{\mathrm{l}, \mathrm{w}, \mathrm{c}\}$$.
+
+Here, $$s \in \{\mathrm{l}, \mathrm{w}, \mathrm{c}\}$$.
 
 $$\begin{align}
 \mathrm{p_{ndc}} 
