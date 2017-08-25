@@ -17,7 +17,7 @@ The fixed-function Rasterizer Stage (`RS`) of the graphics pipeline receives ind
 
 The first operation, Primitive Culling, implies both back face culling (if enabled) and view frustum culling. From here on, we will only focus on the latter type of culling. 
 
-If view frustum culling takes place after the homogeneous divide, the associated culling space corresponds to the `Normalized Device Coordinate` (NDC) space (denoted as $$\mathrm{n}$$). In this space, the following equations need to be satisfied:
+If view frustum culling takes place after the homogeneous divide, the associated culling space corresponds to the `Normalized Device Coordinate` (NDC) space (denoted with a subscript $$\mathrm{n}$$). In this space, the following equations need to be satisfied:
 
 $$\begin{align}
 -1 &\le x_{\mathrm{n}} \le 1\\
@@ -27,7 +27,7 @@ $$\begin{align}
 
 A point primitive is culled if its vertex does not satisfy these equations and thus is positioned outside the view frustum. A triangle primitive is culled if all three of its vertices do not satisy these equations.
 
-By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to `projection space` (denoted as $$\mathrm{p}$$). In this space, the following equations need to be satisfied:
+By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to `projection space` (denoted with a subscript $$\mathrm{p}$$). In this space, the following equations need to be satisfied:
 
 $$\begin{align}
 -w_{\mathrm{p}} &\le x_{\mathrm{p}} \le w_{\mathrm{p}}\\
