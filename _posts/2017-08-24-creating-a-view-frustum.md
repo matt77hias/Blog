@@ -5,6 +5,9 @@ date:   2017-08-24
 categories: culling
 ---
 
+Still under construction...
+
+
 # GPU - View Frustum Culling
 The fixed-function Rasterizer Stage (`RS`) of the graphics pipeline receives individual primitives as input and generates fragments as output. In order to generate these fragments, multiple functional operations are performed:
 1. Primitive Culling
@@ -17,7 +20,7 @@ The fixed-function Rasterizer Stage (`RS`) of the graphics pipeline receives ind
 
 The first operation, Primitive Culling, implies both back face culling (if enabled) and view frustum culling. From here on, we will only focus on the latter type of culling. 
 
-If view frustum culling takes place after the homogeneous divide, the associated culling space corresponds to the `Normalized Device Coordinate` (NDC) space (denoted with a subscript $$\mathrm{n}$$). In this space, the following equations need to be satisfied:
+If view frustum culling takes place after the homogeneous divide, the associated culling space corresponds to the `Normalized Device Coordinate` (NDC) space (denoted with a subscript $$\mathrm{n}$$). In this space, the following six equations need to be satisfied:
 
 $$\begin{align}
 -1 &\le x_{\mathrm{n}} \le 1\\
@@ -27,7 +30,7 @@ $$\begin{align}
 
 A point primitive is culled if its vertex does not satisfy these equations and thus is positioned outside the view frustum. A triangle primitive is culled if all three of its vertices do not satisy these equations.
 
-By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to `projection space` (denoted with a subscript $$\mathrm{p}$$). In this space, the following equations need to be satisfied:
+By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to `projection space` (denoted with a subscript $$\mathrm{p}$$). In this space, the following six equations need to be satisfied:
 
 $$\begin{align}
 -w_{\mathrm{p}} &\le x_{\mathrm{p}} \le w_{\mathrm{p}}\\
@@ -64,7 +67,10 @@ $$\begin{align}
 &= \begin{bmatrix}p_{s} \cdot \mathrm{T}_{.,1}^{s \rightarrow \mathrm{p}} \\p_{s} \cdot \mathrm{T}_{.,2}^{s \rightarrow \mathrm{p}} \\p_{s} \cdot \mathrm{T}_{.,3}^{s \rightarrow \mathrm{p}} \\p_{s} \cdot \mathrm{T}_{.,4}^{s \rightarrow \mathrm{p}} \end{bmatrix}.
 \end{align}$$
 
-TODO
+Here, we see that the coordinates of $$p_{p}$$ (projection space coordinates) can be expressed as the dot product of $$p_{s}$$ ($$s$$ space coordinates) and one of the columns of the transform matrix $$\mathrm{T}^{s \rightarrow \mathrm{p}}$$. Combining this with the equations used for culling in projection space (see above), results in a substitution of the projection space coordinates which directly leads to the six planes of the view frustum (one for each equation).
+
+# Code
+If we use an `SIMD` library such as `DirectXMath`, matrices are represented in row-major order. Each row of a matrix will be put in an SIMD register. To perform additions and subtractions between columns, one could retrieve the individual elements and perform the arithmetic operations without using SIMD. Alternatively one could take the transpose of the matrix (*columns become rows and vice versa*) to perform the arithmetic operations using SIMD:
 
 ```c++
 ViewFrustum::ViewFrustum(CXMMATRIX transform) {
