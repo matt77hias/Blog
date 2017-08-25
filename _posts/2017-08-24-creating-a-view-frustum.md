@@ -47,7 +47,7 @@ A point $$p=\left(x,y,z\right)$$ satisfies the following relations:
 * If $$\hat{n} \cdot p + d \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\hat{n} \cdot p + d \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
-Alternatively, a homogeneous point $p=\left(x_{p},y_{p},z_{p},1\right)$ satisfies the following relations:
+Alternatively, a homogeneous point $$p=\left(x_{p},y_{p},z_{p},1\right)$$ satisfies the following relations:
 * If $$\hat{n} \cdot p = 0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\hat{n} \cdot p \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\hat{n} \cdot p \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
