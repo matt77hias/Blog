@@ -60,7 +60,7 @@ $$\begin{align}
 \mathrm{p_{p}} 
 &= \left( x_{\mathrm{p}}, y_{\mathrm{p}}, z_{\mathrm{p}}, w_{\mathrm{p}} \right) \\
 &= \left( x_{s}, y_{s}, z_{s}, 1 \right) \mathrm{T}^{s \rightarrow \mathrm{p}} \\
-&= \mathrm{p}_{s} \mathrm{T}^{s \rightarrow \mathrm{p}}
+&= \mathrm{p}_{s} \mathrm{T}^{s \rightarrow \mathrm{p}} \\
 &= \begin{bmatrix}p_{s} \cdot \mathrm{T}_{.,1}^{s \rightarrow \mathrm{p}} \\p_{s} \cdot \mathrm{T}_{.,2}^{s \rightarrow \mathrm{p}} \\p_{s} \cdot \mathrm{T}_{.,3}^{s \rightarrow \mathrm{p}} \\p_{s} \cdot \mathrm{T}_{.,4}^{s \rightarrow \mathrm{p}} \end{bmatrix}.
 \end{align}$$
 
