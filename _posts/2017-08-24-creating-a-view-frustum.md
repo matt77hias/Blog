@@ -40,16 +40,30 @@ We will use the same equations to perform culling outside of the graphics pipeli
 # CPU - View Frustum Culling
 Typically, a `Bounding Volume` (BV) is associated with and expressed in the local space of each submodel. Since a submodel is completely contained in its BV, culling the BV is equivalent to culling the submodel: if the BV is completely positioned outside a view frustum, the contained submodel is also completely positioned outside that view frustum. All kinds of BVs can be used for this purpose as long as they fit the submodel tightly, and are cheap to cull against a view frustum. Note that the tightest BV of a submodel is the submodel itself, but this BV is in general very expensive to cull directly. Frequently used BVs include `Bounding Spheres` (BSs),  `Axis-Aligned Bounding Boxes` (AABBs) and `Oriented Bounding Boxes` (OBBs).
 
-TODO
+Now that we have BVs (the entities we are going to cull against the view frustum), all that remains is creating a view frustum in the local coordinate space of the BV and thus the local coordinate space of the submodel. A view frustum consists of bounding six planes. A plane $(\hat{n}|d)$ is mathematically characterized by a normal vector $\hat{n}$ and a signed distance $d$ from the origin in the direction of its normal $\hat{n}$. 
+
+A point $p=\left(x,y,z\right)$ satisfies the following relations:
+* If $\hat{n} \cdot p + d = 0$, then $p$ lies on the plane $(\hat{n}|d)$
+* If $\hat{n} \cdot p + d \gt 0$, then $p$ lies above the plane $(\hat{n}|d)$
+* If $\hat{n} \cdot p + d \lt 0$, then $p$ lies below the plane $(\hat{n}|d)$
+
+Alternatively, a homogeneous point $p=\left(x,y,z,1\right)$ satisfies the following relations:
+* If $\hat{n} \cdot p = 0$, then $p$ lies on the plane $(\hat{n}|d)$
+* If $\hat{n} \cdot p \gt 0$, then $p$ lies above the plane $(\hat{n}|d)$
+* If $\hat{n} \cdot p \lt 0$, then $p$ lies below the plane $(\hat{n}|d)$
+
+If we use six inward facing planes for our view frustum, all points $p$ satisfying $\hat{n} \cdot p \lt 0$ for at least one plane of the view frustum will be culled.
+
+But how do you obtain the six planes? Lets look at the transformation from $s$ (local $l$, world $w$, or camera $c$) space to projection space:
 
 $$\begin{align}
 \mathrm{p_{p}} 
 &= \left( x_{\mathrm{p}}, y_{\mathrm{p}}, z_{\mathrm{p}}, w_{\mathrm{p}} \right) \\
-&= \left( x_{s}, y_{s}, z_{s}, w_{s} \right) \mathrm{T}_{i \rightarrow \mathrm{p}} \\
+&= \left( x_{s}, y_{s}, z_{s}, 1 \right) \mathrm{T}_{i \rightarrow \mathrm{p}} \\
 &= \mathrm{p}_{s} \mathrm{T}_{i \rightarrow \mathrm{p}}.
 \end{align}$$
 
-Here, $$s \in \{\mathrm{l}, \mathrm{w}, \mathrm{c}\}$$.
+TODO
 
 ```c++
 ViewFrustum::ViewFrustum(CXMMATRIX transform) {
