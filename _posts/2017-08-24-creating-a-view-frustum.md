@@ -48,9 +48,9 @@ A point $$p=\left(x,y,z\right)$$ satisfies the following relations:
 * If $$\hat{n} \cdot p + d \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
 Alternatively, a homogeneous point $$p=\left(x_{p},y_{p},z_{p},1\right)$$ satisfies the following relations:
-* If $$\left(\hat{n}, d) \cdot p = 0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
-* If $$\left(\hat{n}, d) \cdot p \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
-* If $$\left(\hat{n}, d) \cdot p \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
+* If $$\left(\hat{n}, d\right) \cdot p = 0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
+* If $$\left(\hat{n}, d\right) \cdot p \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
+* If $$\left(\hat{n}, d\right) \cdot p \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
 If we use six inward facing planes for our view frustum, all points $$p$$ satisfying $$\hat{n} \cdot p \lt 0$$ for at least one plane of the view frustum will be culled.
 
