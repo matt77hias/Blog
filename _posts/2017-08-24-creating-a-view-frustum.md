@@ -43,14 +43,14 @@ Typically, a `Bounding Volume` (BV) is associated with and expressed in the loca
 Now that we have BVs (the entities we are going to cull against the view frustum), all that remains is creating a view frustum in the local coordinate space of the BV and thus the local coordinate space of the submodel. A view frustum consists of six bounding planes. A plane $$\left(\hat{n} \vert d\right)$$ is mathematically characterized by a normal vector $$\hat{n}$$ (rotation) and a signed distance $$d$$ (translation) from the origin in the direction of its normal $$\hat{n}$$. 
 
 A point $$p=\left(x,y,z\right)$$ satisfies the following relations:
-* If $$\hat{n} \cdot p + d = 0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$
-* If $$\hat{n} \cdot p + d \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$
-* If $$\hat{n} \cdot p + d \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$
+* If $$\hat{n} \cdot p + d = 0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
+* If $$\hat{n} \cdot p + d \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
+* If $$\hat{n} \cdot p + d \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
-Alternatively, a homogeneous point $p=\left(x,y,z,1\right)$ satisfies the following relations:
-* If $$\hat{n} \cdot p = 0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$
-* If $$\hat{n} \cdot p \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$
-* If $$\hat{n} \cdot p \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$
+Alternatively, a homogeneous point $p=\left(x_{p},y_{p},z_{p},1\right)$ satisfies the following relations:
+* If $$\hat{n} \cdot p = 0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
+* If $$\hat{n} \cdot p \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
+* If $$\hat{n} \cdot p \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
 If we use six inward facing planes for our view frustum, all points $$p$$ satisfying $$\hat{n} \cdot p \lt 0$$ for at least one plane of the view frustum will be culled.
 
