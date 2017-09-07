@@ -47,7 +47,7 @@ To avoid these situations, we need to centralize the bindings between HLSL files
 
 Bindings in HLSL files can now be defined as:
 
-```hlsl
+```c++
 Texture2D< float4 > g_foo_texture : register(REG_T(SLOT_SRV_FOO));
 Texture2D< float4 > g_bar_texture : register(REG_T(SLOT_SRV_BAR));
 ```
