@@ -53,7 +53,7 @@ $$\begin{align}
 \mathrm{p^p}/\mathrm{p}_{z}^\mathrm{p} &= \left(\frac{1}{x} \frac{\mathrm{p}_{x}^\mathrm{v}}{\mathrm{p}_{z}^\mathrm{v}}, \frac{1}{y} \frac{\mathrm{p}_{y}^\mathrm{v}}{\mathrm{p}_{z}^\mathrm{v}}, -w + \frac{z}{\mathrm{p}_{z}^\mathrm{v}}, 1\right) = \mathrm{p^{ndc}}.
 \end{align}$$
 
-Since the projection values ($$x$$, $$y$$, $$z$$ and $$w$$) and the position $$\mathrm{p^{ndc}}$$ in NDC space are known, we can obtain the position $$\mathrm{p^v}$$ in view-space:
+Since the projection values ($$x$$, $$y$$, $$z$$ and $$w$$) and the position $$\mathrm{p^{ndc}}$$ in NDC space are known, we can reconstruct the position $$\mathrm{p^v}$$ in view-space:
 
 $$\begin{align}
 \mathrm{p}_{z}^\mathrm{ndc} &= -w + \frac{z}{\mathrm{p}_{z}^\mathrm{v}} 
