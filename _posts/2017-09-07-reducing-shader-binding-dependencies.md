@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Shader Bindings"
+title:  "Reducing shader binding dependencies"
 date:   2017-09-07
 categories: hlsl
 ---
@@ -52,4 +52,4 @@ Texture2D< float4 > g_foo_texture : register(REG_T(SLOT_SRV_FOO));
 Texture2D< float4 > g_bar_texture : register(REG_T(SLOT_SRV_BAR));
 ```
 
-This approach reduces the number of implicit binding dependencies. Note that, however, some implicit binding dependencies still remain (e.g. the order of RTVs and UAVs bound to the Output Merger, etc.).
+This approach reduces the number of implicit binding dependencies. Note that, however, some implicit binding dependencies still remain (e.g. the order of RTVs and UAVs bound to the Output Merger stage, etc.).
