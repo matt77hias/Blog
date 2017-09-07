@@ -63,7 +63,7 @@ $$\begin{align}
 \end{align}$$
 
 **HLSL Code:**
-```C++
+```c++
 float NDCZtoViewZ(float p_ndc_z, float2 projection_values) {
     return projection_values.x / (p_ndc_z + projection_values.y);
 }
