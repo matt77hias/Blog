@@ -23,11 +23,7 @@ $$\begin{align}
 
 Here, $$\mathrm{fov_x}$$ and $$\mathrm{fov_y}$$ are the horizontal and vertical [field-of-view](https://en.wikipedia.org/wiki/Field_of_view_in_video_games), respectively, and $$\mathrm{z_n}$$ and $$\mathrm{z_f}$$ are the position of the near and far-plane of the [viewing frustum](https://en.wikipedia.org/wiki/Viewing_frustum), respectively.
 
-The view-to-projection matrix of an orthographic camera has the following format (assuming a row-major convention):
-
-...
-
-Note that there are only four variable matrix entries which fully characterize the view-to-projection matrix for both perspective and orthographic cameras: $$\mathrm{T}_{00}$$, $$\mathrm{T}_{11}$$, $$\mathrm{T}_{22}$$ and $$\mathrm{T}_{32}$$.
+Note that there are only four variable matrix entries which fully characterize the view-to-projection matrix: $$\mathrm{T}_{00}$$, $$\mathrm{T}_{11}$$, $$\mathrm{T}_{22}$$ and $$\mathrm{T}_{32}$$.
 It is possible to pack these four values in a `float4` of a constant buffer to access them in HLSL. In order to avoid some divisions and additions in our HLSL code, we better use the following four projection values ($$x$$, $$y$$, $$z$$ and $$w$$):
 
 $$\begin{equation}
@@ -39,10 +35,10 @@ $$\begin{equation}
 ```c++
 inline const XMVECTOR XM_CALLCONV GetProjectionValues(FXMMATRIX projection_matrix) noexcept {
     const float x = 1.0f / XMVectorGetX(projection_matrix.r[0]);
-		const float y = 1.0f / XMVectorGetY(projection_matrix.r[1]);
-		const float z =  XMVectorGetZ(projection_matrix.r[3]);
-		const float w = -XMVectorGetZ(projection_matrix.r[2]);
-		return XMVectorSet(x, y, z, w);
+    const float y = 1.0f / XMVectorGetY(projection_matrix.r[1]);
+    const float z =  XMVectorGetZ(projection_matrix.r[3]);
+    const float w = -XMVectorGetZ(projection_matrix.r[2]);
+    return XMVectorSet(x, y, z, w);
 }
  ```
 
@@ -67,7 +63,7 @@ $$\begin{align}
 \end{align}$$
 
 **HLSL Code:**
-```hlsl
+```C++
 float NDCZtoViewZ(float p_ndc_z, float2 projection_values) {
     return projection_values.x / (p_ndc_z + projection_values.y);
 }
@@ -82,5 +78,3 @@ float3 NDCtoView(float3 p_ndc, float4 projection_values) {
 
 If the shading takes not place in view-space, but in some other space (e.g. world-space), you need to reconstruct the position $$\mathrm{p^v}$$ in view-space first.
 Next you need to transform this position from view-space to the space used for shading.
-
-
