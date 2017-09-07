@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "NDC to View space"
-date:   2017-08-24
+date:   2017-09-07
 categories: transformation
 ---
 
@@ -44,7 +44,7 @@ inline const XMVECTOR XM_CALLCONV GetProjectionValues(FXMMATRIX projection_matri
 
 # Reconstructing the view position
 
-Multiplying the position $$\mathrm{p^v}$$ in view-space with the view-to-projection matrix results in the position $$\mathrm{p^p}$$ in projection space. 
+Multiplying the position $$\mathrm{p^v}$$ in view space with the view-to-projection matrix results in the position $$\mathrm{p^p}$$ in projection space. 
 Dividing the latter by its $$w$$ coordinate (i.e. the homogeneous divide), results in the position $$\mathrm{p^{ndc}}$$ in NDC space.
 If we explicitly write down this chain of transformations, we obtain:
 
@@ -53,7 +53,7 @@ $$\begin{align}
 \mathrm{p^p}/\mathrm{p}_{z}^\mathrm{p} &= \left(\frac{1}{x} \frac{\mathrm{p}_{x}^\mathrm{v}}{\mathrm{p}_{z}^\mathrm{v}}, \frac{1}{y} \frac{\mathrm{p}_{y}^\mathrm{v}}{\mathrm{p}_{z}^\mathrm{v}}, -w + \frac{z}{\mathrm{p}_{z}^\mathrm{v}}, 1\right) = \mathrm{p^{ndc}}.
 \end{align}$$
 
-Since the projection values ($$x$$, $$y$$, $$z$$ and $$w$$) and the position $$\mathrm{p^{ndc}}$$ in NDC space are known, we can reconstruct the position $$\mathrm{p^v}$$ in view-space:
+Since the projection values ($$x$$, $$y$$, $$z$$ and $$w$$) and the position $$\mathrm{p^{ndc}}$$ in NDC space are known, we can reconstruct the position $$\mathrm{p^v}$$ in view space:
 
 $$\begin{align}
 \mathrm{p}_{z}^\mathrm{ndc} &= -w + \frac{z}{\mathrm{p}_{z}^\mathrm{v}} 
@@ -76,7 +76,7 @@ float3 NDCtoView(float3 p_ndc, float4 projection_values) {
 
 # Notes
 
-If the shading takes not place in view space, but in some other space (e.g. world-space), you need to reconstruct the position $$\mathrm{p^v}$$ in view-space first.
+If the shading takes not place in view space, but in some other space (e.g. world-space), you need to reconstruct the position $$\mathrm{p^v}$$ in view space first.
 Next, you need to transform this position from view space to the space used for shading.
 
 The approach does not work for orthographic cameras.
