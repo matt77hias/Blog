@@ -5,9 +5,6 @@ date:   2017-08-24
 categories: culling
 ---
 
-Still under construction...
-
-
 # GPU - View Frustum Culling
 The fixed-function Rasterizer Stage (`RS`) of the graphics pipeline receives individual primitives as input and generates fragments as output. In order to generate these fragments, multiple functional operations are performed:
 1. Primitive Culling
