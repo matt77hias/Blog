@@ -76,7 +76,6 @@ float3 NDCtoView(float3 p_ndc, float4 projection_values) {
 
 # Notes
 
-If the shading takes not place in view space, but in some other space (e.g. world-space), you need to reconstruct the position $$\mathrm{p^v}$$ in view space first.
-Next, you need to transform this position from view space to the space used for shading.
+If the shading does not take place in view space, but in some other space (e.g. world-space), you need to reconstruct the position $$\mathrm{p^v}$$ in view space first. Next, you need to transform this position from view space to the space used for shading.
 
-The approach does not work for orthographic cameras.
+The approach does not work for orthographic cameras. The view-to-projection matrix for orthographic cameras is a just rescaling; $$\mathrm{p^{ndc}}=\mathrm{p^{p}}$$ (no homogeneous divide). Reconstructing the position in view space requires applying the inverse scaling to the position in NDC space.
