@@ -11,7 +11,7 @@ This approach, unfortunately, introduces lots of implicit dependencies, difficul
 
 To avoid these situations, we need to centralize the bindings between HLSL files and between HLSL and C++ files while still beining able to resolve the bindings at compile-time. A possible solution is to include a single header file containing all binding information in both our HLSL and C++ files:
 
-~~~c++
+```c++
 #ifndef HEADER_HLSL // "pragma once" in unfortunately not supported by the HLSL compiler
 #define HEADER_HLSL
 
@@ -43,13 +43,13 @@ To avoid these situations, we need to centralize the bindings between HLSL files
 #define SLOT_UAV_BAR     1
 
 #endif // HEADER_HLSL
-~~~
+```
 
 Bindings in HLSL files can now be defined as:
 
-~~~c++
+```hlsl
 Texture2D< float4 > g_foo_texture : register(REG_T(SLOT_SRV_FOO));
 Texture2D< float4 > g_bar_texture : register(REG_T(SLOT_SRV_BAR));
-~~~
+```
 
 This approach reduces the number of implicit binding dependencies. Note that, however, some implicit binding dependencies still remain (e.g. the order of RTVs and UAVs bound to the Output Merger, etc.).
