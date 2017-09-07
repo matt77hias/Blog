@@ -24,7 +24,7 @@ $$\begin{align}
 Here, $$\mathrm{fov_x}$$ and $$\mathrm{fov_y}$$ are the horizontal and vertical [field-of-view](https://en.wikipedia.org/wiki/Field_of_view_in_video_games), respectively, and $$\mathrm{z_n}$$ and $$\mathrm{z_f}$$ are the position of the near and far-plane of the [viewing frustum](https://en.wikipedia.org/wiki/Viewing_frustum), respectively.
 
 Note that there are only four variable matrix entries which fully characterize the view-to-projection matrix: $$\mathrm{T}_{00}$$, $$\mathrm{T}_{11}$$, $$\mathrm{T}_{22}$$ and $$\mathrm{T}_{32}$$.
-It is possible to pack these four values in a `float4` of a constant buffer to access them in HLSL. In order to avoid some divisions and additions in our HLSL code, we better use the following four projection values ($$x$$, $$y$$, $$z$$ and $$w$$):
+It is possible to pack these four values in a `float4` of a constant buffer to access them in HLSL. In order to avoid some divisions and additions in our HLSL code, we could use the following four projection values ($$x$$, $$y$$, $$z$$ and $$w$$) instead:
 
 $$\begin{equation}
 \mathrm{T}^{\mathrm{v} \rightarrow \mathrm{p}} 
