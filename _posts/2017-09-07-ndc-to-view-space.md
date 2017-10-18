@@ -28,7 +28,7 @@ It is possible to pack these four values in a `float4` of a constant buffer to a
 
 $$\begin{equation}
 \mathrm{T}^{\mathrm{v} \rightarrow \mathrm{p}} 
-= \begin{bmatrix} 1/x &0 &0 &0 \\ 0 &1/y &0 &0 \\ 0 &0 &-w &0 \\ 0 &0 &z &0\end{bmatrix}.
+= \begin{bmatrix} 1/x &0 &0 &0 \\ 0 &1/y &0 &0 \\ 0 &0 &-w &1 \\ 0 &0 &z &0\end{bmatrix}.
 \end{equation}$$
 
 **C++ Code**:
