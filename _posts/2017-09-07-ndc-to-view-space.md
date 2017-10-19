@@ -121,9 +121,9 @@ p_{y}^\mathrm{ndc} &= \frac{1}{y} p_{y}^\mathrm{v}
  Returns the projection values from the given projection matrix to construct 
  the view position coordinates from the NDC position coordinates.
 
- @return		The projection values from the given projection matrix to 
-          construct the view position coordinates from the NDC position 
-          coordinates.
+ @return   The projection values from the given projection matrix to 
+           construct the view position coordinates from the NDC position 
+           coordinates.
  */
 inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
     FXMMATRIX projection_matrix) noexcept {
