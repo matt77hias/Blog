@@ -148,7 +148,7 @@ inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
 ```
 
 # Summary
-We have seen how to use reconstruct the surface position in view space coordinates for a perspective and orthographic camera. Both reconstructions require only a `float4` in HLSL and are unfortunately quite different. So if our deferred renderer is going to support one camera type only, we could use the appropriate reconstruction. If our deferred renderer needs to support both or even more camera types, we need to specialize our shaders or specialize in our shaders by passing a flag in some constant buffer based on the camera type.
+So far, we have seen how to reconstruct the surface position in view space coordinates for a perspective and orthographic camera. Both reconstructions require only a `float4` coefficient vector in HLSL and are unfortunately quite different. So if our deferred renderer is going to support one camera type only, we could use the appropriate reconstruction. If our deferred renderer needs to support both or even more camera types, we need to specialize our shaders or specialize in our shaders by passing a flag in some constant buffer based on the camera type.
 
 Alternatively, we can pass the inverse of our view-to-projection matrices (i.e. projection-to-view matrices) to reconstruct the view space coordinates from the NDC space coordinates.
 
