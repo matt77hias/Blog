@@ -8,7 +8,10 @@ categories: transformation
 # Introduction
 In [deferred shading](https://en.wikipedia.org/wiki/Deferred_shading), geometrical (normal, depth) and material data is stored in a GBuffer in a first pass. 
 The actual lighting takes place in a second pass based on the data stored in the GBuffer.
-With regard to geometrical data, we minimally need a surface position and normal, both expressed in camera view or world space coordinates depending on the space used for lighting calculations. For the remainder, we assume that the lighting calculations take place in camera view space. If you want to use world space instead, you need to transform the surface position and normal from camera view to world space, before applying your lighting calculations. There is no need, however, for storing an explicit surface position in the GBuffer (and thus wasting valuable memory resources and bandwidth), since this surface position can be reconstructed.
+With regard to geometrical data, we minimally need a surface position and normal, both expressed in camera view or world space coordinates depending on the space used for lighting calculations. 
+There is no need, however, for storing an explicit surface position in the GBuffer (and thus wasting valuable memory resources and bandwidth), since this surface position can be reconstructed.
+(*For the remainder, we assume that the lighting calculations take place in camera view space. 
+If you want to use world space instead, you need to transform the surface position and normal from camera view to world space before applying your lighting calculations.*)
 
 ## Perspective Camera Only Approach
 A (row-major) perspective transformation matrix has the following format:
