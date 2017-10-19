@@ -11,7 +11,7 @@ The actual lighting takes place in a second pass based on the data stored in the
 With regard to geometrical data, we minimally need a surface position and normal, both expressed in camera view or world space coordinates depending on the space used for lighting calculations. 
 There is no need, however, for storing an explicit surface position in the GBuffer (and thus wasting valuable memory resources and bandwidth), since this surface position can be reconstructed.
 (*For the remainder, we assume that the lighting calculations take place in camera view space. 
-If you want to use world space instead, you need to transform the surface position and normal from camera view to world space before applying your lighting calculations.*)
+If you want to use world space instead, you need to additionally transform the surface position and normal from camera view to world space before applying your lighting calculations.*)
 
 ## Perspective Camera Only Approach
 A (row-major) perspective transformation matrix has the following format:
@@ -30,11 +30,11 @@ $$\begin{align}
 0 &0 &z &0 \end{bmatrix} \! . 
 \end{align}$$
 
-This transformation matrix is used to transform (*homogeneous*) points from view ($$p^{\mathrm{v}}$$) to projection space ($$p^{\mathrm{p}}$$), after which the homogeneous divide ($$p_{w}^{\mathrm{v}}$$) is applied to transform to NDC (Normalized Device Coordinate, p^{\mathrm{ndc}}) space. (*NDC space is technically a 3D space, but for ease of notation, I use 4D points with a $$w=1$$*). If we explicitly write down this chain of transformations, we obtain:
+This transformation matrix is used to transform (*homogeneous*) points from view ($$p^{\mathrm{v}}$$) to projection ($$p^{\mathrm{p}}$$) space, after which the homogeneous divide ($$p_{w}^{\mathrm{p}}$$) is applied to transform to NDC (Normalized Device Coordinate, $$p^{\mathrm{ndc}}$$) space. (*NDC space is technically a 3D space, but for ease of notation, I use 4D points with a $$w=1$$*). If we explicitly write down this chain of transformations, we obtain:
 
 $$\begin{align}
 p^{\mathrm{v}} \mathrm{T}^{\mathrm{v} \rightarrow \mathrm{p}}  &= \left(\frac{1}{x} p_{x}^\mathrm{v}, \frac{1}{y} p_{y}^\mathrm{v}, -w~p_{z}^\mathrm{v} + z, p_{z}^\mathrm{v}\right) = p^{\mathrm{p}} \\
-p^{\mathrm{p}}/p_{w}^{\mathrm{v}} &= \left(\frac{1}{x} \frac{p_{x}^\mathrm{v}}{p_{z}^\mathrm{v}}, \frac{1}{y} \frac{p_{y}^\mathrm{v}}{p_{z}^\mathrm{v}}, -w + \frac{z}{p_{z}^\mathrm{v}}, 1\right) = p^{\mathrm{ndc}}.
+p^{\mathrm{p}}/p_{w}^{\mathrm{p}} &= \left(\frac{1}{x} \frac{p_{x}^\mathrm{v}}{p_{z}^\mathrm{v}}, \frac{1}{y} \frac{p_{y}^\mathrm{v}}{p_{z}^\mathrm{v}}, -w + \frac{z}{p_{z}^\mathrm{v}}, 1\right) = p^{\mathrm{ndc}}.
 \end{align}$$
 
 In a deferred renderer, we need to go the other way around while resolving the GBuffer and could use four components ($$x$$, $$y$$, $$z$$, $$w$$, see above) to transform a point from NDC to view space:
