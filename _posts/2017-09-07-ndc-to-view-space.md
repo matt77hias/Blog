@@ -54,8 +54,8 @@ p_{y}^\mathrm{ndc} &= \frac{1}{y} \frac{p_{y}^\mathrm{v}}{p_{z}^\mathrm{v}}
  the view position coordinates from the NDC position coordinates.
 
  @return		The projection values from the given projection matrix to 
-                construct the view position coordinates from the NDC position 
-                coordinates.
+           construct the view position coordinates from the NDC position 
+           coordinates.
  */
 inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
     FXMMATRIX projection_matrix) noexcept {
@@ -109,9 +109,9 @@ Again, we could use four components ($$x$$, $$y$$, $$z$$, $$w$$, see above) to t
 
 $$\begin{align}
 p_{z}^\mathrm{ndc} &= \frac{1}{z} p_{z}^\mathrm{v} - w
-&\Leftrightarrow p_{z}^\mathrm{v} &= z~\left(p_{z}^\mathrm{ndc} + w\right\\
+&\Leftrightarrow p_{z}^\mathrm{v} &= z~\left(p_{z}^\mathrm{ndc} + w\right) \\
 p_{x}^\mathrm{ndc} &= \frac{1}{x} p_{x}^\mathrm{v} 
-&\Leftrightarrow p_{x}^\mathrm{v} &= x~p_{x}^\mathrm{ndc}\\
+&\Leftrightarrow p_{x}^\mathrm{v} &= x~p_{x}^\mathrm{ndc} \\
 p_{y}^\mathrm{ndc} &= \frac{1}{y} p_{y}^\mathrm{v} 
 &\Leftrightarrow p_{y}^\mathrm{v} &= y~p_{y}^\mathrm{ndc}.
 \end{align}$$
@@ -122,8 +122,8 @@ p_{y}^\mathrm{ndc} &= \frac{1}{y} p_{y}^\mathrm{v}
  the view position coordinates from the NDC position coordinates.
 
  @return		The projection values from the given projection matrix to 
-                construct the view position coordinates from the NDC position 
-                coordinates.
+          construct the view position coordinates from the NDC position 
+          coordinates.
  */
 inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
     FXMMATRIX projection_matrix) noexcept {
