@@ -53,7 +53,7 @@ p_{y}^\mathrm{ndc} &= \frac{1}{y} \frac{p_{y}^\mathrm{v}}{p_{z}^\mathrm{v}}
  Returns the projection values from the given projection matrix to construct 
  the view position coordinates from the NDC position coordinates.
 
- @return		The projection values from the given projection matrix to 
+ @return   The projection values from the given projection matrix to 
            construct the view position coordinates from the NDC position 
            coordinates.
  */
