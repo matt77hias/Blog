@@ -150,7 +150,11 @@ inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
 # Summary
 So far, we have seen how to reconstruct the surface position in view space coordinates for a perspective and orthographic camera. Both reconstructions require only a `float4` coefficient vector in HLSL and are unfortunately quite different. So if our deferred renderer is going to support one camera type only, we could use the appropriate reconstruction. If our deferred renderer needs to support both or even more camera types, we need to specialize our shaders statically (i.e. pre-processor directives) or dynamically (i.e. dynamic branching based on some constant buffer flag) based on the camera type.
 
-Alternatively, we can pass the inverse of our view-to-projection matrices (i.e. projection-to-view matrices) to reconstruct the view space coordinates from the NDC space coordinates.
+Alternatively, we can pass the inverse of our view-to-projection matrices (i.e. projection-to-view matrices) to reconstruct the view space coordinates from the NDC space coordinates. We set the $$w$$ coordinate of the NDC position to $$1$$ to obtain the projection space coordinates. Next, we apply the projection-to-view transformation. Finally, we apply an homogeneous divide to obtain the view space coordinates.
+
+# Generalized Approach
+
+The view-to-projection and projection-to-view matrices for a perspective camera are defined as: 
 
 $$\begin{align} 
 \mathrm{T}^{\mathrm{v \rightarrow p}} &= \begin{bmatrix} 
@@ -188,6 +192,8 @@ virtual const XMMATRIX GetProjectionToViewMatrix() const noexcept override {
  };
 }
 ```
+
+The view-to-projection and projection-to-view matrices for an orthographic camera are defined as: 
 
 **Orthographic Camera**
 
