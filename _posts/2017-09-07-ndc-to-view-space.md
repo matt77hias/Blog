@@ -169,8 +169,8 @@ $$\begin{align}
 /**
  Returns the projection-to-view matrix of this perspective camera.
 
- @return		The projection-to-view matrix of this perspective 
-    camera.
+ @return   The projection-to-view matrix of this perspective 
+           camera.
  */
 virtual const XMMATRIX GetProjectionToViewMatrix() const noexcept override {
  const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
@@ -208,8 +208,8 @@ $$\begin{align}
 /**
  Returns the projection-to-view matrix of this orthographic camera.
 
- @return		The projection-to-view matrix of this orthographic 
-    camera.
+ @return   The projection-to-view matrix of this orthographic 
+           camera.
  */
 virtual const XMMATRIX GetProjectionToViewMatrix() const noexcept override {
  const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
