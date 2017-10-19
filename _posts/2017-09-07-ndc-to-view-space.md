@@ -185,10 +185,10 @@ virtual const XMMATRIX GetProjectionToViewMatrix() const noexcept override {
  const F32 m33 = -XMVectorGetZ(view_to_projection.r[2]) * m23;
 
  return XMMATRIX {
-   m00, 0.0f, 0.0f, 0.0f,
-  0.0f,  m11, 0.0f, 0.0f,
-  0.0f, 0.0f, 0.0f,  m23,
-  0.0f, 0.0f, 1.0f,  m33
+       m00, 0.0f, 0.0f, 0.0f,
+      0.0f,  m11, 0.0f, 0.0f,
+      0.0f, 0.0f, 0.0f,  m23,
+      0.0f, 0.0f, 1.0f,  m33
  };
 }
 ```
@@ -226,10 +226,10 @@ virtual const XMMATRIX GetProjectionToViewMatrix() const noexcept override {
  const F32 m32 = -XMVectorGetZ(view_to_projection.r[3]) * m22;
 
  return XMMATRIX {
-   m00, 0.0f, 0.0f, 0.0f,
-  0.0f,  m11, 0.0f, 0.0f,
-  0.0f, 0.0f,  m22, 0.0f,
-  0.0f, 0.0f,  m32, 1.0f
+       m00, 0.0f, 0.0f, 0.0f,
+      0.0f,  m11, 0.0f, 0.0f,
+      0.0f, 0.0f,  m22, 0.0f,
+      0.0f, 0.0f,  m32, 1.0f
  };
 }
 ```
