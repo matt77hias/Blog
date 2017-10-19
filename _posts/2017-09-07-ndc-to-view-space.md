@@ -10,10 +10,11 @@ In [deferred shading](https://en.wikipedia.org/wiki/Deferred_shading), geometric
 The actual lighting takes place in a second pass based on the data stored in the GBuffer.
 With regard to geometrical data, we minimally need a surface position and normal, both expressed in camera view or world space coordinates depending on the space used for lighting calculations. For the remainder, we assume that the lighting calculations take place in camera view space. If you want to use world space instead, you need to transform the surface position and normal from camera view to world space, before applying your lighting calculations. There is no need, however, for storing an explicit surface position in the GBuffer (and thus wasting valuable memory resources and bandwidth), since this surface position can be reconstructed.
 
-## Perspective Camera
+## Perspective Camera Only Approach
 A (row-major) perspective transformation matrix has the following format:
 
-$$\begin{align} \mathrm{T} 
+$$\begin{align} 
+\mathrm{T}^{\mathrm{v \rightarrow p}}
 &= \begin{bmatrix} 
 \mathrm{T}_{00} &0 &0 &0 \\ 
 0 &\mathrm{T}_{11} &0 &0 \\ 
@@ -77,10 +78,10 @@ inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
 }
 ```
 
-# Orthographic Camera
+# Orthographic Camera Only Approach
 An (row-major) orthographic transformation matrix has the following format:
 
-$$\begin{align} \mathrm{T} 
+$$\begin{align} \mathrm{T}^{\mathrm{v \rightarrow p}}
 &= \begin{bmatrix} 
 \mathrm{T}_{00} &0 &0 &0 \\ 
 0 &\mathrm{T}_{11} &0 &0 \\ 
@@ -144,4 +145,82 @@ inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
 ```
 
 # Summary
-So far, we have seen how to use reconstruct the surface position in view space coordinates for a perspective and orthographic camera. Both reconstructions require only 4 coefficients 
+We have seen how to use reconstruct the surface position in view space coordinates for a perspective and orthographic camera. Both reconstructions require only a `float4` in HLSL and are unfortunately quite different. So if our deferred renderer is going to support one camera type only, we could use the appropriate reconstruction. If our deferred renderer needs to support both or even more camera types, we need to specialize our shaders or specialize in our shaders by passing a flag in some constant buffer based on the camera type.
+
+Alternatively, we can pass the inverse of our view-to-projection matrices (i.e. projection-to-view matrices) to reconstruct the view space coordinates from the NDC space coordinates.
+
+$$\begin{align} 
+\mathrm{T}^{\mathrm{v \rightarrow p}} &= \begin{bmatrix} 
+\mathrm{T}_{00} &0 &0 &0 \\ 
+0 &\mathrm{T}_{11} &0 &0 \\ 
+0 &0 &\mathrm{T}_{22} &1 \\ 
+0 &0 &\mathrm{T}_{32} &0 \end{bmatrix} \! , \\
+\mathrm{T}^{\mathrm{p \rightarrow v}} &=\begin{bmatrix} 
+1/\mathrm{T}_{00} &0 &0 &0 \\ 
+0 &1/\mathrm{T}_{11} &0 &0 \\ 
+0 &0 &0 &1/\mathrm{T}_{32} \\ 
+0 &0 &1 &-\mathrm{T}_{22}/\mathrm{T}_{32}\end{bmatrix} \! . 
+\end{align}$$
+
+```c++
+/**
+ Returns the projection-to-view matrix of this perspective camera.
+
+ @return		The projection-to-view matrix of this perspective 
+    camera.
+ */
+virtual const XMMATRIX GetProjectionToViewMatrix() const noexcept override {
+ const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
+
+ const F32 m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
+ const F32 m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
+ const F32 m23 = 1.0f / XMVectorGetZ(view_to_projection.r[3]);
+ const F32 m33 = -XMVectorGetZ(view_to_projection.r[2]) * m23;
+
+ return XMMATRIX {
+   m00, 0.0f, 0.0f, 0.0f,
+  0.0f,  m11, 0.0f, 0.0f,
+  0.0f, 0.0f, 0.0f,  m23,
+  0.0f, 0.0f, 1.0f,  m33
+ };
+}
+```
+
+**Orthographic Camera**
+
+$$\begin{align} 
+\mathrm{T}^{\mathrm{v \rightarrow p}} &= \begin{bmatrix} 
+\mathrm{T}_{00} &0 &0 &0 \\ 
+0 &\mathrm{T}_{11} &0 &0 \\ 
+0 &0 &\mathrm{T}_{22} &0 \\ 
+0 &0 &\mathrm{T}_{32} &1 \end{bmatrix} \! , \\
+\mathrm{T}^{\mathrm{p \rightarrow v}} &=\begin{bmatrix} 
+1/\mathrm{T}_{00} &0 &0 &0 \\ 
+0 &1/\mathrm{T}_{11} &0 &0 \\ 
+0 &0 &1/\mathrm{T}_{22} &0 \\ 
+0 &0 &-\mathrm{T}_{32}/\mathrm{T}_{22} &1\end{bmatrix} \! . 
+\end{align}$$
+
+```c++
+/**
+ Returns the projection-to-view matrix of this orthographic camera.
+
+ @return		The projection-to-view matrix of this orthographic 
+    camera.
+ */
+virtual const XMMATRIX GetProjectionToViewMatrix() const noexcept override {
+ const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
+
+ const F32 m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
+ const F32 m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
+ const F32 m22 = 1.0f / XMVectorGetZ(view_to_projection.r[2]);
+ const F32 m32 = -XMVectorGetZ(view_to_projection.r[3]) * m22;
+
+ return XMMATRIX {
+   m00, 0.0f, 0.0f, 0.0f,
+  0.0f,  m11, 0.0f, 0.0f,
+  0.0f, 0.0f,  m22, 0.0f,
+  0.0f, 0.0f,  m32, 1.0f
+ };
+}
+```
