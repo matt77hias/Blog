@@ -177,19 +177,19 @@ $$\begin{align}
            camera.
  */
 virtual const XMMATRIX GetProjectionToViewMatrix() const noexcept override {
- const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
+    const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
 
- const F32 m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
- const F32 m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
- const F32 m23 = 1.0f / XMVectorGetZ(view_to_projection.r[3]);
- const F32 m33 = -XMVectorGetZ(view_to_projection.r[2]) * m23;
+    const F32 m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
+    const F32 m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
+    const F32 m23 = 1.0f / XMVectorGetZ(view_to_projection.r[3]);
+    const F32 m33 = -XMVectorGetZ(view_to_projection.r[2]) * m23;
 
- return XMMATRIX {
-       m00, 0.0f, 0.0f, 0.0f,
-      0.0f,  m11, 0.0f, 0.0f,
-      0.0f, 0.0f, 0.0f,  m23,
-      0.0f, 0.0f, 1.0f,  m33
- };
+    return XMMATRIX {
+        m00, 0.0f, 0.0f, 0.0f,
+        0.0f,  m11, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,  m23,
+        0.0f, 0.0f, 1.0f,  m33
+    };
 }
 ```
 
@@ -216,18 +216,18 @@ $$\begin{align}
            camera.
  */
 virtual const XMMATRIX GetProjectionToViewMatrix() const noexcept override {
- const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
+    const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
 
- const F32 m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
- const F32 m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
- const F32 m22 = 1.0f / XMVectorGetZ(view_to_projection.r[2]);
- const F32 m32 = -XMVectorGetZ(view_to_projection.r[3]) * m22;
+    const F32 m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
+    const F32 m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
+    const F32 m22 = 1.0f / XMVectorGetZ(view_to_projection.r[2]);
+    const F32 m32 = -XMVectorGetZ(view_to_projection.r[3]) * m22;
 
- return XMMATRIX {
-       m00, 0.0f, 0.0f, 0.0f,
-      0.0f,  m11, 0.0f, 0.0f,
-      0.0f, 0.0f,  m22, 0.0f,
-      0.0f, 0.0f,  m32, 1.0f
- };
+    return XMMATRIX {
+         m00, 0.0f, 0.0f, 0.0f,
+        0.0f,  m11, 0.0f, 0.0f,
+        0.0f, 0.0f,  m22, 0.0f,
+        0.0f, 0.0f,  m32, 1.0f
+    };
 }
 ```
