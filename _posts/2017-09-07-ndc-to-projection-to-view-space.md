@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "NDC to View space"
-date:   2017-09-07
-categories: transformation
+title:  "NDC to Projection to View space"
+date:   2017-10-19
+categories: transformations
 ---
 
 # Introduction
