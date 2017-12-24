@@ -14,4 +14,4 @@ My personal [blog](http://matt77hias.github.io/blog).
 * [Jekyll Pygments Themes](https://github.com/jwarby/jekyll-pygments-themes/blob/master/UNLICENSE.txt)
 * [MathJax](https://github.com/mathjax/MathJax/blob/master/LICENSE)
 
-<p align="center">Copyright © 2015-2017 Matthias Moulin. All Rights Reserved.</p>
+<p align="center">Copyright © 2015-2018 Matthias Moulin. All Rights Reserved.</p>
