@@ -5,7 +5,7 @@ date:   2018-27-01
 categories: c++
 ---
 
-This post contains a running list of C++ language features and std extensions, I would like to see in future (C++20 <= ) C++ standards.
+This post contains a running list of C++ language features and standard library (`std`) extensions, I would like to see in future C++ standards (C++20 or beyond).
 
 ## Full and partial template specilization for alias templates
 
