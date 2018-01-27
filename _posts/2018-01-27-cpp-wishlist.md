@@ -225,7 +225,7 @@ you can use [`std::base_of`](http://en.cppreference.com/w/cpp/types/is_base_of) 
 None of these three versions look very readable or pleasing at all.
 If we stick to SFINAE, we will probably have to wait until C++20 which will introduce the `requires` keyword.
 
-Alternatively use C++17's [`if constexpr`](http://en.cppreference.com/w/cpp/language/if):
+Alternatively, we can use C++17's [`if constexpr`](http://en.cppreference.com/w/cpp/language/if):
 ```c++
 #include <type_traits>
 #include <vector>
