@@ -355,3 +355,8 @@ Most of the remaining functions or member methods (i.e. getters) that return a v
 Ideally C++17 should have broken backwards compatibility by adding the opposite keyword [[maybe_discarded]]. Note that this is not strictly breaking backwards compatibility, but merely adds extra warnings to existing codebases (compilers will always become better at analyzing code, so you should expect more warnings anyway).
 
 **Therefore, I like to be able to use a [[maybe_discarded]] instead of [[nodiscard]] attribute in future C++.**
+
+## CPU clock
+
+## 16 bit floating point values
+
