@@ -24,8 +24,8 @@ template< typename T >
 using Vector = std::vector< T >;
 ```
 
-Suppose we want to specialize the return type of a template function based on the template parameter, 
-we somehow need to map template parameters to return types. To allow arbitrary mappings, template specialization is required.
+Suppose we want to specialize the return type of a template function based on the template parameter. 
+Then we somehow need to map template parameters to return types. To allow arbitrary mappings, template specialization is required.
 
 Lets assume that we want to convert 32-bit numeric values (unsigned integer, signed integer, floating point) to the corresponding 64-bit numeric values. 
 In order to specify this mapping in C++, we can use a class template that will be specialized for each element of the mapping:
