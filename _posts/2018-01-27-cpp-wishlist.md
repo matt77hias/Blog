@@ -340,7 +340,7 @@ int main() {
 
 **Therefore, I like to be able to define (un)signed chars and (un)signed shorts using prefixes in future C++.**
 
-## noexcept move constructor and assignment operators in std
+## `noexcept` move constructor and assignment operators in std
 Move constructors and move assignment operators should be declared `noexcept`, especially in the `std`.
 Unfortunately, this is not true for all `std` classes:
 * [std::function](http://en.cppreference.com/w/cpp/utility/functional/function)
@@ -348,8 +348,10 @@ Unfortunately, this is not true for all `std` classes:
 * ...
 
 ## Remove and replace `[[nodiscard]]` with `[[maybe_discard]]`.
-I add C++17's `[[nodiscard]]` attribute everywhere it makes sense. For functions returning error codes, the returned value should be used, since I return these codes for a reason and do not intent or allow the continuation of the program without handling them appropriately (where the user may use his preferred programming style: total, normal, defensive, etc.). For functions returning values that could leak resources (allocators) or could break the goal (async) in case of not using them, the returned values should be used.  Most of the remaining functions or member methods (i.e. getters) that return a value are pure or nearly pure (if no exceptions are thrown or assertions are failed). This last category comprises more than 90% of my codebase. Calling these functions without using the returned value makes no sense and should be dealt with to obtain proper code. So in that sense, I like to be warned or even receive an error in such cases. On the other hand, interfaces become quite verbose since you will nearly see the attribute once in every two functions. 
+I add C++17's `[[nodiscard]]` attribute everywhere it makes sense. For functions returning error codes, the returned value should be used, since I return these codes for a reason and do not intent or allow the continuation of the program without handling them appropriately (where the user may use his preferred programming style: total, normal, defensive, etc.). For functions returning values that could leak resources (allocators) or could break the goal (async) in case of not using them, the returned values should be used.  
 
-Ideally C++17 should have broken backwards compatibility by adding the opposite keyword [[maybe_discarded]]. Note that this is not strictly breaking backwards compatibility, but merely adds extra warnings to existing codebases (compilers will always become better at analyzing code, so you should expect more warning anyway).
+Most of the remaining functions or member methods (i.e. getters) that return a value are pure or nearly pure (if no exceptions are thrown or assertions are failed). This last category comprises more than 90% of my codebase. Calling these functions without using the returned value makes no sense and should be dealt with to obtain proper code. So in that sense, I like to be warned or even receive an error in such cases. On the other hand, interfaces become quite verbose since you will nearly see the attribute once in every two functions. 
+
+Ideally C++17 should have broken backwards compatibility by adding the opposite keyword [[maybe_discarded]]. Note that this is not strictly breaking backwards compatibility, but merely adds extra warnings to existing codebases (compilers will always become better at analyzing code, so you should expect more warnings anyway).
 
 **Therefore, I like to be able to use a [[maybe_discarded]] instead of [[nodiscard]] attribute in future C++.**
