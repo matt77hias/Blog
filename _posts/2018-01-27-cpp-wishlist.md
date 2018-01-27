@@ -357,6 +357,14 @@ Ideally C++17 should have broken backwards compatibility by adding the opposite 
 **Therefore, I like to be able to use a [[maybe_discarded]] instead of [[nodiscard]] attribute in future C++.**
 
 ## CPU clock
+I really like the [`#include <chrono>`](http://en.cppreference.com/w/cpp/chrono) and especially the way it handles different storage types (e.g. integer or floating point) with varying degrees of precision. The available clocks can only handle wall clock time. I would like to handle kernel and/or user mode time as well, since these are more accurate. *(If you have a Windows operating system, I encourage you to compare the difference for yourself with this [project](https://github.com/matt77hias/Timing/blob/master/Timing/Timing/src/Timing.cpp). More particularly, compare the results obtained after running the program once versus twice at the same time.)*
 
-## 16 bit floating point values
+It would be handy to have a clock that handles kernel and/or user mode timestamps in the `std`, since it could be used on all platforms. The surprising thing is that C++ already has such a clock from its C legacy: [`clock`](http://www.cplusplus.com/reference/ctime/clock/). 
 
+> Returns the processor time consumed by the program.
+
+Unfortunately, there is a rather large caveat when looking at the documentation of Microsoft's implementation of [`clock`](https://msdn.microsoft.com/en-us/library/4e2ess30.aspx):
+
+> The clock function tells how much **wall-clock time** has passed since the CRT initialization during process start. Note that this function does not strictly conform to ISO C, which specifies net CPU time as the return value. To obtain CPU times, use the Win32 [`GetProcessTimes`](https://msdn.microsoft.com/en-us/library/windows/desktop/ms683223(v=vs.85).aspx) function.
+
+The aforementioned `GetProcessTimes` is, as one would guess, only available for Windows operating systems. The `std` leaves us thus empty-handed. But even if C's `clock` worked the way it is supposed to on all platforms, we still need a clock inside `<chrono>` with an interface similar to the other clocks (`std::chrono::system_clock`, `std::chrono::steady_clock`, `std::chrono::high_resolution_clock`).
