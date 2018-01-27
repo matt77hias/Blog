@@ -324,8 +324,8 @@ int main() {
     
     auto i = static_cast<   signed short >(9);
     auto j = static_cast< unsigned short >(10);
-    auto k = static_cast<   signed char >(11);
-    auto l = static_cast< unsigned char >(12);
+    auto k = static_cast<   signed char  >(11);
+    auto l = static_cast< unsigned char  >(12);
 }
 ```
 This can become quite verbose when using simple arithmetic functions:
