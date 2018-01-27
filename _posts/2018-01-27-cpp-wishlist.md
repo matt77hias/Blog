@@ -276,12 +276,12 @@ template< typename ResourceT, typename... ConstructorArgsT >
 ResourceT &Create(ConstructorArgsT &&...args);
 
 template< typename... ConstructorArgsT >
-inline Foo &Create< Foo >(ConstructorArgsT &&...args) {
+inline Foo &Create(ConstructorArgsT &&...args) {
     return g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
 template< typename... ConstructorArgsT >
-inline Bar &Create< Bar >(ConstructorArgsT &&...args) {
+inline Bar &Create(ConstructorArgsT &&...args) {
     return g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
