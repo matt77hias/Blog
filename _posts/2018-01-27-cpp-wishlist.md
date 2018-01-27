@@ -100,8 +100,6 @@ return_t< T > convert(T value) {
 Unfortunately, (full) specialization of alias templates is not permitted in C++ (<= C++17). 
 This also implies that partial specialization of alias templates is not permitted either.
 
-**Therefore, I like to be able to define full and partial template specializations of alias templates in future C++.**
-
 ## Partial template specilization for functions and member methods
 
 Assume that we want to create resources in a uniform way by calling a function `Create` 
@@ -111,6 +109,7 @@ with a list of arguments matching the constructor of the resource we want to inv
 If we use [SFINAE](http://en.cppreference.com/w/cpp/language/sfinae) on the return type, we can write the following code:
 
 * **C++11**
+
 ```c++
 #include <type_traits>
 #include <vector>
@@ -148,6 +147,7 @@ int main() {
 ```
 
 * **C++14** (using [`std::enable_if_t`](http://en.cppreference.com/w/cpp/types/enable_if))
+
 ```c++
 #include <type_traits>
 #include <vector>
@@ -185,6 +185,7 @@ int main() {
 ```
 
 * **C++17** (using the new [`std::vector::emplace_back`](http://en.cppreference.com/w/cpp/container/vector/emplace_back) and [`std::is_same_v`](http://en.cppreference.com/w/cpp/types/is_same))
+
 ```c++
 #include <type_traits>
 #include <vector>
@@ -226,6 +227,7 @@ None of these three versions look very readable or pleasing at all.
 If we stick to SFINAE, we will probably have to wait until C++20 which will introduce the `requires` keyword.
 
 Alternatively, we can use C++17's [`if constexpr`](http://en.cppreference.com/w/cpp/language/if):
+
 ```c++
 #include <type_traits>
 #include <vector>
@@ -258,6 +260,7 @@ int main() {
 This looks much compacter, but unfortunately requires us to know all resource types in advance which will not always be the case.
 
 Ideally, we would like to write something like this:
+
 ```c++
 #include <type_traits>
 #include <vector>
@@ -295,16 +298,12 @@ Unfortunately, partial specialization of template functions is not permitted in 
 This is also the case when we want to encapsulate our resource collections inside a class: 
 partial specialization of member methods is not permitted in C++ (<= C++17). 
 
-**Therefore, I like to be able to define partial template specializations of template functions and member methods in future C++.**
-
 ## Anonymous structs
 C11 added anonymous unions (originally only a GNU extension) and anonymous structs to the C standard.
 C++98 (the first C++ standard) includes anonymous unions but not anonymous structs.
 
 Though, anonymous structs work out-of-the-box with MVC++, gcc and Clang for all C++ standards and are ubiquitous in APIs aiming at both a C and C++ audience such as the Windows API (try to disable C++ language extensions in the compiler and see for yourself). 
 So the only reason I can imagine for not adding anonymous structs to the C++ standard, is that one simply forgot that this language feature is non-standard.
-
-**Therefore, I like to be able to define anonymous structs in future C++.**
 
 ## Integral prefixes
 
@@ -338,8 +337,6 @@ int main() {
 }
 ```
 
-**Therefore, I like to be able to define (un)signed chars and (un)signed shorts using prefixes in future C++.**
-
 ## `noexcept` move constructor and assignment operators in std
 Move constructors and move assignment operators should be declared `noexcept`, especially in the `std`.
 Unfortunately, this is not true for all `std` classes:
@@ -353,8 +350,6 @@ I add C++17's `[[nodiscard]]` attribute everywhere it makes sense. For functions
 Most of the remaining functions or member methods (i.e. getters) that return a value are pure or nearly pure (if no exceptions are thrown or assertions are failed). This last category comprises more than 90% of my codebase. Calling these functions without using the returned value makes no sense and should be dealt with to obtain proper code. So in that sense, I like to be warned or even receive an error in such cases. On the other hand, interfaces become quite verbose since you will nearly see the attribute once in every two functions. 
 
 Ideally C++17 should have broken backwards compatibility by adding the opposite keyword [[maybe_discarded]]. Note that this is not strictly breaking backwards compatibility, but merely adds extra warnings to existing codebases (compilers will always become better at analyzing code, so you should expect more warnings anyway).
-
-**Therefore, I like to be able to use a [[maybe_discarded]] instead of [[nodiscard]] attribute in future C++.**
 
 ## CPU clock
 I really like the [`#include <chrono>`](http://en.cppreference.com/w/cpp/chrono) and especially the way it handles different storage types (e.g. integer or floating point) with varying degrees of precision. The available clocks can only handle wall clock time. I would like to handle kernel and/or user mode time as well, since these are more accurate. *(If you have a Windows operating system, I encourage you to compare the difference for yourself with this [project](https://github.com/matt77hias/Timing/blob/master/Timing/Timing/src/Timing.cpp). More particularly, compare the results obtained after running the program once versus twice at the same time.)*
