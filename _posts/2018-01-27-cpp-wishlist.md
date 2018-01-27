@@ -219,7 +219,7 @@ int main() {
     auto &bar = Create< Bar >();
 }
 ```
-Note that multiple type traits exist in C++. 
+**Note** that various type traits exist in C++. 
 For example: if you rather want collections of pointers instead of values to exploit polymorphism, 
 you can use [`std::base_of`](http://en.cppreference.com/w/cpp/types/is_base_of) instead of `std::is_same`.
 
@@ -257,7 +257,7 @@ int main() {
     auto &bar = Create< Bar >();
 }
 ```
-This looks much compacter, but unfortunately requires us to know all resource types in advance which will not always be the case.
+This looks much more compact, but unfortunately requires us to know all resource types in advance which will not always be the case.
 
 Ideally, we would like to write something like this:
 
@@ -302,7 +302,7 @@ partial specialization of member methods is not permitted in C++ (<= C++17).
 C11 added anonymous unions (originally only a GNU extension) and anonymous structs to the C standard.
 C++98 (the first C++ standard) includes anonymous unions but not anonymous structs.
 
-Though, anonymous structs work out-of-the-box with MVC++, gcc and Clang for all C++ standards and are ubiquitous in APIs aiming at both a C and C++ audience such as the Windows API (try to disable C++ language extensions in the compiler and see for yourself). 
+Though, anonymous structs work out-of-the-box with MVC++, gcc and Clang for all C++ standards and are ubiquitous in APIs aiming at both a C and C++ audience, such as the Windows API (try to disable C++ language extensions in the compiler and see for yourself). 
 So the only reason I can imagine for not adding anonymous structs to the C++ standard, is that one simply forgot that this language feature is non-standard.
 
 ## Integral prefixes
@@ -328,7 +328,7 @@ int main() {
 }
 ```
 This can become quite verbose when using simple arithmetic functions:
-```
+```c++
 #include <algorithm>
 
 int main() {
@@ -337,22 +337,22 @@ int main() {
 }
 ```
 
-## `noexcept` move constructor and assignment operators in std
+## noexcept move constructor and assignment operators in std
 Move constructors and move assignment operators should be declared `noexcept`, especially in the `std`.
 Unfortunately, this is not true for all `std` classes:
-* [std::function](http://en.cppreference.com/w/cpp/utility/functional/function)
-* [std::map](http://en.cppreference.com/w/cpp/container/map/map), [std::unordered_map](http://en.cppreference.com/w/cpp/container/unordered_map/unordered_map), [std::multimap](http://en.cppreference.com/w/cpp/container/multimap/multimap), [std::unordered_multimap](http://en.cppreference.com/w/cpp/container/unordered_multimap/unordered_multimap)
+* [std::function](http://en.cppreference.com/w/cpp/utility/functional/function);
+* [std::map](http://en.cppreference.com/w/cpp/container/map/map), [std::unordered_map](http://en.cppreference.com/w/cpp/container/unordered_map/unordered_map), [std::multimap](http://en.cppreference.com/w/cpp/container/multimap/multimap), [std::unordered_multimap](http://en.cppreference.com/w/cpp/container/unordered_multimap/unordered_multimap);
 * ...
 
-## Remove and replace `[[nodiscard]]` with `[[maybe_discard]]`.
+## Remove and replace [[nodiscard]] with [[maybe_discard]].
 I add C++17's `[[nodiscard]]` attribute everywhere it makes sense. For functions returning error codes, the returned value should be used, since I return these codes for a reason and do not intent or allow the continuation of the program without handling them appropriately (where the user may use his preferred programming style: total, normal, defensive, etc.). For functions returning values that could leak resources (allocators) or could break the goal (async) in case of not using them, the returned values should be used.  
 
 Most of the remaining functions or member methods (i.e. getters) that return a value are pure or nearly pure (if no exceptions are thrown or assertions are failed). This last category comprises more than 90% of my codebase. Calling these functions without using the returned value makes no sense and should be dealt with to obtain proper code. So in that sense, I like to be warned or even receive an error in such cases. On the other hand, interfaces become quite verbose since you will nearly see the attribute once in every two functions. 
 
-Ideally C++17 should have broken backwards compatibility by adding the opposite keyword [[maybe_discarded]]. Note that this is not strictly breaking backwards compatibility, but merely adds extra warnings to existing codebases (compilers will always become better at analyzing code, so you should expect more warnings anyway).
+Ideally C++17 should have broken backwards compatibility by adding the opposite keyword `[[maybe_discarded]]`. Note that this is not strictly breaking backwards compatibility, but merely adds extra warnings to existing codebases. Compilers will always become better at analyzing code, so you should expect more future warnings anyway.
 
 ## CPU clock
-I really like the [`#include <chrono>`](http://en.cppreference.com/w/cpp/chrono) and especially the way it handles different storage types (e.g. integer or floating point) with varying degrees of precision. The available clocks can only handle wall clock time. I would like to handle kernel and/or user mode time as well, since these are more accurate. *(If you have a Windows operating system, I encourage you to compare the difference for yourself with this [project](https://github.com/matt77hias/Timing/blob/master/Timing/Timing/src/Timing.cpp). More particularly, compare the results obtained after running the program once versus twice at the same time.)*
+I really like the [`<chrono>`](http://en.cppreference.com/w/cpp/chrono) API and more particularly the way it handles different storage types (e.g. integer or floating point) with varying degrees of precision. The available clocks can only handle wall clock time. I would like to handle kernel and/or user mode time as well, since these are more accurate. *(If you have a Windows operating system, I encourage you to compare the difference for yourself with this [project](https://github.com/matt77hias/Timing/blob/master/Timing/Timing/src/Timing.cpp). More particularly, compare the results obtained after running the program once versus twice at the same time.)*
 
 It would be handy to have a clock that handles kernel and/or user mode timestamps in the `std`, since it could be used on all platforms. The surprising thing is that C++ already has such a clock from its C legacy: [`clock`](http://www.cplusplus.com/reference/ctime/clock/). 
 
