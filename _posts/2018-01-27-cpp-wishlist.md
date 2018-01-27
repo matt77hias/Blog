@@ -5,6 +5,8 @@ date:   2018-27-01
 categories: c++
 ---
 
+This post contains a running list of C++ language features and std extensions, I would like to see in future (C++20 <= ) C++ standards.
+
 ## Full and partial template specilization for alias templates
 
 [Alias templates](http://en.cppreference.com/w/cpp/language/type_alias) are introduced in C++11. 
