@@ -309,7 +309,7 @@ So the only reason I can imagine for not adding anonymous structs to the C++ sta
 ## Integral prefixes
 
 There exist no integral suffix for (un)signed chars and (un)signed shorts. 
-Therefore, (implicit/explicit) are required to initialize these types:
+Therefore, (implicit/explicit) casts are required to initialize these types:
 ```c++
 int main() {
     auto a = 1;    //   signed int
@@ -333,7 +333,7 @@ This can become quite verbose when using simple arithmetic functions:
 #include <algorithm>
 
 int main() {
-    auto value  = static_cast< signed short >(9); // Assume that this value is not known at compile time.
+    auto value  = static_cast< signed short >(9); // Assume that this value is not known at compile time...
     auto result = std::max(i, static_cast< signed short >(5));
 }
 ```
@@ -341,8 +341,8 @@ int main() {
 **Therefore, I like to be able to define (un)signed chars and (un)signed shorts using prefixes in future C++.**
 
 ## noexcept move constructor and assignment operators in std
-Move constructors and assignment operators should be declared `noexcept`, especially in the std.
-Unfortunately, this is not true for all std classes:
+Move constructors and move assignment operators should be declared `noexcept`, especially in the `std`.
+Unfortunately, this is not true for all `std` classes:
 * [std::function](http://en.cppreference.com/w/cpp/utility/functional/function)
 * [std::map](http://en.cppreference.com/w/cpp/container/map/map), [std::unordered_map](http://en.cppreference.com/w/cpp/container/unordered_map/unordered_map), [std::multimap](http://en.cppreference.com/w/cpp/container/multimap/multimap), [std::unordered_multimap](http://en.cppreference.com/w/cpp/container/unordered_multimap/unordered_multimap)
 * ...
