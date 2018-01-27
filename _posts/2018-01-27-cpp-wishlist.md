@@ -146,6 +146,7 @@ int main() {
 ```
 
 * **C++14** (using [`std::enable_if_t`](http://en.cppreference.com/w/cpp/types/enable_if))
+```c++
 #include <type_traits>
 #include <vector>
 
