@@ -222,7 +222,7 @@ Note that multiple type traits exist in C++.
 For example: if you rather want collections of pointers instead of values to exploit polymorphism, 
 you can use [`std::base_of`](http://en.cppreference.com/w/cpp/types/is_base_of) instead of `std::is_same`.
 
-None of these three versions looks very readable nor pleasing at all.
+None of these three versions look very readable or pleasing at all.
 If we stick to SFINAE, we will probably have to wait until C++20 which will introduce the `requires` keyword.
 
 Alternatively use C++17's [`if constexpr`](http://en.cppreference.com/w/cpp/language/if):
