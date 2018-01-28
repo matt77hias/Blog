@@ -5,8 +5,6 @@ date:   2018-01-28
 categories: c++
 ---
 
-WIP
-
 ## Problem
 
 I want to apply an [Entity–Component–System](https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system) architecture to my game engine.
