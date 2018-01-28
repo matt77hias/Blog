@@ -430,7 +430,3 @@ Alternatively, the [paper](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/20
 ## Reflection
 
 ## Serialization and deserialization
-
-
-
-
