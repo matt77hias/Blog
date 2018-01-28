@@ -37,7 +37,7 @@ This approach is prone to error, since the index itself has no clue of the `std:
 
 Ok, so why not wrap the index and a reference to the `std::vector` in some handle class, then we get even the type of element for free? 
 But what if we want to use other collections (such as `std::array` and `std::map`) as well? 
-If we just encapsulate the collection and "index", we will obtain various different handle classes.
+If we just encapsulate the "index" and a reference to the collection, we will obtain various different handle classes.
 What if we need to store such handles in the same collection? 
 Should we create a common abstract base class on top that provides an abstract function to obtain the raw pointer or reference?
 This virtual method will certainly incur some additional cost at runtime.
