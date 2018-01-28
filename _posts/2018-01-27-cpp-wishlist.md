@@ -398,9 +398,9 @@ int main() {
     g_map = {{0, 'a'}, {1, 'b'}, {2, 'c'}};
     
     for (const auto &[key, value] : g_map) {
-		(void)key; // Unused
-		std::cout << value << std::endl;
-	}
+        (void)key; // Unused
+        std::cout << value << std::endl;
+    }
 }
 ```
 Notice that we still need to "use" the key to avoid any warnings regarding unused local variables. 
@@ -416,9 +416,10 @@ std::map< int, char > g_map;
 
 int main() {
     g_map = {{0, 'a'}, {1, 'b'}, {2, 'c'}};
+    
     for (const auto &[_, value] : g_map) {
-		std::cout << value << std::endl;
-	}
+        std::cout << value << std::endl;
+    }
 }
 ```
 Of course this will not work since `_` is a valid variable name in C++. 
