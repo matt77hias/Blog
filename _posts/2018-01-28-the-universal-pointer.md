@@ -78,7 +78,7 @@ ProxyPtr(std::nullptr_t) noexcept
 
 ```
 
-Furthermore, we provide a constructor accepting a `std::function` and a constructor for array, `std::array`, `std::vector` that will create the `std::function` itself:
+Furthermore, we provide a constructor accepting a `std::function` and a constructor for commonly used collections such as a C-style array, `std::array` and `std::vector` that will create the `std::function` for us:
 
 ```c++
 explicit ProxyPtr(std::function< T *() > getter) noexcept
