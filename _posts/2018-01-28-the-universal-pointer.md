@@ -125,8 +125,8 @@ ProxyPtr &operator=(ProxyPtr &&ptr) noexcept {
 }
 ```
 
-Note that all these member methods are declared `noexcept`. `std::function` does not provide noexcept copy and move constructors, nor noexcept copy and move assignment operators, so we need to define all the above methods ourself (otherwise, we could explicitly use the default ones via `= default`). Obviously, we want a `noexcept` move constructor and move assignment operator. 
-But why do we require the remaining methods to be `noexcept`? Since, a raw pointer is just a primitive type, it cannot throw exceptions upon construction or assignment. We generalize this raw pointer, so we like to have this behavior as well. 
+Note that all these member methods are declared `noexcept`. `std::function` does not provide `noexcept` copy and move constructors, nor `noexcept` copy and move assignment operators. So we need to define all the above methods ourself (otherwise, we could explicitly use the default ones via `= default`). Obviously, we want a `noexcept` move constructor and move assignment operator. 
+But why do we require the remaining methods to be `noexcept`? Since a raw pointer is just a primitive type, it cannot throw exceptions upon construction or assignment. We generalize this raw pointer, so we like to have this behavior as well. 
 Furthermore, suppose an exception would be thrown (I encourage you to try to trigger it.) we could not recover anyway. 
 Finally, adding `noexcept` will increase the performance, since the call stack does not necessarily need to be unwound, effectively reducing the code size. Our `ProxyPtr` will be fundamental to our design and will be frequently used, making it a good candidate for optimization.
 
@@ -138,7 +138,7 @@ For ease of use, we provide a member method to return a raw pointer (similar to 
 }
 ```
 
-We override operator* and operator-> to let `ProxyPtr` obtain a pointer like behavior:
+We override `operator*` and `operator->` to let `ProxyPtr` obtain pointer like behavior:
 
 ```c++
 T &operator*() const noexcept {
@@ -260,4 +260,4 @@ inline ProxyPtr< ToT > reinterpret_pointer_cast(ProxyPtr< FromT > &&ptr) noexcep
 	});
 }
 ```
-Note that we directly access our `m_getter` member variable inside the capture of the lambdas.
+Note that we directly access our `m_getter` member variable inside the capture of the lambdas. This explains the public access modifier.
