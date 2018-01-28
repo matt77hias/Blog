@@ -57,7 +57,7 @@ public:
     std::function< T *() > m_getter;
 }
 ```
-`ProxyPtr` is a template class containing one public member variable which is a `std::function` that will return a pointer to the template parameter. The `std::function` guarantees to return a pointer of the desired type, how it is supposed to this is implementation dependent. You can just return a raw pointer to obtain the same expressive power as a raw pointer. Or you can add complete programs as the body of this function. Since, C++ is a Turing Complete language, you can basically do anything you want inside the body of this function. This is also the reason, I call it a universal pointer: one cannot create another pointer with more expressive power.
+`ProxyPtr` is a template class containing one public member variable which is a `std::function` that will return a pointer to an object of the type of the template parameter. The `std::function` guarantees to return a pointer of the desired type, how it is supposed to this is implementation dependent. You can just return a raw pointer to obtain the same expressive power as a raw pointer. Or you can add complete programs as the body of this function. Since, C++ is a Turing Complete language, you can basically do anything you want inside the body of this function. This is also the reason, I call it a universal pointer: one cannot create another pointer with more expressive power.
 
 Normally, I would like to avoid public member variables, but as we will see this is not possible for our `ProxyPtr`. The problem is that some lambda functions which are not visible in the scope of `ProxyPtr` require access to the member variable `m_getter` for casting purposes.
 
