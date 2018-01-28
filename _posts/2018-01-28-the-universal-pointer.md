@@ -91,7 +91,7 @@ explicit ProxyPtr(ContainerT &container, size_t index) noexcept
     }) {}
 ```
 
-The copy and move constructor, and a generalized copy and move constructor to facilitate casting from child to base pointers:
+We provide a copy and move constructor, and a generalized copy and move constructor to facilitate casting from child to base `ProxyPtr`s:
 
 ```c++
 ProxyPtr(const ProxyPtr &ptr) noexcept
@@ -109,7 +109,7 @@ ProxyPtr(ProxyPtr< U > &&ptr) noexcept
     : m_getter(std::move(ptr.m_getter)) {}
 ```
 
-The destructor, copy and move assignment operator:
+The destructor, copy and move assignment operator are defined as follows:
 
 ```c++
 ~ProxyPtr() = default;
