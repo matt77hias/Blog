@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "The universal pointer"
+title:  "The Universal Pointer"
 date:   2018-01-28
 categories: c++
 ---
