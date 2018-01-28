@@ -201,6 +201,7 @@ template< typename T >
 ```
 
 Finally, we need to provide a way to apply all kinds of casts to our `ProxyPtr`. 
+For example: we want to be able to cast a base `ProxyPtr` to child `ProxyPtr`, similar to a raw pointer.
 For this purpose, we provide some functions similar to their equivalents of [`std::shared_ptr`](http://en.cppreference.com/w/cpp/memory/shared_ptr/pointer_cast):
 
 ```c++
