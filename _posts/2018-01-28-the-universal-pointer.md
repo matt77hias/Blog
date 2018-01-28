@@ -34,9 +34,9 @@ given that we know the maximum number of elements. This way we always assume wor
 
 The first and second problem can be solved together by using the index of elements as a handle instead of a pointer or reference to the element.
 This approach is prone to error, since the index itself has no clue of the `std::vector` it belongs to. 
-Ok, so why not wrap the index and `std::vector` in some handle class, then we get even the type of element for free.
 
-But what if we use other collections as well? 
+Ok, so why not wrap the index and `std::vector` in some handle class, then we get even the type of element for free? 
+But what if we want to use other collections as well? 
 If we just encapsulate the collection and "index", we will obtain various different handle classes.
 What if we need to store such handles in the same collection? 
 Should we create a common abstract base class on top that provides an abstract function to obtain the raw pointer or reference?
