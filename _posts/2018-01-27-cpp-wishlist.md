@@ -395,7 +395,7 @@ So we do not care about the keys. Then we can write something like this:
 std::map< int, char > g_map;
 
 int main() {
-    g_map = {{0, 'a'}, {1, 'b'}, {2, 'c'}};
+    g_map = { {0, 'a'}, {1, 'b'}, {2, 'c'} };
     
     for (const auto &[key, value] : g_map) {
         (void)key; // Unused
@@ -415,7 +415,7 @@ Maybe in a Python kind of fashion:
 std::map< int, char > g_map;
 
 int main() {
-    g_map = {{0, 'a'}, {1, 'b'}, {2, 'c'}};
+    g_map = { {0, 'a'}, {1, 'b'}, {2, 'c'} };
     
     for (const auto &[_, value] : g_map) {
         std::cout << value << std::endl;
