@@ -93,20 +93,22 @@ explicit ProxyPtr(ContainerT &container, size_t index) noexcept
 		}) {}
 ```
 
-The copy and move constructor, and a generalized copy and move constructor to facilitate casting:
+The copy and move constructor, and a generalized copy and move constructor to facilitate casting from child to base pointers:
 
 ```c++
 ProxyPtr(const ProxyPtr &ptr) noexcept
-			: m_getter(ptr.m_getter) {}
+    : m_getter(ptr.m_getter) {}
 		
 ProxyPtr(ProxyPtr &&ptr) noexcept
-			: m_getter(std::move(ptr.m_getter)) {}
+    : m_getter(std::move(ptr.m_getter)) {}
 
 template< typename U >
-ProxyPtr(const ProxyPtr< U > &ptr) noexcept;
+ProxyPtr(const ProxyPtr< U > &ptr) noexcept
+    : m_getter(ptr.m_getter) {}
 
 template< typename U >
-ProxyPtr(ProxyPtr< U > &&ptr) noexcept;
+ProxyPtr(ProxyPtr< U > &&ptr) noexcept
+    : m_getter(std::move(ptr.m_getter)) {}
 ```
 
 The destructor, copy and move assignment operator:
@@ -130,50 +132,134 @@ But why do we require the remaining methods to be `noexcept`? Since, a raw point
 Furthermore, suppose an exception would be thrown (I encourage you to try to trigger it.) we could not recover anyway. 
 Finally, adding `noexcept` will increase the performance, since the call stack does not necessarily need to be unwound, effectively reducing the code size. Our `ProxyPtr` will be fundamental to our design and will be frequently used, making it a good candidate for optimization.
 
-For ease of use, we provide a member method
-
-[[nodiscard]] T *Get() const noexcept {
-			return m_getter();
-		}
-
-
-
-To allow code of the form `if (ptr)` or `if (!ptr)`, we need to allow casting our ProxyPtr to `bool`:
+For ease of use, we provide a member method to return a raw pointer (similar to `std::unique_ptr` and `std::shared_ptr`):
 
 ```c++
-explicit operator bool() const noexcept {
-			return nullptr != Get();
+[[nodiscard]] T *Get() const noexcept {
+    return m_getter();
 }
 ```
 
+We override operator* and operator-> to let `ProxyPtr` obtain a pointer like behavior:
 
-    
-    
-    
-    
+```c++
+T &operator*() const noexcept {
+    return *Get();
+}
 
-		T &operator*() const noexcept {
-			return *Get();
-		}
+T *operator->() const noexcept {
+    return Get();
+}
+```
 
-		T *operator->() const noexcept {
-			return Get();
-		}
+To allow code of the form `if (ptr)` or `if (!ptr)`, we need to allow casting our `ProxyPtr` to `bool`:
 
+```c++
+explicit operator bool() const noexcept {
+    return nullptr != Get();
+}
+```
 
+To allow `ProxyPtr` comparisons of the same or different types, we provide a generalized `operator==` and `operator!=`:
 
+```c++
+template< typename U >
+[[nodiscard]] bool operator==(const ProxyPtr< U >& rhs) const noexcept {
+    return Get() == rhs.Get(); 
+}
+		
+template< typename U >
+[[nodiscard]] bool operator!=(const ProxyPtr< U >& rhs) const noexcept {
+    return !(*this == rhs);
+}
+```
 
+To avoid needless invocations of our constructor accepting an argument of type `nullptr_t` and to allow both left-hand side and right-hand side comparisons with `nullptr`, we define the following comparison functions:
 
+```c++
+template< typename T >
+[[nodiscard]] inline bool operator==(const ProxyPtr< T >& lhs,
+		                     std::nullptr_t) noexcept {
+    return !bool(lhs);
+}
 
+template< typename T >
+[[nodiscard]] inline bool operator!=(const ProxyPtr< T >& lhs,
+		                     std::nullptr_t) noexcept {
+    return bool(lhs);
+}
 
+template< typename T >
+[[nodiscard]] inline bool operator==(std::nullptr_t,
+		                     const ProxyPtr< T >& rhs) noexcept {
+    return !bool(rhs);
+}
 
+template< typename T >
+[[nodiscard]] inline bool operator!=(std::nullptr_t,
+		                     const ProxyPtr< T >& rhs) noexcept {
+    return bool(rhs);
+}
+```
 
+Finally, we need to provide a way to apply all kinds of casts to our `ProxyPtr`. 
+For this purpose, we provide some functions similar to their equivalents of [`std::shared_ptr`](http://en.cppreference.com/w/cpp/memory/shared_ptr/pointer_cast):
 
+```c++
+template< typename ToT, typename FromT >
+inline ProxyPtr< ToT > static_pointer_cast(const ProxyPtr< FromT > &ptr) noexcept {
+	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept {
+		return static_cast< ToT * >(getter());
+	});
+}
 
+template< typename ToT, typename FromT >
+inline ProxyPtr< ToT > static_pointer_cast(ProxyPtr< FromT > &&ptr) noexcept {
+	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept {
+		return static_cast< ToT * >(getter());
+	});
+}
 
+template< typename ToT, typename FromT >
+inline ProxyPtr< ToT > dynamic_pointer_cast(const ProxyPtr< FromT > &ptr) noexcept {
+	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept {
+		return dynamic_cast< ToT * >(getter());
+	});
+}
 
+template< typename ToT, typename FromT >
+inline ProxyPtr< ToT > dynamic_pointer_cast(ProxyPtr< FromT > &&ptr) noexcept {
+	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept {
+		return dynamic_cast< ToT * >(getter());
+	});
+}
 
+template< typename ToT, typename FromT >
+inline ProxyPtr< ToT > const_pointer_cast(const ProxyPtr< FromT > &ptr) noexcept {
+	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept {
+		return const_cast< ToT * >(getter());
+	});
+}
 
+template< typename ToT, typename FromT >
+inline ProxyPtr< ToT > const_pointer_cast(ProxyPtr< FromT > &&ptr) noexcept {
+	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept {
+		return const_cast< ToT * >(getter());
+	});
+}
 
+template< typename ToT, typename FromT >
+inline ProxyPtr< ToT > reinterpret_pointer_cast(const ProxyPtr< FromT > &ptr) noexcept {
+	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept {
+		return reinterpret_cast< ToT * >(getter());
+	});
+}
 
-
+template< typename ToT, typename FromT >
+inline ProxyPtr< ToT > reinterpret_pointer_cast(ProxyPtr< FromT > &&ptr) noexcept {
+	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept {
+		return reinterpret_cast< ToT * >(getter());
+	});
+}
+```
+Note that we directly access our `m_getter` member variable inside the capture of the lambdas.
