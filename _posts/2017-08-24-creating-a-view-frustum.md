@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Creating a view frustum in local/world/camera space using SIMD"
+title:  "Creating a View Frustum in Local/World/Camera Space using SIMD"
 date:   2017-08-24
 categories: culling
 ---
