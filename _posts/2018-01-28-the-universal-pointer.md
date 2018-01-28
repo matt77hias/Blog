@@ -88,7 +88,7 @@ template< typename ContainerT >
 explicit ProxyPtr(ContainerT &container, size_t index) noexcept
     : ProxyPtr([&container, index]() noexcept {
         return &container[index];
-		}) {}
+    }) {}
 ```
 
 The copy and move constructor, and a generalized copy and move constructor to facilitate casting from child to base pointers:
