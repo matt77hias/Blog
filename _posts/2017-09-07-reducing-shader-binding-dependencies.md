@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Reducing shader binding dependencies"
+title:  "Reducing Shader Binding Dependencies"
 date:   2017-09-07
 categories: hlsl
 ---
