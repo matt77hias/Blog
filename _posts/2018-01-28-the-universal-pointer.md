@@ -48,6 +48,121 @@ This virtual method will certainly incur some additional cost at runtime.
 There is an alternative. We can encapsulate all the data we need inside a [`std::function`](http://en.cppreference.com/w/cpp/utility/functional/function).
 
 ## ProxyPtr
+I call our universal pointer, `ProxyPtr`, after the [Proxy design pattern](https://en.wikipedia.org/wiki/Proxy_pattern). *(If someone will ever be tempted to add it to the `std`, you may call it std::proxy_ptr inside `<memory>` ;) )*.
+
+Lets start with the member variables:
+```c++
+template< typename T >
+	class ProxyPtr final {
+
+	public:
+  
+      std::function< T *() > m_getter;
+```
+`ProxyPtr` is a template class containing one public member variable which is a `std::function` that will return a pointer to the template parameter. The `std::function` guarantees to return a pointer of the desired type, how it is supposed to this is implementation dependent. You can just return a raw pointer to obtain the same expressive power as a raw pointer. Or you can add complete programs as the body of this function. Since, C++ is a Turing Complete language, you can basically do anything you want inside the body of this function. This is also the reason, I call it a universal pointer: one cannot create another pointer with more expressive power.
+
+Normally, I would like to avoid public member variables, but as we will see this is not possible for our `ProxyPtr`. The problem is that some lambda functions which are not visible in the scope of `ProxyPtr` require access to the member variable `m_getter` for casting purposes.
+
+Lets continue with the constructors, destructors and assignment operators. We have an empty constructor that defines `m_getter` to return `nullptr` when invoked:
+
+```c++
+ProxyPtr() noexcept 
+    : ProxyPtr([]() noexcept -> T * {
+		     return nullptr;
+		}) {}
+```
+    
+We have a constructor accepting an argument of the `nullptr` type, [`nullptr_t`](http://en.cppreference.com/w/cpp/types/nullptr_t) (`typedef decltype(nullptr) nullptr_t;`). This way we can write the following code: `ProxyPtr< Widget > ptr = nullptr;`. We do not need to use the argument itself, since we know that `m_getter` needs to return `nullptr` in this case:
+
+```c++
+ProxyPtr(std::nullptr_t) noexcept
+    : ProxyPtr() {}
+
+```
+
+Furthermore, we provide a constructor accepting a `std::function` and a constructor for array, `std::array`, `std::vector` that will create the `std::function` itself:
+
+```c++
+explicit ProxyPtr(std::function< T *() > getter) noexcept
+    : m_getter(std::move(getter)) {}
+
+template< typename ContainerT >
+explicit ProxyPtr(ContainerT &container, size_t index) noexcept
+    : ProxyPtr([&container, index]() noexcept {
+        return &container[index];
+		}) {}
+```
+
+The copy and move constructor, and a generalized copy and move constructor to facilitate casting:
+
+```c++
+ProxyPtr(const ProxyPtr &ptr) noexcept
+			: m_getter(ptr.m_getter) {}
+		
+ProxyPtr(ProxyPtr &&ptr) noexcept
+			: m_getter(std::move(ptr.m_getter)) {}
+
+template< typename U >
+ProxyPtr(const ProxyPtr< U > &ptr) noexcept;
+
+template< typename U >
+ProxyPtr(ProxyPtr< U > &&ptr) noexcept;
+```
+
+The destructor, copy and move assignment operator:
+
+```c++
+~ProxyPtr() = default;
+
+ProxyPtr &operator=(const ProxyPtr &ptr) noexcept {
+    m_getter = ptr.m_getter;
+		return *this;
+}
+		
+ProxyPtr &operator=(ProxyPtr &&ptr) noexcept {
+		m_getter = std::move(ptr.m_getter);
+    return *this;
+}
+```
+
+Note that all these member methods are declared `noexcept`. `std::function` does not provide noexcept copy and move constructors, nor noexcept copy and move assignment operators, so we need to define all the above methods ourself (otherwise, we could explicitly use the default ones via `= default`). Obviously, we want a `noexcept` move constructor and move assignment operator. 
+But why do we require the remaining methods to be `noexcept`? Since, a raw pointer is just a primitive type, it cannot throw exceptions upon construction or assignment. We generalize this raw pointer, so we like to have this behavior as well. 
+Furthermore, suppose an exception would be thrown (I encourage you to try to trigger it.) we could not recover anyway. 
+Finally, adding `noexcept` will increase the performance, since the call stack does not necessarily need to be unwound, effectively reducing the code size. Our `ProxyPtr` will be fundamental to our design and will be frequently used, making it a good candidate for optimization.
+
+For ease of use, we provide a member method
+
+[[nodiscard]] T *Get() const noexcept {
+			return m_getter();
+		}
+
+
+
+To allow code of the form `if (ptr)` or `if (!ptr)`, we need to allow casting our ProxyPtr to `bool`:
+
+```c++
+explicit operator bool() const noexcept {
+			return nullptr != Get();
+}
+```
+
+
+    
+    
+    
+    
+
+		T &operator*() const noexcept {
+			return *Get();
+		}
+
+		T *operator->() const noexcept {
+			return Get();
+		}
+
+
+
+
 
 
 
