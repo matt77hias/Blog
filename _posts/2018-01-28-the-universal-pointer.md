@@ -29,7 +29,7 @@ That element will be replaced by the new element. If no `terminated` elements ar
 This way elements will always reside at the same index. 
 *(If it must be possible to remove elements, you can still use the approach below by adding some extra bookkeeping.)*
 
-The second problem can be solved by using a `std::array` of `std::vector` which not will be resized, 
+The second problem can be solved by using a `std::array` of `std::vector` (which will only be resized once), 
 given that we know the maximum number of elements. This way we always assume worst case behavior.
 
 The first and second problem can be solved together by using the index of elements as a handle instead of a pointer or reference to the element.
