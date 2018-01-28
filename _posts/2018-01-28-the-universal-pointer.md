@@ -16,7 +16,7 @@ Assume a `std::vector` contains three elements.
 If we invoke `std::vector::erase` on the vector by passing an iterator to the second element, 
 all the following elements need to be moved (via the move assignment operator) to a lower index to avoid fragmentation.
 Thus, the third element will become the second element. The implementation of `std::vector` will handle this for us. 
-All pointers and reference to the original third element, will become invalid (i.e. they will not point or refer anymore to the correct element). 
+All pointers and references to the original third element, will become invalid (i.e. they will not point or refer anymore to the correct element). 
 * How do you avoid invalidation of pointers and references when components are added to their respective collections?
 One would expect that adding elements to a `std::vector` would not invalidate pointers or references, since elements will always stay at the same index. 
 `std::vector`, however, manages internally a contiguous block of memory of a finite size, when the size is too small to fit the required number of elements, 
