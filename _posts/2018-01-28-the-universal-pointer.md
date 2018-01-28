@@ -10,7 +10,7 @@ WIP
 ## Problem
 
 I want to apply an [Entity–Component–System](https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system) architecture to my game engine.
-My scene data includes a dynamic array encapsulating a contiguous block of memory (`std::vector`) for each component type that stores components by value.
+My scene data includes a dynamic array encapsulating a contiguous block of memory (`std::vector`) that stores components by value for each component type.
 That way, I can exploit cache coherence and avoid unnecessary jumps between unrelated memory.
 This design imposes two immediate problems that need to be handled properly:
 * How do you avoid invalidation of pointers and references when components are deleted from their respective collections? 
