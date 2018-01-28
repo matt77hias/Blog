@@ -53,11 +53,12 @@ I call our universal pointer, `ProxyPtr`, after the [Proxy design pattern](https
 Lets start with the member variables:
 ```c++
 template< typename T >
-	class ProxyPtr final {
+class ProxyPtr final {
 
-	public:
+public:
   
-      std::function< T *() > m_getter;
+    std::function< T *() > m_getter;
+}
 ```
 `ProxyPtr` is a template class containing one public member variable which is a `std::function` that will return a pointer to the template parameter. The `std::function` guarantees to return a pointer of the desired type, how it is supposed to this is implementation dependent. You can just return a raw pointer to obtain the same expressive power as a raw pointer. Or you can add complete programs as the body of this function. Since, C++ is a Turing Complete language, you can basically do anything you want inside the body of this function. This is also the reason, I call it a universal pointer: one cannot create another pointer with more expressive power.
 
@@ -68,8 +69,8 @@ Lets continue with the constructors, destructors and assignment operators. We ha
 ```c++
 ProxyPtr() noexcept 
     : ProxyPtr([]() noexcept -> T * {
-		     return nullptr;
-		}) {}
+        return nullptr;
+    }) {}
 ```
     
 We have a constructor accepting an argument of the `nullptr` type, [`nullptr_t`](http://en.cppreference.com/w/cpp/types/nullptr_t) (`typedef decltype(nullptr) nullptr_t;`). This way we can write the following code: `ProxyPtr< Widget > ptr = nullptr;`. We do not need to use the argument itself, since we know that `m_getter` needs to return `nullptr` in this case:
@@ -118,11 +119,11 @@ The destructor, copy and move assignment operator:
 
 ProxyPtr &operator=(const ProxyPtr &ptr) noexcept {
     m_getter = ptr.m_getter;
-		return *this;
+    return *this;
 }
 		
 ProxyPtr &operator=(ProxyPtr &&ptr) noexcept {
-		m_getter = std::move(ptr.m_getter);
+    m_getter = std::move(ptr.m_getter);
     return *this;
 }
 ```
