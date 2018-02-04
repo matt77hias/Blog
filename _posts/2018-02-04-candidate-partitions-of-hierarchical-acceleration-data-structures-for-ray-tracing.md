@@ -58,8 +58,8 @@ The AABB of both child voxels can be trivially calculated given the <span style=
 
 While observing the image of a BSP candidate partition, we clearly see the AABBs associated with the <span style="color:blue;">parent</span> (blue), <span style="color:green;">left</span> (green) and <span style="color:red;">right</span> (red) child voxel. A candidate partition is, however, only a conceptual thing to compare different acceleration data structures against each other. The obtained BSPs and kd-trees after construction do not store the AABBs associated with each node. First of all, this would increase the memory footprint. Assume that an AABB consists of 6x 32-bit floating point values (24 bytes) and we have $2^{30}$ nodes. This results in 24 Gbytes for the AABBs alone. This is clearly something we want to avoid given that BSPs already suffer from high memory usage due to reference duplication for geometric primitives straddling a <span style="color:purple;">splitting plane</span>. Furthermore, if we really wanted the AABB of a particular node, we can construct it starting from the AABB of the acceleration data structure (this is the only AABB we explicitly store) and the <span style="color:purple;">splitting plane</span>s (i.e. split position and split axis) found along the way while traversing the tree from the root node to our target node. So how do we traverse such a tree without AABBs? We just start at the root node and test the ray for intersection with the <span style="color:purple;">splitting plane</span>. Depending on the result, we only need to traverse the <span style="color:green;">left</span>, <span style="color:red;">right</span> or both child voxels in front-to-back order along the ray. This ray-plane intersection test is also much cheaper than a ray-AABB intersection test.
 
- - (+) $O(n \log n)$ full sweeping-plane SAH build algorithm is possible for constructing complete BSPs.
- - (+) $O(n \log n)$ binned SAH build algorithm for constructing complete BSPs (in parallel) is possible.
+ - (+) $\mathcal{O}\left(N \log N\right)$ full sweeping-plane SAH build algorithm is possible for constructing complete BSPs.
+ - (+) $\mathcal{O}\left(N \log N\right)$ binned SAH build algorithm for constructing complete BSPs (in parallel) is possible.
 
 #### References
 
@@ -89,8 +89,8 @@ The AABB of both child voxels is made tight to the geometric primitives. *Note t
 
 BVHs are traversed by testing the ray for intersection with the AABBs associated with the intermediate/child voxels.
 
- - (+) $O(n \log n)$ full sweeping-plane SAH build algorithm is possible for constructing complete BIHs.
- - (+) $O(n \log n)$ binned SAH build algorithm for constructing complete BIHs (in parallel) is possible.
+ - (+) $\mathcal{O}\left(N \log N\right)$ full sweeping-plane SAH build algorithm is possible for constructing complete BIHs.
+ - (+) $\mathcal{O}\left(N \log N\right)$ binned SAH build algorithm for constructing complete BIHs (in parallel) is possible.
 
 #### References
 
@@ -118,8 +118,8 @@ BIHs are also known as *Spatial Kd trees* (SKds) and *Bounded Kd trees* (B-Kds).
 ##### AABBs of the child voxels
 The AABB of both child voxels is similar to those of BSPs except that the AABB's plane corresponding to the <span style="color:purple;">splitting plane</span> is made tight to the geometric primitives.
 
- - (+) $O(n \log n)$ full sweeping-plane SAH build algorithm is possible for constructing complete BVHs.
- - (+) $O(n \log n)$ binned SAH build algorithm for constructing complete BVHs (in parallel) is possible.
+ - (+) $\mathcal{O}\left(N \log N\right)$ full sweeping-plane SAH build algorithm is possible for constructing complete BVHs.
+ - (+) $\mathcal{O}\left(N \log N\right)$ binned SAH build algorithm for constructing complete BVHs (in parallel) is possible.
 
 #### References
 
@@ -153,8 +153,8 @@ The AABBs of the child voxels are made tight to the geometric primitives, but th
 
 Originally, I discovered the GK-BVH myself and called it a Tight BSP (TBSP) due to its close resemblance to BSPs with regard to the construction. The traversal algorithm, however, is similar to a BVH, explaining the GK-BVH name. The only difference is that geometric primitives can now be associated with multiple leaf nodes and thus the same geometric primitives can be tested multiple times for intersection by the same ray (without using optimizations such as *mailboxing*). This also implies that the resulting GK-BVH will look differently internally as opposed to BVHs, where the latter can just reorganize the geometric primitives in place and the former will depend on an extra indirection (i.e. indices).
 
- - (-) $O(n \log n)$ full sweeping-plane SAH build algorithm is **not** possible for constructing complete GK-BVHs due to the involved clipping operations.
- - (+) $O(n \log n)$ binned SAH build algorithm for constructing complete GK-BVHs (in parallel) is possible.
+ - (-) $\mathcal{O}\left(N \log N\right)$ full sweeping-plane SAH build algorithm is **not** possible for constructing complete GK-BVHs due to the involved clipping operations.
+ - (+) $\mathcal{O}\left(N \log N\right)$ binned SAH build algorithm for constructing complete GK-BVHs (in parallel) is possible.
 
 We can also clip the AABBs instead of the geometric primitives, which is similar to the difference between kd-trees and kd-trees built with split clipping.
 
@@ -186,8 +186,8 @@ GK-BVHs are tighter since they perform clipping operations on the geometric prim
 
 SBVHs are built with a combination of a BVH and GK-BVH candidate partions.
 
- - (-) $O(n \log n)$ full sweeping-plane SAH build algorithm is **not** possible for constructing complete SBVHs due to the inclusion of GK-BVH candidate partitions (*see above*).
- - (+) $O(n \log n)$ binned SAH build algorithm for constructing complete SBVHs (in parallel) is possible.
+ - (-) $\mathcal{O}\left(N \log N\right)$ full sweeping-plane SAH build algorithm is **not** possible for constructing complete SBVHs due to the inclusion of GK-BVH candidate partitions (*see above*).
+ - (+) $\mathcal{O}\left(N \log N\right)$ binned SAH build algorithm for constructing complete SBVHs (in parallel) is possible.
 
 Since, GK-BVHs will be traversed similarly to BVHs, nothing is stopping us from combining GK-BVH and BVH candidate partitions. The original goal was including some spatial splitting in the BVH construction to have the best of both worlds: the compactness of BVHs and the spatial awareness of BSPs. The best BVH candidate partition and the best BSP candidate partition are found per split decision; both using their variant of the SAH. But how do we select the best of these two to obtain one best candidate partition? If we just compare the SAH costs, the BVH candidate partition will be selected in nearly all cases and we end up with a BVH acceleration data structure. Since, the child voxels of a BVH candidate partition are tight which is not the case for the child voxels of a BSP candidate partition, the SAH cost will be lower since the surface area of the child voxels will be smaller. The solution is to make the BSP candidate partition as tight as possible. This way we obtain the GK-BVH candidate partition which allows for a fairer comparison against BVH candidate partitions (compared to BSP candidate partitions).
 
