@@ -5,7 +5,7 @@ date:   2018-02-04
 categories: [ADS, ray-tracing]
 ---
 
-## Partitiong Schemes
+# Partitiong Schemes
 
 Given some geometric primitives in a scene, it is possible to partition and organize these primitives in multiple ways in a hierarchical or non-hierarchical data structure to exploit spatial coherence during ray tracing. We can partition the geometric primitives into two or more disjoint groups without taking the scene (explicitly) into consideration during the partitioning itself. Or we can do the complete opposite by partitioning the scene's space into two or more disjoint groups without taking the geometric primitives (explicitly) into consideration during the partitioning itself. Or we can use a combination of these two extremes. More formerly:
 - *Spatial partitioning schemes* (recursively) subdivide a given space into spatially disjoint groups. This makes an efficient ray traversal possible at the expense of referencing geometric primitives multiple times.
@@ -16,7 +16,7 @@ For *closest-hit ray queries* (e.g. camera rays, indirect rays, etc.), we want t
 
 *Any-hit ray queries* (e.g. shadow rays) do not care about the closest hit point, any hit point will do. The efficient traversal of any-hit queries, however, is a completely different story beyond the scope of this post.
 
-## Acceleration Data Structures for Ray Tracing
+# Acceleration Data Structures for Ray Tracing
 
 Various *acceleration data structures* exist for exploiting spatial coherence during ray tracing. The faster these structures can be traversed and the less geometric primitives that need to be tested for intersection by rays, the more effective these structures are. Currently, the most effective acceleration data structures are hierarchical, adaptive tree structures of which the leaf nodes reference the geometric primitives and the internal nodes contain spatial information (i.e. splitting plane position, bounding box) to cull the associated part of the scene.
 
@@ -24,7 +24,7 @@ I will give a short overview of some of these structures, and more particularly 
 
 As we will see, the structure of these candidate partitions differ between different acceleration data structures. But in all cases, a candidate partition is completely determined given a parent voxel and a splitting plane. For object partitioning schemes, the geometric primitives are mapped to their centroids (or an other point) to determine the positioning relative to the splitting plane.
 
-### (Binary) Space Partition - BSP
+## (Binary) Space Partition - BSP
 
  - spatial partitioning scheme
  - hierarchical
@@ -35,7 +35,7 @@ In case of a binary tree with axis-aligned voxels, the BSP is called a *kd-tree*
 
 <p align="center"><img src="http://i.stack.imgur.com/Q40LG.jpg"></p>
 
-#### Geometric primitives of the child voxels
+##### Geometric primitives of the child voxels
 * Geometric primitives whose AABB is to the left of the <span style="color:purple;">splitting plane</span> belong to the <span style="color:green;">left</span> child voxel. 
 * Geometric primitives whose AABB is to the right of the <span style="color:purple;">splitting plane</span> belong to the <span style="color:red;">right</span> child voxel. 
 * Geometric primitives whose AABB is straddling the <span style="color:purple;">splitting plane</span> belong to both child voxels.
@@ -65,7 +65,7 @@ While observing the image of a BSP candidate partition, we clearly see the AABBs
  - KAPLAN M. R.: The Use of Spatial Coherence in Ray Tracing. *ACM SIGGRAPH Course Notes 11* (1985).
  - IZE T., WALD I., PARKER S. G.: Ray tracing with the BSP tree. In *IEEE Symposium on Interactive Ray Tracing 2008* (Aug 2008), pp. 159–166.
 
-### Bounding Volume Hierarchy - BVH
+## Bounding Volume Hierarchy - BVH
 
  - object partitioning scheme
  - hierarchical
@@ -92,7 +92,7 @@ BVHs are traversed by testing the ray for intersection with the AABBs associated
 
  - RUBIN S. M., WHITTED T.: A 3-dimensional Representation for Fast Rendering of Complex Scenes. *SIGGRAPH Comput. Graph. 14*, 3 (Jul 1980), 110–116.
 
-### Bounding Interval Hierarchy - BIH
+## Bounding Interval Hierarchy - BIH
 
  - hybrid partitioning scheme
  - hierarchical
@@ -124,7 +124,7 @@ The AABB of both child voxels is similar to those of BSPs except that the AABB's
 
 Note that the papers introducing SKds, B-Kds and BIHs in computer graphics (i.e. the last three references) are all from the same year which explains the various synonyms.
 
-### GK-BVH candidate partition
+## GK-BVH candidate partition
 
  - spatial partitioning scheme
  - hierarchical
@@ -164,7 +164,7 @@ GK-BVHs are tighter since they perform clipping operations on the geometric prim
 
  - POPOV S., GEORGIEV I., DIMOV R., SLUSALLEK P.: Object Partitioning Considered Harmful: Space Subdivision for BVHs. In *Proceedings of the Conference on High Performance Graphics* 2009 (New York, NY, USA, 2009), HPG ’09, ACM, pp. 15–22.
 
-### Spatial Split Bounding Volume Hierarchy - SBVH
+## Spatial Split Bounding Volume Hierarchy - SBVH
 
  - hybrid partitioning scheme
  - hierarchical
@@ -191,5 +191,5 @@ if we do not use fancy optimizations such as LBVHs which uses spatial Morton cod
 
 **Note** that the papers introducing GK-BVHs and SBVHs are both of the same year and the same conference which explains the implicit inclusion of GK-BVHs in SBVHs without referring to the paper about GK-BVHs.
 
-## General Reference
+# General Reference
 MOULIN M., DUTRÉ P.: On the use of Local Ray Termination for Efficiently Constructing Qualitative  BSPs, BIHs and (S)BVHs. *under review*, 2017.
