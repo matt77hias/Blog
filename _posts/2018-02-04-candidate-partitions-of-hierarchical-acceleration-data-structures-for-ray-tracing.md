@@ -5,7 +5,9 @@ date:   2018-02-04
 categories: [ADS, ray-tracing]
 ---
 
-# Partitiong Schemes
+In this post, we 
+
+## Partitiong Schemes
 
 First of all we need to differentiate possible partitioning schemes. Given some geometric primitives in a scene, it is possible to partition and organize these primitives in multiple ways in a hierarchical or non-hierarchical data structure to exploit spatial coherence during ray tracing. We can partition the geometric primitives into two or more disjoint groups without taking the scene (explicitly) into consideration during the partitioning itself. Or we can do the complete opposite by partitioning the scene's space into two or more disjoint groups without taking the geometric primitives (explicitly) into consideration during the partitioning itself. Or we can use a combination of these two extremes. More formerly:
 
@@ -20,7 +22,7 @@ First of all we need to differentiate possible partitioning schemes. Given some 
 
 Note that the efficient ray traversal of spatial partitioning schemes implies a front-to-back ray traversal (BSPs). For closest-hit ray queries (e.g. camera rays, indirect rays, etc.), we want to find the closest hit point of rays with the scene. Any-hit ray queries (e.g. shadow rays) do not care about the closest hit point, any hit point will do. The traversal of the latter is a completely different story.
 
-# Acceleration Data Structures for Ray Tracing
+## Acceleration Data Structures for Ray Tracing
 
 Various acceleration data structures exist for exploiting spatial coherence during ray tracing. The faster these structures can be traversed and the less geometric primitives that need to be tested for intersection by rays, the more effective these structures are. Currently, the most effective acceleration data structures are hierarchical, adaptive tree structures of which the leaf nodes
 reference the geometric primitives and the internal nodes contain spatial information (i.e. splitting plane position, bounding box) to cull the associated part of the scene.
@@ -29,7 +31,7 @@ I will give a short overview of some of these structures, and more particularly 
 
 As we will see, the structure of these candidate partitions differ between different acceleration data structures. But in all cases, a candidate partition is completely determined given a parent voxel and a splitting plane. This implies partitioning the centroids (i.e. points) of the geometric primitives for object partitioning schemes (or an alternative heuristic can be used for mapping geometric primitives to points).
 
-## (Binary) Space Partition - BSP
+### (Binary) Space Partition - BSP
 
  - spatial partitioning scheme
  - hierarchical
@@ -38,7 +40,7 @@ As we will see, the structure of these candidate partitions differ between diffe
 
 In case of a binary tree with axis-aligned voxels, the BSP is called a *kd-tree* or *rectilinear BSP*.
 
-### Candidate Partition
+#### Candidate Partition
 
 <pre>
                            <img src="http://i.stack.imgur.com/Q40LG.jpg">
@@ -61,13 +63,13 @@ A ray-plane intersection test is much cheaper than a ray-AABB intersection test.
  - (+) $O(n \log n)$ full sweeping-plane SAH build algorithm is possible for constructing complete BSPs.
  - (+) $O(n \log n)$ binned SAH build algorithm for constructing complete BSPs (in parallel) is possible.
 
-### References
+#### References
 
  - BENTLEY J. L., FRIEDMAN J. H.: Data Structures for Range Searching. ACM Comput. Surv. 11, 4 (Dec 1979), 397–409.
  - KAPLAN M. R.: The Use of Spatial Coherence in Ray Tracing. *ACM SIGGRAPH Course Notes 11* (1985).
  - IZE T., WALD I., PARKER S. G.: Ray tracing with the BSP tree. In *IEEE Symposium on Interactive Ray Tracing 2008* (Aug 2008), pp. 159–166.
 
-## Bounding Volume Hierarchy - BVH
+### Bounding Volume Hierarchy - BVH
 
  - object partitioning scheme
  - hierarchical
@@ -94,11 +96,11 @@ BVHs are traversed by testing the ray for intersection with the AABBs associated
  - (+) $O(n \log n)$ full sweeping-plane SAH build algorithm is possible for constructing complete BIHs.
  - (+) $O(n \log n)$ binned SAH build algorithm for constructing complete BIHs (in parallel) is possible.
 
-### References
+#### References
 
  - RUBIN S. M., WHITTED T.: A 3-dimensional Representation for Fast Rendering of Complex Scenes. *SIGGRAPH Comput. Graph. 14*, 3 (Jul 1980), 110–116.
 
-## Bounding Interval Hierarchy - BIH
+### Bounding Interval Hierarchy - BIH
 
  - hybrid partitioning scheme
  - hierarchical
@@ -108,7 +110,7 @@ BVHs are traversed by testing the ray for intersection with the AABBs associated
 
 BIHs are also known as *Spatial Kd trees* (SKds) and *Bounded Kd trees* (B-Kds).
 
-### Candidate Partition
+#### Candidate Partition
 
 <pre>
                            <img src="http://i.stack.imgur.com/rUlS6.jpg">
@@ -126,7 +128,7 @@ An example [BVH implementation](https://github.com/mmp/pbrt-v3/blob/master/src/a
  - (+) $O(n \log n)$ full sweeping-plane SAH build algorithm is possible for constructing complete BVHs.
  - (+) $O(n \log n)$ binned SAH build algorithm for constructing complete BVHs (in parallel) is possible.
 
-### References
+#### References
 
  - OOI B. C., MCDONELL K. J., RON S.-D.: Spatial Kd-Tree: An Indexing Mechanism for Spatial Databases. In *Proceedings of the IEEE COMPSAC Conference* (1987).
  - HAVRAN V., HERZOG R., SEIDEL H.-P.: On the Fast Construction of Spatial Hierarchies for Ray Tracing. In *IEEE Symposium on Interactive Ray Tracing 2006* (Sept 2006), pp. 71–80.
@@ -135,7 +137,7 @@ An example [BVH implementation](https://github.com/mmp/pbrt-v3/blob/master/src/a
 
 **Note** that the papers introducing SKds, B-Kds and BIHs in computer graphics (i.e. the last three references) are all from the same year which explains the various synonyms.
 
-## GK-BVH candidate partition
+### GK-BVH candidate partition
 
  - spatial partitioning scheme
  - hierarchical
@@ -143,7 +145,7 @@ An example [BVH implementation](https://github.com/mmp/pbrt-v3/blob/master/src/a
  - (non-)axis-aligned voxels
  - 6 planes of the voxels are tight, but constrained by the splitting plane
 
-### Candidate Partition
+#### Candidate Partition
 
 <pre>
                            <img src="http://i.stack.imgur.com/01qkt.jpg">
@@ -169,11 +171,11 @@ Based on the description of the acceleration data structures, which we will see 
 
 So it would make more sense to compare your acceleration data structure against GK-BVHs, BVHs and SBVHs, which all require a similar traversal.
 
-### References
+#### References
 
  - POPOV S., GEORGIEV I., DIMOV R., SLUSALLEK P.: Object Partitioning Considered Harmful: Space Subdivision for BVHs. In *Proceedings of the Conference on High Performance Graphics* 2009 (New York, NY, USA, 2009), HPG ’09, ACM, pp. 15–22.
 
-## Spatial Split Bounding Volume Hierarchy - SBVH
+### Spatial Split Bounding Volume Hierarchy - SBVH
 
  - hybrid partitioning scheme
  - hierarchical
@@ -181,7 +183,7 @@ So it would make more sense to compare your acceleration data structure against 
  - (non-)axis-aligned voxels
  - combination of BVH and GK-BVH candidate partitions
 
-### Candidate Partitions
+#### Candidate Partitions
 
 <pre>
                            <img src="http://i.stack.imgur.com/0IkdU.jpg">
@@ -199,7 +201,7 @@ Besides being a hybrid of BVH and GK-BVH candidate partitions, the SBVH is more 
 
 if we do not use fancy optimizations such as LBVHs which uses spatial Morton coding to organize the BVH. The SBVH is conceptually the most effective acceleration data structure presented here so far, offering the best of both worlds (hybrid of spatial and object partitioning schemes). SBVHs were the preferred acceleration data structure of [NVidia OptiX Ray Tracing Engine](https://developer.nvidia.com/optix).
 
-### References
+#### References
 
  - STICH M., FRIEDRICH H., DIETRICH A.: Spatial Splits in Bounding Volume Hierarchies. In *Proceedings of the Conference on High Performance Graphics 2009* (New York, NY, USA, 2009), HPG’09, ACM, pp. 7–13.
 
