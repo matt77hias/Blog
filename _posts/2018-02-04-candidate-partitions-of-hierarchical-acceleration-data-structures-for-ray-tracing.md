@@ -12,7 +12,9 @@ Given some geometric primitives in a scene, it is possible to partition and orga
 - *Object partitioning schemes* (recursively) subdivide a given set of geometric primitives into disjoint groups which tightly comprise their geometric primitives. Geometric primitives are referenced just once at the expense of a less efficient ray traversal in case of spatially overlapping groups.
 - *Hybrid partitioning scheme*s combine both spatial and object partitioning schemes.
 
-For *closest-hit ray queries* (e.g. camera rays, indirect rays, etc.), we want to find the closest hit point of rays with the scene. Therefore, the most efficient traversal of a ray through the acceleration data structure is a front-to-back ray traversal. Such a traversal is trivially to achieve for spatial partitioning schemes, but not for object partitioning schemes due to the possible spatial overlapping between the different groups of geometric primitives. *Any-hit ray queries* (e.g. shadow rays) do not care about the closest hit point, any hit point will do. The efficient traversal of any-hit queries, however, is a completely different story beyond the scope of this post.
+For *closest-hit ray queries* (e.g. camera rays, indirect rays, etc.), we want to find the closest hit point of rays with the scene. Therefore, the most efficient traversal of a ray through the acceleration data structure is a front-to-back ray traversal. Such a traversal is trivially to achieve for spatial partitioning schemes, but not for object partitioning schemes due to the possible spatial overlapping between the different groups of geometric primitives. 
+
+*Any-hit ray queries* (e.g. shadow rays) do not care about the closest hit point, any hit point will do. The efficient traversal of any-hit queries, however, is a completely different story beyond the scope of this post.
 
 ## Acceleration Data Structures for Ray Tracing
 
@@ -20,7 +22,7 @@ Various *acceleration data structures* exist for exploiting spatial coherence du
 
 I will give a short overview of some of these structures, and more particularly the considered *candidate partitions*. Assuming a top-down tree construction, we start with a voxel containing all the geometric primitives that need to be partitioned and having an associated AABB (e.g. AABB of the complete scene or a highly tesselated model). We typically propose a certain number of candidate partitions for the current parent voxel which consists of all child voxels (i.e. the AABB constituting the voxel and the geometric primitives contained in that voxel). We select the best one according to some heuristic/cost function (e.g. SAH) and then decide whether we apply that best candidate partition (i.e. create an intermediate node) or not (i.e. create a leaf node).
 
-As we will see, the structure of these candidate partitions differ between different acceleration data structures. But in all cases, a candidate partition is completely determined given a parent voxel and a splitting plane. For object partitioning schemes, the geometric primitives are mapped to their centroids (or an other point) to determine the position of the geometric primitives relative to the splitting plane.
+As we will see, the structure of these candidate partitions differ between different acceleration data structures. But in all cases, a candidate partition is completely determined given a parent voxel and a splitting plane. For object partitioning schemes, the geometric primitives are mapped to their centroids (or an other point) to determine the positioning relative to the splitting plane.
 
 ### (Binary) Space Partition - BSP
 
@@ -35,17 +37,23 @@ In case of a binary tree with axis-aligned voxels, the BSP is called a *kd-tree*
 
 <p align="center"><img src="http://i.stack.imgur.com/Q40LG.jpg"></p>
 
+##### Geometric primitives of the child voxels
 * Geometric primitives whose AABB is to the left of the splitting plane belong to the left child voxel. 
 * Geometric primitives whose AABB is to the right of the splitting plane belong to the right child voxel. 
 * Geometric primitives whose AABB is straddling the splitting plane belong to both child voxels.
+
+##### AABBs of the child voxels
 The AABB of both child voxels can be trivially calculated given the parent voxel. The spatial union of the AABB of both child voxels is equal to the parent voxel (none of the six surrounding planes is tight).
 
-**Note** *split clipping* is a possible optimization (i.e. clipping the geometric primitives against the splitting plane and/or the AABB of the parent voxel). It is possible that the AABB of a geometric primitive straddles the splitting plane, but the actual geometric primitive only lies on one side of the splitting plane. It is even possible that the AABB of a geometric primitive overlaps with a parent voxel, but not the geometric primitive associated with this AABB.
+*split clipping* is a possible optimization (i.e. clipping the geometric primitives against the splitting plane and/or the AABB of the parent voxel). It is possible that the AABB of a geometric primitive straddles the splitting plane, but the actual geometric primitive only lies on one side of the splitting plane. It is even possible that the AABB of a geometric primitive overlaps with a parent voxel, but not the geometric primitive associated with this AABB.
 
+##### Geometric primitives of the child voxels
 * Geometric primitives to the left of the splitting plane belong to the left child voxel. 
 * Geometric primitives to the right of the splitting plane belong to the right child voxel. 
 * Geometric primitives straddling the splitting plane belong to both child voxels.
 * Geometric primitives lying outside the parent voxel belong to none of the child voxels.
+
+##### AABBs of the child voxels
 The AABB of both child voxels can be trivially calculated given the parent voxel. The spatial union of the AABB of both child voxels is equal to the parent voxel (none of the six surrounding planes is tight).
 
 While observing the image of the BSP candidate partition, we clearly see the AABBs associated with the parent (blue), left (green) and right (red) child voxel. A candidate partition is, however, only a conceptual thing to compare different acceleration data structures against each other. The obtained BSPs and kd-trees after construction do not store the AABBs associated with each node. First of all, this would increase the memory footprint. Assume that an AABB consists of 6x 32-bit floating point values (24 bytes) and we have $2^{30}$ nodes. This results in 24 Gbytes for the AABBs alone. This is clearly something we want to avoid given that BSPs already suffer from high memory usage due to reference duplication for geometric primitives straddling a splitting plane. Furthermore, if we really wanted the AABB of a particular node, we can construct it starting from the AABB of the acceleration data structure (this is the only AABB we explicitly store) and the splitting planes (i.e. split position and split axis) found along the way while traversing the tree from the root node to our target node. So how do we traverse such a tree without AABBs? We just start at the root node and test the ray for intersection with the splitting plane. Depending on the result, we only need to traverse the left, right or both child voxels in front-to-back order along the ray. This ray-plane intersection test is also much cheaper than a ray-AABB intersection test.
@@ -71,9 +79,12 @@ While observing the image of the BSP candidate partition, we clearly see the AAB
 
 <p align="center"><img src="http://i.stack.imgur.com/AhKBT.jpg"></p>
 
+##### Geometric primitives of the child voxels
 * Geometric primitives whose centroid is to the left of the splitting plane belong to the left child voxel. 
 * Geometric primitives whose centroid is to the right of the splitting plane belong to the right child voxel. 
 * Geometric primitives whose centroid lies on the splitting plane are added to the left child voxel. 
+
+##### AABBs of the child voxels
 The AABB of both child voxels is made tight to the geometric primitives. *Note that the AABBs of the child voxels may not be larger than the AABB of the parent voxel, which can occur while constructing SBVHs. In this case, only the overlap with the AABB of the parent voxel will be used.*
 
 BVHs are traversed by testing the ray for intersection with the AABBs associated with the intermediate/child voxels.
@@ -99,9 +110,12 @@ BIHs are also known as *Spatial Kd trees* (SKds) and *Bounded Kd trees* (B-Kds).
 
 <p align="center"><img src="http://i.stack.imgur.com/rUlS6.jpg"></p>
 
+##### Geometric primitives of the child voxels
 * Geometric primitives whose centroid is to the left of the splitting plane belong to the left child voxel. 
 * Geometric primitives whose centroid is to the right of the splitting plane belong to the right child voxel. 
 * Geometric primitives whose centroid lies on the splitting plane are added to the left child voxel. 
+
+##### AABBs of the child voxels
 The AABB of both child voxels is similar to those of BSPs except that the AABB's plane corresponding to the splitting plane is made tight to the geometric primitives.
 
  - (+) $O(n \log n)$ full sweeping-plane SAH build algorithm is possible for constructing complete BVHs.
@@ -128,10 +142,13 @@ The AABB of both child voxels is similar to those of BSPs except that the AABB's
 
 <p align="center"><img src="http://i.stack.imgur.com/01qkt.jpg"></p>
 
+##### Geometric primitives of the child voxels
 * Geometric primitives to the left of the splitting plane belong to the left child voxel. 
 * Geometric primitives to the right of the splitting plane belong to the right child voxel. 
 * Geometric primitives straddling the splitting plane belong to both child voxels.
 * Geometric primitives lying outside the parent voxel belong to none of the child voxels.
+
+##### AABBs of the child voxels
 The AABBs of the child voxels are made tight to the geometric primitives, but the plane corresponding to the splitting plane can only be moved to the left (right) for the left (right) child voxel. So the geometry first needs to be clipped against the splitting plane. Furthermore, only the overlap with the AABB of the parent voxel will be used when geometric primitives straddle the AABB of the parent voxel.
 
 Originally, I discovered the GK-BVH myself and called it a Tight BSP (TBSP) due to its close resemblance to BSPs with regard to the construction. The traversal algorithm, however, is similar to a BVH, explaining the GK-BVH name. The only difference is that geometric primitives can now be associated with multiple leaf nodes and thus the same geometric primitives can be tested multiple times for intersection by the same ray (without using optimizations such as *mailboxing*). This also implies that the resulting GK-BVH will look differently internally as opposed to BVHs, where the latter can just reorganize the geometric primitives in place and the former will depend on an extra indirection (i.e. indices).
@@ -141,9 +158,12 @@ Originally, I discovered the GK-BVH myself and called it a Tight BSP (TBSP) due 
 
 We can also clip the AABBs instead of the geometric primitives, which is similar to the difference between kd-trees and kd-trees built with split clipping.
 
+##### Geometric primitives of the child voxels
 * Geometric primitives whose AABB is to the left of the splitting plane belong to the left child voxel. 
 * Geometric primitives whose AABB is to the right of the splitting plane belong to the right child voxel. 
 * Geometric primitives whose AABB is straddling the splitting plane belong to both child voxels.
+
+##### AABBs of the child voxels
 The AABBs of the child voxels are made tight to the geometric primitives, but the plane corresponding to the splitting plane can only be moved to the left (right) for the left (right) child voxel. Furthermore, only the overlap with the AABB of the parent voxel will be used when geometric primitives straddle the AABB of the parent voxel.
 
 GK-BVHs are tighter since they perform clipping operations on the geometric primitives (and thus not on their less tighter AABBs). Therefore, GK-BVHs will typically have a smaller geometric reference duplication. The only benefit of not clipping the geometric primitives, but the AABBs instead, is a faster build algorithm and the potential of still being able to use a full sweeping-plane SAH build algorithm in a similar fashion to the way BVHs can be built. The traversal of your acceleration data structure and the GK-BVH will however be the same, and will thus be the same as the traversal of a BVH. And the traversal of the latter is more efficient in case of less overlap between the AABBs of the child voxels. Since the tightness of GK-BVHs is larger than your acceleration data structure, GK-BVHs will outperform them.
