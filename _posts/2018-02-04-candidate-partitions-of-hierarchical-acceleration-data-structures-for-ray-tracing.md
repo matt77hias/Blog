@@ -33,11 +33,9 @@ As we will see, the structure of these candidate partitions differ between diffe
 
 In case of a binary tree with axis-aligned voxels, the BSP is called a *kd-tree* or *rectilinear BSP*.
 
-#### Candidate Partition
-
 <p align="center"><img src="http://i.stack.imgur.com/Q40LG.jpg"></p>
 
-##### Geometric primitives of the child voxels
+#### Geometric primitives of the child voxels
 * Geometric primitives whose AABB is to the left of the <span style="color:purple;">splitting plane</span> belong to the <span style="color:green;">left</span> child voxel. 
 * Geometric primitives whose AABB is to the right of the <span style="color:purple;">splitting plane</span> belong to the <span style="color:red;">right</span> child voxel. 
 * Geometric primitives whose AABB is straddling the <span style="color:purple;">splitting plane</span> belong to both child voxels.
@@ -56,12 +54,12 @@ The AABB of both child voxels can be trivially calculated given the <span style=
 ##### AABBs of the child voxels
 The AABB of both child voxels can be trivially calculated given the <span style="color:blue;">parent</span> voxel and the <span style="color:purple;">splitting plane</span>. The spatial union of the AABB of both child voxels is equal to the <span style="color:blue;">parent</span> voxel (none of the six surrounding planes is tight).
 
-While observing the image of a BSP candidate partition, we clearly see the AABBs associated with the <span style="color:blue;">parent</span>, <span style="color:green;">left</span> and <span style="color:red;">right</span> child voxel. A candidate partition is, however, only a conceptual thing to compare different acceleration data structures against each other. The obtained BSPs and kd-trees after construction do not store the AABBs associated with each node. First of all, this would increase the memory footprint. Assume that an AABB consists of 6x 32-bit floating point values (24 bytes) and we have $2^{30}$ nodes. This results in 24 Gbytes for the AABBs alone. This is clearly something we want to avoid given that BSPs already suffer from high memory usage due to reference duplication for geometric primitives straddling a <span style="color:purple;">splitting plane</span>. Furthermore, if we really wanted the AABB of a particular node, we can construct it starting from the AABB of root node (this is the only AABB we explicitly store) and the <span style="color:purple;">splitting plane</span>s (i.e. split position and split axis) found along the way while traversing the tree from the root node to our target node. So how do we traverse such a tree without AABBs? We just start at the root node and test the ray for intersection with the <span style="color:purple;">splitting plane</span>. Depending on the result, we only need to traverse the <span style="color:green;">left</span>, <span style="color:red;">right</span> or both child voxels in front-to-back order along the ray. This ray-plane intersection test is also much cheaper than a ray-AABB intersection test.
+While observing the image of a BSP candidate partition, we clearly see the AABBs associated with the <span style="color:blue;">parent</span>, <span style="color:green;">left</span> and <span style="color:red;">right</span> child voxel. A candidate partition is, however, only a conceptual thing to compare different acceleration data structures against each other. The obtained BSPs and kd-trees after construction do not store the AABBs associated with each node. First of all, this would increase the memory footprint. Assume that an AABB consists of 6x 32-bit floating point values (24 bytes) and we have $2^{30}$ nodes. This results in 24 Gbytes for the AABBs alone. This is clearly something we want to avoid given that BSPs already suffer from high memory usage due to reference duplication for geometric primitives straddling a <span style="color:purple;">splitting plane</span>. Furthermore, if we really wanted the AABB of a particular node, we can construct it starting from the AABB of the root node (this is the only AABB we explicitly store) and the <span style="color:purple;">splitting plane</span>s (i.e. split position and split axis) found along the way while traversing the tree from the root node to our target node. So how do we traverse such a tree without AABBs? We just start at the root node and test the ray for intersection with the <span style="color:purple;">splitting plane</span>. Depending on the result, we only need to traverse the <span style="color:green;">left</span>, <span style="color:red;">right</span> or both child voxels in front-to-back order along the ray. This ray-plane intersection test is also much cheaper than a ray-AABB intersection test.
 
  - (+) $\mathcal{O}\left(N \log N\right)$ full sweeping-plane SAH build algorithm is possible for constructing complete BSPs.
  - (+) $\mathcal{O}\left(N \log N\right)$ binned SAH build algorithm for constructing complete BSPs (in parallel) is possible.
 
-#### References
+##### References
 
  - BENTLEY J. L., FRIEDMAN J. H.: Data Structures for Range Searching. ACM Comput. Surv. 11, 4 (Dec 1979), 397–409.
  - KAPLAN M. R.: The Use of Spatial Coherence in Ray Tracing. *ACM SIGGRAPH Course Notes 11* (1985).
@@ -74,8 +72,6 @@ While observing the image of a BSP candidate partition, we clearly see the AABBs
  - binary/*n*-ary tree
  - (non-)axis-aligned voxels
  - 6 planes of the voxels are tight
-
-### Candidate Partition
 
 <p align="center"><img src="http://i.stack.imgur.com/AhKBT.jpg"></p>
 
@@ -92,7 +88,7 @@ BVHs are traversed by testing the ray for intersection with the AABBs associated
  - (+) $\mathcal{O}\left(N \log N\right)$ full sweeping-plane SAH build algorithm is possible for constructing complete BIHs.
  - (+) $\mathcal{O}\left(N \log N\right)$ binned SAH build algorithm for constructing complete BIHs (in parallel) is possible.
 
-#### References
+##### References
 
  - RUBIN S. M., WHITTED T.: A 3-dimensional Representation for Fast Rendering of Complex Scenes. *SIGGRAPH Comput. Graph. 14*, 3 (Jul 1980), 110–116.
 
@@ -105,8 +101,6 @@ BVHs are traversed by testing the ray for intersection with the AABBs associated
  - 1 plane of the voxels is tight
 
 BIHs are also known as *Spatial Kd trees* (SKds) and *Bounded Kd trees* (B-Kds).
-
-#### Candidate Partition
 
 <p align="center"><img src="http://i.stack.imgur.com/rUlS6.jpg"></p>
 
@@ -121,7 +115,7 @@ The AABB of both child voxels is similar to those of BSPs except that the AABB's
  - (+) $\mathcal{O}\left(N \log N\right)$ full sweeping-plane SAH build algorithm is possible for constructing complete BVHs.
  - (+) $\mathcal{O}\left(N \log N\right)$ binned SAH build algorithm for constructing complete BVHs (in parallel) is possible.
 
-#### References
+##### References
 
  - OOI B. C., MCDONELL K. J., RON S.-D.: Spatial Kd-Tree: An Indexing Mechanism for Spatial Databases. In *Proceedings of the IEEE COMPSAC Conference* (1987).
  - HAVRAN V., HERZOG R., SEIDEL H.-P.: On the Fast Construction of Spatial Hierarchies for Ray Tracing. In *IEEE Symposium on Interactive Ray Tracing 2006* (Sept 2006), pp. 71–80.
@@ -137,8 +131,6 @@ Note that the papers introducing SKds, B-Kds and BIHs in computer graphics (i.e.
  - binary/*n*-ary tree
  - (non-)axis-aligned voxels
  - 6 planes of the voxels are tight, but constrained by the <span style="color:purple;">splitting plane</span>
-
-#### Candidate Partition
 
 <p align="center"><img src="http://i.stack.imgur.com/01qkt.jpg"></p>
 
@@ -168,7 +160,7 @@ The AABBs of the child voxels are made tight to the AABBs of the geometric primi
 
 GK-BVHs are tighter since they perform clipping operations on the geometric primitives (and thus not on their less tighter AABBs). Therefore, GK-BVHs will typically have a smaller geometric reference duplication. The only benefit of not clipping the geometric primitives, but the AABBs instead, is a faster build algorithm and the potential of still being able to use a full sweeping-plane SAH build algorithm in a similar fashion to the way BVHs can be built. The traversal will however be the same as for the GK-BVH, and will thus be the same as for the BVH as well. And the traversal of the latter is more efficient in case of less overlap between the AABBs of the child voxels. Since the tightness of GK-BVHs is larger than your acceleration data structure, GK-BVHs will outperform them.
 
-#### References
+##### References
 
  - POPOV S., GEORGIEV I., DIMOV R., SLUSALLEK P.: Object Partitioning Considered Harmful: Space Subdivision for BVHs. In *Proceedings of the Conference on High Performance Graphics* 2009 (New York, NY, USA, 2009), HPG ’09, ACM, pp. 15–22.
 
@@ -179,8 +171,6 @@ GK-BVHs are tighter since they perform clipping operations on the geometric prim
  - binary/*n*-ary tree
  - (non-)axis-aligned voxels
  - combination of BVH and GK-BVH candidate partitions
-
-#### Candidate Partitions
 
 <p align="center"><img src="http://i.stack.imgur.com/0IkdU.jpg"></p>
 
@@ -195,11 +185,11 @@ Besides being a hybrid of BVH and GK-BVH candidate partitions, the SBVH is more 
 
 if we do not use fancy optimizations such as LBVHs which uses spatial Morton coding to organize the BVH. The SBVH is conceptually the most effective acceleration data structure presented here so far, offering the best of both worlds (hybrid of spatial and object partitioning schemes). SBVHs were the preferred acceleration data structure of [NVidia OptiX Ray Tracing Engine](https://developer.nvidia.com/optix).
 
-#### References
+##### References
 
  - STICH M., FRIEDRICH H., DIETRICH A.: Spatial Splits in Bounding Volume Hierarchies. In *Proceedings of the Conference on High Performance Graphics 2009* (New York, NY, USA, 2009), HPG’09, ACM, pp. 7–13.
 
 **Note** that the papers introducing GK-BVHs and SBVHs are both of the same year and the same conference which explains the implicit inclusion of GK-BVHs in SBVHs without referring to the paper about GK-BVHs.
 
-# General Reference
+## General Reference
 MOULIN M., DUTRÉ P.: On the use of Local Ray Termination for Efficiently Constructing Qualitative  BSPs, BIHs and (S)BVHs. *under review*, 2017.
