@@ -61,9 +61,11 @@ While observing the image of a BSP candidate partition, we clearly see the AABBs
 
 ##### References
 
-* BENTLEY J. L., FRIEDMAN J. H.: Data Structures for Range Searching. ACM Comput. Surv. 11, 4 (Dec 1979), 397–409.
-* KAPLAN M. R.: The Use of Spatial Coherence in Ray Tracing. *ACM SIGGRAPH Course Notes 11* (1985).
-* IZE T., WALD I., PARKER S. G.: Ray tracing with the BSP tree. In *IEEE Symposium on Interactive Ray Tracing 2008* (Aug 2008), pp. 159–166.
+BENTLEY J. L., FRIEDMAN J. H.: Data Structures for Range Searching. ACM Comput. Surv. 11, 4 (Dec 1979), 397–409.
+
+IZE T., WALD I., PARKER S. G.: Ray tracing with the BSP tree. In *IEEE Symposium on Interactive Ray Tracing 2008* (Aug 2008), pp. 159–166.
+
+KAPLAN M. R.: The Use of Spatial Coherence in Ray Tracing. *ACM SIGGRAPH Course Notes 11* (1985).
 
 ## Bounding Volume Hierarchy - BVH
 
@@ -90,7 +92,7 @@ BVHs are traversed by testing the ray for intersection with the AABBs associated
 
 ##### References
 
-* RUBIN S. M., WHITTED T.: A 3-dimensional Representation for Fast Rendering of Complex Scenes. *SIGGRAPH Comput. Graph. 14*, 3 (Jul 1980), 110–116.
+RUBIN S. M., WHITTED T.: A 3-dimensional Representation for Fast Rendering of Complex Scenes. *SIGGRAPH Comput. Graph. 14*, 3 (Jul 1980), 110–116.
 
 ## Bounding Interval Hierarchy - BIH
 
@@ -117,10 +119,13 @@ The AABB of both child voxels is similar to those of BSPs except that the AABB's
 
 ##### References
 
-* OOI B. C., MCDONELL K. J., RON S.-D.: Spatial Kd-Tree: An Indexing Mechanism for Spatial Databases. In *Proceedings of the IEEE COMPSAC Conference* (1987).
-* HAVRAN V., HERZOG R., SEIDEL H.-P.: On the Fast Construction of Spatial Hierarchies for Ray Tracing. In *IEEE Symposium on Interactive Ray Tracing 2006* (Sept 2006), pp. 71–80.
-* WOOP S., MARMITT G., SLUSALLEK P.: B-Kd Trees for Hardware Accelerated Ray Tracing of Dynamic Scenes. In *Proceedings of the 21st ACM SIGGRAPH/EUROGRAPHICS Symposium on Graphics Hardware* (New York, NY, USA, 2006), GH ’06, ACM, pp. 67–77.
-* WÄCHTER C., KELLER A.: Instant Ray Tracing: The Bounding Interval Hierarchy. In *Proceedings of the 17th Eurographics Conference on Rendering Techniques* (Aire-la-Ville, Switzerland, Switzerland, 2006), EGSR ’06, Eurographics Association, pp. 139–149.
+HAVRAN V., HERZOG R., SEIDEL H.-P.: On the Fast Construction of Spatial Hierarchies for Ray Tracing. In *IEEE Symposium on Interactive Ray Tracing 2006* (Sept 2006), pp. 71–80.
+
+OOI B. C., MCDONELL K. J., RON S.-D.: Spatial Kd-Tree: An Indexing Mechanism for Spatial Databases. In *Proceedings of the IEEE COMPSAC Conference* (1987).
+
+WÄCHTER C., KELLER A.: Instant Ray Tracing: The Bounding Interval Hierarchy. In *Proceedings of the 17th Eurographics Conference on Rendering Techniques* (Aire-la-Ville, Switzerland, Switzerland, 2006), EGSR ’06, Eurographics Association, pp. 139–149.
+
+WOOP S., MARMITT G., SLUSALLEK P.: B-Kd Trees for Hardware Accelerated Ray Tracing of Dynamic Scenes. In *Proceedings of the 21st ACM SIGGRAPH/EUROGRAPHICS Symposium on Graphics Hardware* (New York, NY, USA, 2006), GH ’06, ACM, pp. 67–77.
 
 Note that the papers introducing SKds, B-Kds and BIHs in computer graphics (i.e. the last three references) are all from the same year which explains the various synonyms.
 
@@ -165,7 +170,7 @@ GK-BVHs are, however, tighter since they perform clipping operations on the geom
 
 ##### References
 
-* POPOV S., GEORGIEV I., DIMOV R., SLUSALLEK P.: Object Partitioning Considered Harmful: Space Subdivision for BVHs. In *Proceedings of the Conference on High Performance Graphics* 2009 (New York, NY, USA, 2009), HPG ’09, ACM, pp. 15–22.
+POPOV S., GEORGIEV I., DIMOV R., SLUSALLEK P.: Object Partitioning Considered Harmful: Space Subdivision for BVHs. In *Proceedings of the Conference on High Performance Graphics* 2009 (New York, NY, USA, 2009), HPG ’09, ACM, pp. 15–22.
 
 ## Spatial Split Bounding Volume Hierarchy - SBVH
 
@@ -190,9 +195,10 @@ If we do not use fancy optimizations such as LBVHs which uses spatial Morton cod
 
 ##### References
 
-* STICH M., FRIEDRICH H., DIETRICH A.: Spatial Splits in Bounding Volume Hierarchies. In *Proceedings of the Conference on High Performance Graphics 2009* (New York, NY, USA, 2009), HPG’09, ACM, pp. 7–13.
+STICH M., FRIEDRICH H., DIETRICH A.: Spatial Splits in Bounding Volume Hierarchies. In *Proceedings of the Conference on High Performance Graphics 2009* (New York, NY, USA, 2009), HPG’09, ACM, pp. 7–13.
 
 Note that the papers introducing GK-BVHs and SBVHs are both of the same year and the same conference which explains the implicit inclusion of GK-BVHs in SBVHs without referring to the paper about GK-BVHs.
 
 # General Reference
+
 MOULIN M., DUTRÉ P.: On the use of Local Ray Termination for Efficiently Constructing Qualitative  BSPs, BIHs and (S)BVHs. *under review*, 2017.
