@@ -24,6 +24,8 @@ I will give a short overview of some of these structures, and more particularly 
 
 As we will see, the structure of these candidate partitions differ between different acceleration data structures. But in all cases, a candidate partition is completely determined given a parent voxel and a splitting plane. For object partitioning schemes, the geometric primitives are mapped to their centroids (or an other point) to determine the positioning relative to the splitting plane.
 
+<hr>
+
 ## (Binary) Space Partition - BSP
 
 * spatial partitioning scheme
@@ -67,6 +69,8 @@ IZE T., WALD I., PARKER S. G.: Ray tracing with the BSP tree. In *IEEE Symposium
 
 KAPLAN M. R.: The Use of Spatial Coherence in Ray Tracing. *ACM SIGGRAPH Course Notes 11* (1985).
 
+<hr>
+
 ## Bounding Volume Hierarchy - BVH
 
 * object partitioning scheme
@@ -93,6 +97,8 @@ BVHs are traversed by testing the ray for intersection with the AABBs associated
 ##### References
 
 RUBIN S. M., WHITTED T.: A 3-dimensional Representation for Fast Rendering of Complex Scenes. *SIGGRAPH Comput. Graph. 14*, 3 (Jul 1980), 110–116.
+
+<hr>
 
 ## Bounding Interval Hierarchy - BIH
 
@@ -128,6 +134,8 @@ WÄCHTER C., KELLER A.: Instant Ray Tracing: The Bounding Interval Hierarchy. In
 WOOP S., MARMITT G., SLUSALLEK P.: B-Kd Trees for Hardware Accelerated Ray Tracing of Dynamic Scenes. In *Proceedings of the 21st ACM SIGGRAPH/EUROGRAPHICS Symposium on Graphics Hardware* (New York, NY, USA, 2006), GH ’06, ACM, pp. 67–77.
 
 Note that the papers introducing SKds, B-Kds and BIHs in computer graphics (i.e. the last three references) are all from the same year which explains the various synonyms.
+
+<hr>
 
 ## GK-BVH
 
@@ -172,6 +180,8 @@ GK-BVHs are, however, tighter since they perform clipping operations on the geom
 
 POPOV S., GEORGIEV I., DIMOV R., SLUSALLEK P.: Object Partitioning Considered Harmful: Space Subdivision for BVHs. In *Proceedings of the Conference on High Performance Graphics* 2009 (New York, NY, USA, 2009), HPG ’09, ACM, pp. 15–22.
 
+<hr>
+
 ## Spatial Split Bounding Volume Hierarchy - SBVH
 
 * hybrid partitioning scheme
@@ -199,6 +209,8 @@ STICH M., FRIEDRICH H., DIETRICH A.: Spatial Splits in Bounding Volume Hierarchi
 
 Note that the papers introducing GK-BVHs and SBVHs are both of the same year and the same conference which explains the implicit inclusion of GK-BVHs in SBVHs without referring to the paper about GK-BVHs.
 
+<hr>
+
 # General Reference
 
-MOULIN M., DUTRÉ P.: On the use of Local Ray Termination for Efficiently Constructing Qualitative  BSPs, BIHs and (S)BVHs. *under review*, 2017.
+MOULIN M., DUTRÉ P.: On the use of Local Ray Termination for Efficiently Constructing Qualitative  BSPs, BIHs and (S)BVHs. *under review*, 2018.
