@@ -81,14 +81,14 @@ blockquote {
 }
 
 .headline {
-	font-size: 4em;
+	font-size: 2em;
 	@include media-query($on-palm) {
 		font-size: 2em;
 	}
 }
 
 .post-headline {
-	font-size: 4em;
+	font-size: 2em;
 	@include media-query($on-palm) {
 		font-size: 1.5em;
 	}
