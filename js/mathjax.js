@@ -6,7 +6,7 @@ TeX: {
   extensions: ["AMScd.js"]
 },
 tex2jax: {
-  inlineMath: [ ['$','$'] ],
+  inlineMath: [ ['$','$'], ['\(', '\)'] ],
   displayMath: [ ['$$','$$'] ],
   processEscapes: true,
-}
+});
