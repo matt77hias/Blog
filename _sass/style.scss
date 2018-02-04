@@ -81,6 +81,7 @@ blockquote {
 }
 
 .headline {
+	color: $brand-color;
 	font-size: 2.5em;
 	@include media-query($on-palm) {
 		font-size: 2em;
@@ -88,6 +89,7 @@ blockquote {
 }
 
 .post-headline {
+	color: $brand-color;
 	font-size: 2.5em;
 	@include media-query($on-palm) {
 		font-size: 1.5em;
