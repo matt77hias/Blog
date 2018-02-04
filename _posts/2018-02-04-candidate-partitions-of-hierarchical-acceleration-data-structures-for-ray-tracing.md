@@ -5,8 +5,6 @@ date:   2018-02-04
 categories: [ADS, ray-tracing]
 ---
 
-<span style="color:orange;">Word up</span>
-
 ## Partitiong Schemes
 
 Given some geometric primitives in a scene, it is possible to partition and organize these primitives in multiple ways in a hierarchical or non-hierarchical data structure to exploit spatial coherence during ray tracing. We can partition the geometric primitives into two or more disjoint groups without taking the scene (explicitly) into consideration during the partitioning itself. Or we can do the complete opposite by partitioning the scene's space into two or more disjoint groups without taking the geometric primitives (explicitly) into consideration during the partitioning itself. Or we can use a combination of these two extremes. More formerly:
