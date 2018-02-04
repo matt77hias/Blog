@@ -21,9 +21,16 @@
 	 
 		<script src="{{site.baseurl}}/js/theme.min.js"></script>
 
-		{{ content }}
+		<main>
+    		<article>
+    		{{ content }}
+    		</article>
+    		</main>
 
 		<footer>
+			<div class="links">
+        			<a class="theme" onclick="theme()">Dark/Light</a>
+    			</div>
 			<div class="container">
 				<p class="copyright">Copyright © 2015-2018 Matthias Moulin. All Rights Reserved.</p>
 			</div>
