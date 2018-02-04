@@ -129,7 +129,7 @@ WOOP S., MARMITT G., SLUSALLEK P.: B-Kd Trees for Hardware Accelerated Ray Traci
 
 Note that the papers introducing SKds, B-Kds and BIHs in computer graphics (i.e. the last three references) are all from the same year which explains the various synonyms.
 
-## GK-BVH candidate partition
+## GK-BVH
 
 * spatial partitioning scheme
 * hierarchical
