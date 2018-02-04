@@ -133,7 +133,7 @@ WÄCHTER C., KELLER A.: Instant Ray Tracing: The Bounding Interval Hierarchy. In
 
 WOOP S., MARMITT G., SLUSALLEK P.: B-Kd Trees for Hardware Accelerated Ray Tracing of Dynamic Scenes. In *Proceedings of the 21st ACM SIGGRAPH/EUROGRAPHICS Symposium on Graphics Hardware* (New York, NY, USA, 2006), GH ’06, ACM, pp. 67–77.
 
-Note that the papers introducing SKds, B-Kds and BIHs in computer graphics (i.e. the last three references) are all from the same year which explains the various synonyms.
+Note that the papers introducing SKds, B-Kds and BIHs in computer graphics are all from the same year which explains the various synonyms.
 
 <hr>
 
