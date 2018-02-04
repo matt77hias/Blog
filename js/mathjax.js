@@ -4,7 +4,7 @@ MathJax.Hub.Config({
         extensions: ["AMScd.js"]
     },
     tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      inlineMath: [ ['$','$'], ["\(","\)"] ],
       displayMath: [ ['$$','$$'] ],
       processEscapes: true
     }
