@@ -100,12 +100,14 @@ ProxyPtr(const ProxyPtr& ptr) noexcept
 ProxyPtr(ProxyPtr&& ptr) noexcept
     : m_getter(std::move(ptr.m_getter)) {}
 
-template< typename U >
-ProxyPtr(const ProxyPtr< U >& ptr) noexcept
+template< typename FromT, 
+	  typename = std::enable_if_t< std::is_convertible_v< FromT*, T* > > >
+ProxyPtr(const ProxyPtr< FromT >& ptr) noexcept
     : m_getter(ptr.m_getter) {}
 
-template< typename U >
-ProxyPtr(ProxyPtr< U >&& ptr) noexcept
+template< typename FromT, 
+	  typename = std::enable_if_t< std::is_convertible_v< FromT*, T* > > >
+ProxyPtr(ProxyPtr< FromT >&& ptr) noexcept
     : m_getter(std::move(ptr.m_getter)) {}
 ```
 
@@ -180,29 +182,25 @@ To avoid needless invocations of our constructor accepting an argument of type `
 ```c++
 template< typename T >
 [[nodiscard]]
-inline bool operator==(const ProxyPtr< T >& lhs,
-		       std::nullptr_t) noexcept {
+inline bool operator==(const ProxyPtr< T >& lhs, std::nullptr_t) noexcept {
     return !bool(lhs);
 }
 
 template< typename T >
 [[nodiscard]]
-inline bool operator!=(const ProxyPtr< T >& lhs,
-		       std::nullptr_t) noexcept {
+inline bool operator!=(const ProxyPtr< T >& lhs, std::nullptr_t) noexcept {
     return bool(lhs);
 }
 
 template< typename T >
 [[nodiscard]]
-inline bool operator==(std::nullptr_t,
-		       const ProxyPtr< T >& rhs) noexcept {
+inline bool operator==(std::nullptr_t, const ProxyPtr< T >& rhs) noexcept {
     return !bool(rhs);
 }
 
 template< typename T >
 [[nodiscard]]
-inline bool operator!=(std::nullptr_t,
-		       const ProxyPtr< T >& rhs) noexcept {
+inline bool operator!=(std::nullptr_t, const ProxyPtr< T >& rhs) noexcept {
     return bool(rhs);
 }
 ```
