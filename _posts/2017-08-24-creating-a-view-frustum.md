@@ -71,7 +71,7 @@ If we use an `SIMD` library such as `DirectXMath`, matrices are represented in r
 
 ```c++
 ViewFrustum::ViewFrustum(CXMMATRIX transform) {
-	const XMMATRIX C = XMMatrixTranspose(transform);
+	const auto C = XMMatrixTranspose(transform);
 
 	// Extract the view frustum planes from the given transform.
 	// All view frustum planes are inward facing: 0 <= n . p + d
