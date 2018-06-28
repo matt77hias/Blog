@@ -57,8 +57,9 @@ p_{y}^\mathrm{ndc} &= \frac{1}{y} \frac{p_{y}^\mathrm{v}}{p_{z}^\mathrm{v}}
            construct the view position coordinates from the NDC position 
            coordinates.
  */
-inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
-    FXMMATRIX projection_matrix) noexcept {
+[[nodiscard]]
+inline const XMVECTOR XM_CALLCONV 
+    GetViewPositionConstructionValues(FXMMATRIX projection_matrix) noexcept {
 
     //        [ 1/X  0   0  0 ]
     // p_view [  0  1/Y  0  0 ] = [p_view.x 1/X, p_view.y 1/Y, p_view.z (-W) + Z, p_view.z] = p_proj
@@ -125,8 +126,9 @@ p_{y}^\mathrm{ndc} &= \frac{1}{y} p_{y}^\mathrm{v}
            construct the view position coordinates from the NDC position 
            coordinates.
  */
-inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
-    FXMMATRIX projection_matrix) noexcept {
+[[nodiscard]]
+inline const XMVECTOR XM_CALLCONV 
+    GetViewPositionConstructionValues(FXMMATRIX projection_matrix) noexcept {
 
     //        [ 1/X  0   0  0 ]
     // p_view [  0  1/Y  0  0 ] = [p_view.x 1/X, p_view.y 1/Y, p_view.z 1/Z -W, 1] = p_proj = p_ndc
@@ -176,8 +178,11 @@ $$\begin{align}
  @return   The projection-to-view matrix of this perspective 
            camera.
  */
-virtual const XMMATRIX XM_CALLCONV GetProjectionToViewMatrix() const noexcept override {
-    const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
+[[nodiscard]]
+virtual const XMMATRIX XM_CALLCONV 
+    GetProjectionToViewMatrix() const noexcept override {
+    
+    const auto view_to_projection = GetViewToProjectionMatrix();
 
     const auto m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
     const auto m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
@@ -215,8 +220,11 @@ $$\begin{align}
  @return   The projection-to-view matrix of this orthographic 
            camera.
  */
-virtual const XMMATRIX XM_CALLCONV GetProjectionToViewMatrix() const noexcept override {
-    const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
+[[nodiscard]]
+virtual const XMMATRIX XM_CALLCONV 
+    GetProjectionToViewMatrix() const noexcept override {
+    
+    const auto view_to_projection = GetViewToProjectionMatrix();
 
     const auto m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
     const auto m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
