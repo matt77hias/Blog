@@ -72,12 +72,12 @@ inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
     // 2) p_ndc.x = p_view.x/p_view.z 1/X <=> p_view.x = X * p_ndc.x * p_view.z
     // 3) p_ndc.y = p_view.y/p_view.z 1/Y <=> p_view.y = Y * p_ndc.y * p_view.z
 
-    const F32 x = 1.0f / XMVectorGetX(projection_matrix.r[0]);
-    const F32 y = 1.0f / XMVectorGetY(projection_matrix.r[1]);
-    const F32 z =  XMVectorGetZ(projection_matrix.r[3]);
-    const F32 w = -XMVectorGetZ(projection_matrix.r[2]);
+    const auto x = 1.0f / XMVectorGetX(projection_matrix.r[0]);
+    const auto y = 1.0f / XMVectorGetY(projection_matrix.r[1]);
+    const auto z =  XMVectorGetZ(projection_matrix.r[3]);
+    const auto w = -XMVectorGetZ(projection_matrix.r[2]);
 
-    return XMVectorSet(x, y, z, w);
+    return { x, y, z, w };
 }
 ```
 
@@ -138,12 +138,12 @@ inline const XMVECTOR XM_CALLCONV GetViewPositionConstructionValues(
     // 2) p_ndc.x = p_view.x/X    <=> p_view.x = X * p_ndc.x
     // 3) p_ndc.y = p_view.y/Y    <=> p_view.y = Y * p_ndc.y
 
-    const F32 x = 1.0f / XMVectorGetX(projection_matrix.r[0]);
-    const F32 y = 1.0f / XMVectorGetY(projection_matrix.r[1]);
-    const F32 z = 1.0f / XMVectorGetZ(projection_matrix.r[2]);
-    const F32 w = -XMVectorGetZ(projection_matrix.r[3]);
+    const auto x = 1.0f / XMVectorGetX(projection_matrix.r[0]);
+    const auto y = 1.0f / XMVectorGetY(projection_matrix.r[1]);
+    const auto z = 1.0f / XMVectorGetZ(projection_matrix.r[2]);
+    const auto w = -XMVectorGetZ(projection_matrix.r[3]);
 
-    return XMVectorSet(x, y, z, w);
+    return { x, y, z, w };
 }
 ```
 
@@ -179,12 +179,12 @@ $$\begin{align}
 virtual const XMMATRIX XM_CALLCONV GetProjectionToViewMatrix() const noexcept override {
     const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
 
-    const F32 m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
-    const F32 m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
-    const F32 m23 = 1.0f / XMVectorGetZ(view_to_projection.r[3]);
-    const F32 m33 = -XMVectorGetZ(view_to_projection.r[2]) * m23;
+    const auto m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
+    const auto m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
+    const auto m23 = 1.0f / XMVectorGetZ(view_to_projection.r[3]);
+    const auto m33 = -XMVectorGetZ(view_to_projection.r[2]) * m23;
 
-    return XMMATRIX {
+    return {
         m00, 0.0f, 0.0f, 0.0f,
         0.0f,  m11, 0.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  m23,
@@ -218,12 +218,12 @@ $$\begin{align}
 virtual const XMMATRIX XM_CALLCONV GetProjectionToViewMatrix() const noexcept override {
     const XMMATRIX view_to_projection = GetViewToProjectionMatrix();
 
-    const F32 m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
-    const F32 m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
-    const F32 m22 = 1.0f / XMVectorGetZ(view_to_projection.r[2]);
-    const F32 m32 = -XMVectorGetZ(view_to_projection.r[3]) * m22;
+    const auto m00 = 1.0f / XMVectorGetX(view_to_projection.r[0]);
+    const auto m11 = 1.0f / XMVectorGetY(view_to_projection.r[1]);
+    const auto m22 = 1.0f / XMVectorGetZ(view_to_projection.r[2]);
+    const auto m32 = -XMVectorGetZ(view_to_projection.r[3]) * m22;
 
-    return XMMATRIX {
+    return {
          m00, 0.0f, 0.0f, 0.0f,
         0.0f,  m11, 0.0f, 0.0f,
         0.0f, 0.0f,  m22, 0.0f,
