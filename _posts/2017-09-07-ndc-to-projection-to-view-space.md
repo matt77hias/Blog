@@ -17,7 +17,7 @@ If you want to use world space instead, you need to additionally transform the r
 A (row-major) perspective transformation matrix has the following format:
 
 $$\begin{align} 
-\mathrm{T}^{\mathrm{v \rightarrow p}}
+\mathrm{T}^{\mathrm{cam \rightarrow proj}}
 &= \begin{bmatrix} 
 \mathrm{T}_{00} &0 &0 &0 \\ 
 0 &\mathrm{T}_{11} &0 &0 \\ 
@@ -30,11 +30,11 @@ $$\begin{align}
 0 &0 &z &0 \end{bmatrix} \! . 
 \end{align}$$
 
-This transformation matrix is used to transform (*homogeneous*) points from camera ($$p^{\mathrm{cam}}$$) to projection ($$p^{\mathrm{p}}$$) space, after which the homogeneous divide ($$p_{w}^{\mathrm{p}}$$) is applied to transform to NDC (Normalized Device Coordinate, $$p^{\mathrm{ndc}}$$) space. (*NDC space is technically a 3D space, but for ease of notation, I use 4D points with a $$w=1$$*). If we explicitly write down this chain of transformations, we obtain:
+This transformation matrix is used to transform (*homogeneous*) points from camera ($$p^{\mathrm{cam}}$$) to projection ($$p^{\mathrm{proj}}$$) space, after which the homogeneous divide ($$p_{w}^{\mathrm{proj}}$$) is applied to transform to NDC (Normalized Device Coordinate, $$p^{\mathrm{ndc}}$$) space. (*NDC space is technically a 3D space, but for ease of notation, I use 4D points with a $$w=1$$*). If we explicitly write down this chain of transformations, we obtain:
 
 $$\begin{align}
-p^{\mathrm{cam}} \mathrm{T}^{\mathrm{cam} \rightarrow \mathrm{p}}  &= \left(\frac{1}{x} p_{x}^\mathrm{cam}, \frac{1}{y} p_{y}^\mathrm{cam}, -w~p_{z}^\mathrm{cam} + z, p_{z}^\mathrm{cam}\right) = p^{\mathrm{p}} \\
-p^{\mathrm{p}}/p_{w}^{\mathrm{p}} &= \left(\frac{1}{x} \frac{p_{x}^\mathrm{cam}}{p_{z}^\mathrm{cam}}, \frac{1}{y} \frac{p_{y}^\mathrm{cam}}{p_{z}^\mathrm{cam}}, -w + \frac{z}{p_{z}^\mathrm{cam}}, 1\right) = p^{\mathrm{ndc}}.
+p^{\mathrm{cam}} \mathrm{T}^{\mathrm{cam} \rightarrow \mathrm{proj}}  &= \left(\frac{1}{x} p_{x}^\mathrm{cam}, \frac{1}{y} p_{y}^\mathrm{cam}, -w~p_{z}^\mathrm{cam} + z, p_{z}^\mathrm{cam}\right) = p^{\mathrm{proj}} \\
+p^{\mathrm{proj}}/p_{w}^{\mathrm{proj}} &= \left(\frac{1}{x} \frac{p_{x}^\mathrm{cam}}{p_{z}^\mathrm{cam}}, \frac{1}{y} \frac{p_{y}^\mathrm{cam}}{p_{z}^\mathrm{cam}}, -w + \frac{z}{p_{z}^\mathrm{cam}}, 1\right) = p^{\mathrm{ndc}}.
 \end{align}$$
 
 In a deferred renderer, we need to go the other way around while resolving the GBuffer and could use four components ($$x$$, $$y$$, $$z$$, $$w$$, see above) to transform a point from NDC to camera space:
@@ -69,7 +69,7 @@ inline const XMVECTOR XM_CALLCONV
     // p_proj / p_proj.w        = [p_camera.x/p_camera.z 1/X, p_camera.y/p_camera.z 1/Y, -W + Z/p_camera.z, 1] = p_ndc
     //
     // Construction of p_camera from p_ndc and projection values
-    // 1) p_ndc.z = -W + Z/p_camera.z       <=> p_camera.z = Z / (p_ndc.z + W)
+    // 1) p_ndc.z = -W + Z/p_camera.z         <=> p_camera.z = Z / (p_ndc.z + W)
     // 2) p_ndc.x = p_camera.x/p_camera.z 1/X <=> p_camera.x = X * p_ndc.x * p_camera.z
     // 3) p_ndc.y = p_camera.y/p_camera.z 1/Y <=> p_camera.y = Y * p_ndc.y * p_camera.z
 
@@ -85,7 +85,7 @@ inline const XMVECTOR XM_CALLCONV
 # Orthographic Camera Only Approach
 An (row-major) orthographic transformation matrix has the following format:
 
-$$\begin{align} \mathrm{T}^{\mathrm{v \rightarrow p}}
+$$\begin{align} \mathrm{T}^{\mathrm{cam \rightarrow proj}}
 &= \begin{bmatrix} 
 \mathrm{T}_{00} &0 &0 &0 \\ 
 0 &\mathrm{T}_{11} &0 &0 \\ 
@@ -98,12 +98,12 @@ $$\begin{align} \mathrm{T}^{\mathrm{v \rightarrow p}}
 0 &0 &-w &1 \end{bmatrix} \! . 
 \end{align}$$
 
-This transformation matrix is used to transform (*homogeneous*) points from camera ($$p^{\mathrm{cam}}$$) to projection ($$p^{\mathrm{p}}$$) space, after which the homogeneous divide (no-op) is applied to transform to NDC (= projection) space. (*So basically a non-uniform scaling followed by a translation of the z component*).
+This transformation matrix is used to transform (*homogeneous*) points from camera ($$p^{\mathrm{cam}}$$) to projection ($$p^{\mathrm{proj}}$$) space, after which the homogeneous divide (no-op) is applied to transform to NDC (= projection) space. (*So basically a non-uniform scaling followed by a translation of the z component*).
 
 If we explicitly write down this chain of transformations, we obtain:
 
 $$\begin{align}
-p^{\mathrm{cam}} \mathrm{T}^{\mathrm{cam} \rightarrow \mathrm{p}}  &= \left(\frac{1}{x} p_{x}^\mathrm{cam}, \frac{1}{y} p_{y}^\mathrm{cam}, \frac{1}{z} p_{z}^\mathrm{cam} - w, 1\right) = p^{\mathrm{p}} = p^{\mathrm{ndc}}.
+p^{\mathrm{cam}} \mathrm{T}^{\mathrm{cam} \rightarrow \mathrm{proj}}  &= \left(\frac{1}{x} p_{x}^\mathrm{cam}, \frac{1}{y} p_{y}^\mathrm{cam}, \frac{1}{z} p_{z}^\mathrm{cam} - w, 1\right) = p^{\mathrm{proj}} = p^{\mathrm{ndc}}.
 \end{align}$$
 
 Again, we could use four components ($$x$$, $$y$$, $$z$$, $$w$$, see above) to transform a point from NDC to camera space:
@@ -159,7 +159,7 @@ Alternatively, we can pass the inverse of our camera-to-projection matrices (i.e
 The camera-to-projection and projection-to-camera matrices for a perspective camera are defined as: 
 
 $$\begin{align} 
-\mathrm{T}^{\mathrm{v \rightarrow p}} &= \begin{bmatrix} 
+\mathrm{T}^{\mathrm{cam \rightarrow proj}} &= \begin{bmatrix} 
 \mathrm{T}_{00} &0 &0 &0 \\ 
 0 &\mathrm{T}_{11} &0 &0 \\ 
 0 &0 &\mathrm{T}_{22} &1 \\ 
@@ -201,7 +201,7 @@ virtual const XMMATRIX XM_CALLCONV
 The camera-to-projection and projection-to-camera matrices for an orthographic camera are defined as: 
 
 $$\begin{align} 
-\mathrm{T}^{\mathrm{v \rightarrow p}} &= \begin{bmatrix} 
+\mathrm{T}^{\mathrm{cam \rightarrow proj}} &= \begin{bmatrix} 
 \mathrm{T}_{00} &0 &0 &0 \\ 
 0 &\mathrm{T}_{11} &0 &0 \\ 
 0 &0 &\mathrm{T}_{22} &0 \\ 
