@@ -50,12 +50,11 @@ p_{y}^\mathrm{ndc} &= \frac{1}{y} \frac{p_{y}^\mathrm{cam}}{p_{z}^\mathrm{cam}}
 
 ```c++
 /**
- Returns the projection values from the given projection matrix to construct 
- the camera position coordinates from the NDC position coordinates.
+ Returns the projection values from the given projection matrix to construct the camera 
+ position coordinates from the NDC position coordinates.
 
- @return   The projection values from the given projection matrix to 
-           construct the camera position coordinates from the NDC position 
-           coordinates.
+ @return   The projection values from the given projection matrix to construct the camera 
+           position coordinates from the NDC position coordinates.
  */
 [[nodiscard]]
 inline const XMVECTOR XM_CALLCONV 
@@ -66,7 +65,7 @@ inline const XMVECTOR XM_CALLCONV
     //          [  0   0  -W  1 ]
     //          [  0   0   Z  0 ]
     //
-    // p_proj / p_proj.w        = [p_camera.x/p_camera.z 1/X, p_camera.y/p_camera.z 1/Y, -W + Z/p_camera.z, 1] = p_ndc
+    // p_proj / p_proj.w          = [p_camera.x/p_camera.z 1/X, p_camera.y/p_camera.z 1/Y, -W + Z/p_camera.z, 1] = p_ndc
     //
     // Construction of p_camera from p_ndc and projection values
     // 1) p_ndc.z = -W + Z/p_camera.z         <=> p_camera.z = Z / (p_ndc.z + W)
@@ -119,12 +118,11 @@ p_{y}^\mathrm{ndc} &= \frac{1}{y} p_{y}^\mathrm{cam}
 
 ```c++
 /**
- Returns the projection values from the given projection matrix to construct 
- the camera position coordinates from the NDC position coordinates.
+ Returns the projection values from the given projection matrix to construct the camera 
+ position coordinates from the NDC position coordinates.
 
- @return   The projection values from the given projection matrix to 
-           construct the camera position coordinates from the NDC position 
-           coordinates.
+ @return   The projection values from the given projection matrix to construct the camera 
+           position coordinates from the NDC position coordinates.
  */
 [[nodiscard]]
 inline const XMVECTOR XM_CALLCONV 
@@ -150,9 +148,9 @@ inline const XMVECTOR XM_CALLCONV
 ```
 
 # Summary
-So far, we have seen how to reconstruct the surface position in camera space coordinates for a perspective and orthographic camera. Both reconstructions require only a `float4` coefficient vector in HLSL and are unfortunately quite different. So if our deferred renderer is going to support one camera type only, we could use the appropriate reconstruction. If our deferred renderer needs to support both or even more camera types, we need to specialize our shaders statically (i.e. pre-processor directives) or dynamically (i.e. dynamic branching based on some constant buffer flag) based on the camera type.
+So far, we have seen how to reconstruct the surface position expressed in camera space, for a perspective and orthographic camera. Both reconstructions require only a `float4` coefficient vector in HLSL and are unfortunately quite different. So if our deferred renderer is going to support one camera type only, we could use the appropriate reconstruction. If our deferred renderer needs to support both or even more camera types, we need to specialize our shaders statically (i.e. pre-processor directives) or dynamically (i.e. dynamic branching based on some constant buffer flag) based on the camera type.
 
-Alternatively, we can pass the inverse of our camera-to-projection matrices (i.e. projection-to-camera matrices) to reconstruct the camera space coordinates from the NDC space coordinates. We set the $$w$$ coordinate of the NDC position to $$1$$ to obtain the projection space coordinates. Next, we apply the projection-to-camera transformation, **followed by an homogeneous divide** to obtain the camera space coordinates.
+Alternatively, we can pass the inverse of our camera-to-projection matrices (i.e. projection-to-camera matrices) to reconstruct the camera space coordinates from the NDC space coordinates. We set the $$w$$ coordinate of the NDC position to $$1$$ to obtain the projection space coordinates. Next, we apply the projection-to-camera transformation, **followed by an homogeneous divide** to obtain the surface position expressed in camera space.
 
 # Generalized Approach
 
@@ -164,7 +162,7 @@ $$\begin{align}
 0 &\mathrm{T}_{11} &0 &0 \\ 
 0 &0 &\mathrm{T}_{22} &1 \\ 
 0 &0 &\mathrm{T}_{32} &0 \end{bmatrix} \! , \\
-\mathrm{T}^{\mathrm{p \rightarrow v}} &=\begin{bmatrix} 
+\mathrm{T}^{\mathrm{proj \rightarrow cam}} &=\begin{bmatrix} 
 1/\mathrm{T}_{00} &0 &0 &0 \\ 
 0 &1/\mathrm{T}_{11} &0 &0 \\ 
 0 &0 &0 &1/\mathrm{T}_{32} \\ 
@@ -175,8 +173,7 @@ $$\begin{align}
 /**
  Returns the projection-to-camera matrix of this perspective camera.
 
- @return   The projection-to-camera matrix of this perspective 
-           camera.
+ @return   The projection-to-camera matrix of this perspective camera.
  */
 [[nodiscard]]
 virtual const XMMATRIX XM_CALLCONV 
@@ -206,7 +203,7 @@ $$\begin{align}
 0 &\mathrm{T}_{11} &0 &0 \\ 
 0 &0 &\mathrm{T}_{22} &0 \\ 
 0 &0 &\mathrm{T}_{32} &1 \end{bmatrix} \! , \\
-\mathrm{T}^{\mathrm{p \rightarrow v}} &=\begin{bmatrix} 
+\mathrm{T}^{\mathrm{proj \rightarrow cam}} &=\begin{bmatrix} 
 1/\mathrm{T}_{00} &0 &0 &0 \\ 
 0 &1/\mathrm{T}_{11} &0 &0 \\ 
 0 &0 &1/\mathrm{T}_{22} &0 \\ 
@@ -217,8 +214,7 @@ $$\begin{align}
 /**
  Returns the projection-to-camera matrix of this orthographic camera.
 
- @return   The projection-to-camera matrix of this orthographic 
-           camera.
+ @return   The projection-to-camera matrix of this orthographic camera.
  */
 [[nodiscard]]
 virtual const XMMATRIX XM_CALLCONV 
