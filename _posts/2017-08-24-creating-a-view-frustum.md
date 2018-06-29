@@ -67,10 +67,23 @@ $$\begin{align}
 Here, we see that the coordinates of $$p_{p}$$ (projection space coordinates) can be expressed as the dot product of $$p_{s}$$ ($$s$$ space coordinates) and one of the columns of the transform matrix $$\mathrm{T}^{s \rightarrow \mathrm{p}}$$. Combining this with the equations used for culling in projection space (see above), results in a substitution of the projection space coordinates which directly leads to the six planes of the view frustum (one for each equation).
 
 # Code
-If we use an `SIMD` library such as `DirectXMath`, matrices are represented in row-major order. Each row of a matrix will be put in an SIMD register. To perform additions and subtractions between columns, one could retrieve the individual elements and perform the arithmetic operations without using SIMD. Alternatively, one could take the transpose of the matrix (*columns become rows and vice versa*) to perform the arithmetic operations using SIMD:
+If we use an `SIMD` library such as `DirectXMath`, matrices are represented in row-major order. Each row of a matrix will be put in an SIMD register. To perform additions and subtractions between columns, one could retrieve the individual elements and perform the arithmetic operations without using SIMD. Alternatively, one could take the transpose of the matrix (*columns become rows and vice versa*) to perform the arithmetic operations using SIMD (See [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Math/src/geometry/bounding_volume.cpp#L242)):
 
 ```c++
-ViewFrustum::ViewFrustum(CXMMATRIX transform) {
+/**
+ Constructs a bounding frustum from the given transform.
+
+ If the given transform represents the view-to-projection transformation matrix, 
+ the planes of the bounding frustum are represented by view space coordinates.
+ If the given transform represents the world-to-view-to-projection transformation matrix, 
+ the planes of the bounding frustum are represented by world space coordinates.
+ If the given transform represents the object-to-world-to-view-projection transformation matrix, 
+ the planes of the bounding frustum are represented by object space coordinates.
+ 
+ @param[in]		transform
+			The transform.
+ */
+BoundingFrustum::BoundingFrustum(CXMMATRIX transform) noexcept {
 	const auto C = XMMatrixTranspose(transform);
 
 	// Extract the view frustum planes from the given transform.
@@ -113,7 +126,7 @@ ViewFrustum::ViewFrustum(CXMMATRIX transform) {
 	m_far_plane = C.r[3] - C.r[2];
 
 	// Normalize the view frustum planes.
-	for (size_t i = 0; i < 6; ++i) {
+	for (size_t i = 0; i < std::size(m_planes); ++i) {
 		m_planes[i] = XMPlaneNormalize(m_planes[i]);
 	}
 }
