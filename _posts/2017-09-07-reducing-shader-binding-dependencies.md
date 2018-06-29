@@ -12,7 +12,7 @@ This approach, unfortunately, introduces lots of implicit dependencies, difficul
 To avoid these situations, we need to centralize the bindings between HLSL files and between HLSL and C++ files while still beining able to resolve the bindings at compile-time. A possible solution is to include a single header file containing all binding information in both our HLSL and C++ files:
 
 ```c++
-#ifndef HEADER_HLSL // "pragma once" is unfortunately not supported by the HLSL compiler
+#ifndef HEADER_HLSL // "pragma once" is unfortunately not supported by the HLSL pre-processor
 #define HEADER_HLSL
 
 #define MAGE_NVIDIA_WARP_SIZE   32
