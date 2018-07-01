@@ -42,7 +42,7 @@ The above applies to vertex attributes; so single color coefficients. But what a
 
 `hardware sRGB-to-linear conversion -> filtering != filtering -> user defined sRGB-to-linear conversion`
 
-Similarly for blending. If you use blending (i.e. all blending except opaque blending), the hardware will perform the linear-to-sRGB conversion when appropriate if the render target has an explicit sRGB texture format.
+Similarly for blending (i.e. all blending except opaque blending). By using an explicit sRGB texture format, the hardware will perform the linear-to-sRGB conversion when appropriate.
 
 `blending -> hardware linear-to-sRGB conversion != user defined linear-to-sRGB conversion -> blending`
 
