@@ -9,7 +9,7 @@ categories: [color, perception]
 
 ## Gamma color space
 
-The actual color of a pixel, outputted on a monitor, does not linearly depend on the applied voltage signal for that pixel. For CRT monitors, the actual color is approximately proportional to the applied voltage raised to the power of a so-called *gamma* value, which depends on the monitor. This gamma value typically lies between 2.2 and 2.5 for CRT monitors. 
+The actual color of a pixel, outputted on a monitor, does not linearly depend on the applied voltage signal for that pixel. For CRT monitors, the actual color is approximately proportional to the applied voltage raised to the power of a so-called *gamma* value, which depends on the monitor. This gamma value typically lies between 2.2 and 2.5 for CRT monitors. (*Hence, the ubiquitous appearances of the magical constant 2.2 in rendering applications.*) 
 
 $$L_\mathrm{actual} \sim V^\gamma$$
 
