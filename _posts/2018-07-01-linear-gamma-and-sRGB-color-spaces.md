@@ -62,7 +62,7 @@ Application to the D3D11 demo:
 **main.cpp**
 ```
 sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
--> sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // perceptually a better choice
+-> sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // Perceptually a better choice
 ```
 
 **imgui_impl_dx11.cpp**
