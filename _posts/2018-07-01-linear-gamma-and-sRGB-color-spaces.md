@@ -57,15 +57,15 @@ To summarize the changes required to ImGui:
 
 Without knowing all the details of ImGui, I assume only the last aspect should be dealt with.
 
-Application to the D3D11 demo:
+Application to the D3D11 demo (similar for other graphics APIs):
 
-**main.cpp**
+[**main.cpp**](https://github.com/ocornut/imgui/blob/master/examples/example_win32_directx11/main.cpp)
 ```c++
 // Perceptually a better choice than the current DXGI_FORMAT_R8G8B8A8_UNORM:
 sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 ```
 
-**imgui_impl_dx11.cpp**
+[**imgui_impl_dx11.cpp**](https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_dx11.cpp)
 
 ```c++
 static const char* vertexShader =
