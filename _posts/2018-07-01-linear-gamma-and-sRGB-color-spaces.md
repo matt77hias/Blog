@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Gamma Correction"
+title:  "Linear, Gamma and sRGB Color Spaces"
 date:   2018-07-01
 categories: [color, perception]
 ---
@@ -65,31 +65,31 @@ sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 ```c++
 static const char* vertexShader =
-            "cbuffer vertexBuffer : register(b0) \
-            {\
-            float4x4 ProjectionMatrix; \
-            };\
-            struct VS_INPUT\
-            {\
-            float2 pos : POSITION;\
-            float4 col : COLOR0;\
-            float2 uv  : TEXCOORD0;\
-            };\
-            \
-            struct PS_INPUT\
-            {\
-            float4 pos : SV_POSITION;\
-            float4 col : COLOR0;\
-            float2 uv  : TEXCOORD0;\
-            };\
-            \
-            PS_INPUT main(VS_INPUT input)\
-            {\
-            PS_INPUT output;\
-            output.pos = mul( ProjectionMatrix, float4(input.pos.xy, 0.f, 1.f));\
-            output.col = input.col;\
-            -> output.col = SRGBtoLinear(input.col); // Using sRGB conversion of choice? Or just gamma of 2.2?
-            output.uv  = input.uv;\
-            return output;\
-            }";
+     "cbuffer vertexBuffer : register(b0) \
+     {\
+     float4x4 ProjectionMatrix; \
+     };\
+     struct VS_INPUT\
+     {\
+     float2 pos : POSITION;\
+     float4 col : COLOR0;\
+     float2 uv  : TEXCOORD0;\
+     };\
+     \
+     struct PS_INPUT\
+     {\
+     float4 pos : SV_POSITION;\
+     float4 col : COLOR0;\
+     float2 uv  : TEXCOORD0;\
+     };\
+     \
+     PS_INPUT main(VS_INPUT input)\
+     {\
+     PS_INPUT output;\
+     output.pos = mul( ProjectionMatrix, float4(input.pos.xy, 0.f, 1.f));\
+     output.col = input.col;\
+     -> output.col = SRGBtoLinear(input.col); // Using sRGB conversion of choice? Or just gamma of 2.2?
+     output.uv  = input.uv;\
+     return output;\
+     }";
 ```
