@@ -50,12 +50,10 @@ Alternatively, a halffloat render target can and should be used, if linear color
 
 ## ImGui
 
-To summarize the changes required to ImGui:
+The changes required to ImGui:
 - ImGui uses one font texture by default. This texture should be formatted correctly: sRGB if appropriate. Though, it just contains completely black and white color values which should map to the same values independent of the used color space.
 - If ImGui performs (sRGB) color additions and/or multiplications on the CPU, the involved colors should be transformed first to linear color space, then the additions and/or multiplications are applied, finally the resulting colors are transformed back to sRGB color space.
 - The vertex shader should transform the vertex color attribute from sRGB to linear color space.
-
-Without knowing all the details of ImGui, I assume only the last aspect should be dealt with.
 
 Application to the D3D11 demo (similar for other graphics APIs):
 
@@ -96,3 +94,12 @@ static const char* vertexShader =
      return output;\
      }";
 ```
+
+## MAGE
+[MAGE](https://github.com/matt77hias/MAGE) uses the following clear conventions:
+* All separate colors from material files are expressed in **sRGB** color space;
+* All separate colors from color pickers (i.e. ImGui) are expressed in **sRGB** color space;
+* All separate textures (incl. fonts) are expressed in **linear or sRGB** color space and explicitly encoded as such;
+* All internally stored separate colors are expressed in **linear** color space (for both C++ and HLSL). Exceptions: All internally stored separate colors of ImGui are expressed in **sRGB** color space. All internally stored separate colors of the voxelization are expressed in **LogLuv** color space;
+* All color calculations (inc. filtering and blending) are performed in **linear** color space (for both C++ and HLSL);
+* Final outputted colors are expressed in a custom **gamma** encoded color space (i.e. brightness adjustment).
