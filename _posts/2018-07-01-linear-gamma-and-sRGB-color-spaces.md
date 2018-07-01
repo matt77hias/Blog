@@ -60,9 +60,9 @@ Without knowing all the details of ImGui, I assume only the last aspect should b
 Application to the D3D11 demo:
 
 **main.cpp**
-```
-sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
--> sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // Perceptually a better choice
+```c++
+// Perceptually a better choice than the current DXGI_FORMAT_R8G8B8A8_UNORM:
+sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 ```
 
 **imgui_impl_dx11.cpp**
@@ -91,8 +91,7 @@ static const char* vertexShader =
      {\
      PS_INPUT output;\
      output.pos = mul( ProjectionMatrix, float4(input.pos.xy, 0.f, 1.f));\
-     output.col = input.col;\
-     -> output.col = SRGBtoLinear(input.col); // Using sRGB conversion of choice.
+     output.col = SRGBtoLinear(input.col);\
      output.uv  = input.uv;\
      return output;\
      }";
