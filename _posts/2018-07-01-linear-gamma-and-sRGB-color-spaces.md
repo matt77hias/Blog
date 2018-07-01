@@ -11,10 +11,12 @@ categories: [color, perception]
 
 The actual color of a pixel, outputted on a monitor, does not linearly depend on the applied voltage signal for that pixel. For CRT monitors, the actual color is approximately proportional to the applied voltage raised to the power of a so-called *gamma* value, which depends on the monitor. This gamma value typically lies between 2.2 and 2.5 for CRT monitors. 
 
-To bypass this gamma value in your computations, you need to *gamma correct* the computed colors of each pixel before presenting. By raising the computed color to a power of the reciprocal of that same gamma value, the computed color becomes proportional to the actual color. Formally:
+$$L_\mathrm{actual} \sim V^\gamma$$
 
-$$L_\mathrm{actual} \sim V^\gamma \\
-V \sim L_\mathrm{computed}^{1/\gamma}.$$
+To bypass this gamma value in your computations, you need to *gamma correct* the computed colors of each pixel before presenting. By raising the computed color to a power of the reciprocal of that same gamma value, the computed color becomes proportional to the actual color.
+
+$$V \sim L_\mathrm{computed}^{1/\gamma} \\
+L_\mathrm{actual} \sim L_\mathrm{computed}$$
 
 So in general gamma correction is a technique that adapts the computed colors to the transfer function of the monitor used for outputting. Both CRT and non-CRT monitors each have their own transfer function. This means that the final rendering pass should adapt the computed colors, based on the used monitor, to obtain correct actual colors.
 
