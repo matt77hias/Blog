@@ -32,6 +32,8 @@ The sRGB color space has similar goals, assigning a perceptual linear range of (
 
 The sRGB color space is obviously used for sRGB monitors which are primarily used for content creation (e.g. textures, etc.). Images with a R8G8B8A8 format are in most cases represented in sRGB color space and definitely not in linear color space (*as a user, you obviously do not need to guess, but just need to know which color space is used for the encoding*). RGB color pickers typically operate in sRGB color space as well.
 
+## Color operations
+
 Colors represented in linear color space can be mutually added and multiplied. Colors represented in *a* gamma color space cannot be mutually added, but can be mutually multiplied. Colors represented in sRGB color space can neither be mutually added nor multiplied. Note that I explicitly differentiate between a gamma and sRGB color space, since not everyone will use the most cheapest linear-to-sRGB approximation. 
 
 Colors represented in a gamma or sRGB color space cannot be used as vertex attributes during the barycentric interpolation for fragment generation. The color attribute of a vertex needs to be expressed in linear space before passing to the rasterizer stage. The pixel/fragment shader will thus always obtain a fragment color expressed in linear space.
