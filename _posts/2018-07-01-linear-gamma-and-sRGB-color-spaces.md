@@ -46,11 +46,12 @@ Similarly for blending (i.e. all blending except opaque blending). By using an e
 
 `blending -> hardware linear-to-sRGB conversion != user defined linear-to-sRGB conversion -> blending`
 
-Alternatively, a halffloat render target can and should be used, if linear color values need to be stored instead. This, however, is not the responsibility of ImGui. ImGui should output linear colors, and the user of ImGui should provide an appropriate render target (i.e. `R8G8B8A8_SRGB` or `R16G16B16A16`).
- (Most games let the user use a custom gamma encoding to adjust brightness instead of the default sRGB encoding. So in these uses cases, ImGui will output to a halffloat render target in a first pass. The final pass will apply the custom gamma encoding and output **without blending** to a R8G8B8A8 render target.)
+Alternatively, a halffloat render target can and should be used, if linear color values need to be stored instead. This, however, is not the responsibility of ImGui. ImGui should output linear colors, and the user of ImGui should provide an appropriate render target (i.e. `R8G8B8A8_SRGB` or `R16G16B16A16`). Most games let the user use a custom gamma encoding to adjust brightness instead of using the default sRGB encoding. So in these uses cases, ImGui will output to a halffloat render target in a first pass. The final pass will apply the custom gamma encoding and output **without blending** to a R8G8B8A8 render target.
 
-So to summarize the changes required to ImGui:
-- ImGui uses one font texture by default. This texture should be formatted correctly: sRGB if appropriate. Though, I guess it just contain completely black and white color values which should map to the same values independent of the used color space.
+## ImGui
+
+To summarize the changes required to ImGui:
+- ImGui uses one font texture by default. This texture should be formatted correctly: sRGB if appropriate. Though, it just contains completely black and white color values which should map to the same values independent of the used color space.
 - If ImGui performs (sRGB) color additions and/or multiplications on the CPU, the involved colors should be transformed first to linear color space, then the additions and/or multiplications are applied, finally the resulting colors are transformed back to sRGB color space.
 - The vertex shader should transform the vertex color attribute from sRGB to linear color space.
 
@@ -91,7 +92,7 @@ static const char* vertexShader =
      PS_INPUT output;\
      output.pos = mul( ProjectionMatrix, float4(input.pos.xy, 0.f, 1.f));\
      output.col = input.col;\
-     -> output.col = SRGBtoLinear(input.col); // Using sRGB conversion of choice? Or just gamma of 2.2?
+     -> output.col = SRGBtoLinear(input.col); // Using sRGB conversion of choice.
      output.uv  = input.uv;\
      return output;\
      }";
