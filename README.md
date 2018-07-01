@@ -9,8 +9,8 @@
 [li]: https://raw.githubusercontent.com/matt77hias/matt77hias.github.io/master/LICENSE.txt
 [gi]: https://gitter.im/matt77hias/Lobby
 
-# [blog](http://matt77hias.github.io/blog)
-My personal [blog](http://matt77hias.github.io/blog).
+# [blog](https://matt77hias.github.io/blog)
+My personal [blog](https://matt77hias.github.io/blog).
 
 ### Additional licenses:
 * [Hagura](https://github.com/sharu725/hagura) [[MIT License](https://github.com/sharu725/hagura/blob/gh-pages/LICENCE.md)]

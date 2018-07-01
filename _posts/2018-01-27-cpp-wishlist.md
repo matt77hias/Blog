@@ -125,24 +125,24 @@ std::vector< Foo > g_foos;
 std::vector< Bar > g_bars;
 
 template< typename ResourceT, typename... ConstructorArgsT >
-typename std::enable_if< std::is_same< Foo, ResourceT >::value, ResourceT & >::type 
-    Create(ConstructorArgsT &&...args) {
+typename std::enable_if< std::is_same< Foo, ResourceT >::value, ResourceT& >::type 
+    Create(ConstructorArgsT&&... args) {
     
     g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
     return *g_foos.end();
 }
 
 template< typename ResourceT, typename... ConstructorArgsT >
-typename std::enable_if< std::is_same< Bar, ResourceT >::value, ResourceT & >::type 
-    Create(ConstructorArgsT &&...args) {
+typename std::enable_if< std::is_same< Bar, ResourceT >::value, ResourceT& >::type 
+    Create(ConstructorArgsT&&... args) {
     
     g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
     return *g_bars.end();
 }
 
 int main() {
-    auto &foo = Create< Foo >();
-    auto &bar = Create< Bar >();
+    auto& foo = Create< Foo >();
+    auto& bar = Create< Bar >();
 }
 ```
 
@@ -163,24 +163,24 @@ std::vector< Foo > g_foos;
 std::vector< Bar > g_bars;
 
 template< typename ResourceT, typename... ConstructorArgsT >
-std::enable_if_t< std::is_same< Foo, ResourceT >::value, ResourceT & > 
-    Create(ConstructorArgsT &&...args) {
+std::enable_if_t< std::is_same< Foo, ResourceT >::value, ResourceT& > 
+    Create(ConstructorArgsT&&... args) {
     
     g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
     return *g_foos.end();
 }
 
 template< typename ResourceT, typename... ConstructorArgsT >
-std::enable_if_t< std::is_same< Bar, ResourceT >::value, ResourceT & > 
-    Create(ConstructorArgsT &&...args) {
+std::enable_if_t< std::is_same< Bar, ResourceT >::value, ResourceT& > 
+    Create(ConstructorArgsT&&... args) {
     
     g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
     return *g_bars.end();
 }
 
 int main() {
-    auto &foo = Create< Foo >();
-    auto &bar = Create< Bar >();
+    auto& foo = Create< Foo >();
+    auto& bar = Create< Bar >();
 }
 ```
 
@@ -201,22 +201,22 @@ std::vector< Foo > g_foos;
 std::vector< Bar > g_bars;
 
 template< typename ResourceT, typename... ConstructorArgsT >
-std::enable_if_t< std::is_same_v< Foo, ResourceT >, ResourceT & > 
-    Create(ConstructorArgsT &&...args) {
+std::enable_if_t< std::is_same_v< Foo, ResourceT >, ResourceT& > 
+    Create(ConstructorArgsT&&... args) {
     
     return g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
 template< typename ResourceT, typename... ConstructorArgsT >
-std::enable_if_t< std::is_same_v< Bar, ResourceT >, ResourceT & > 
-    Create(ConstructorArgsT &&...args) {
+std::enable_if_t< std::is_same_v< Bar, ResourceT >, ResourceT& > 
+    Create(ConstructorArgsT&&... args) {
     
     return g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
 int main() {
-    auto &foo = Create< Foo >();
-    auto &bar = Create< Bar >();
+    auto& foo = Create< Foo >();
+    auto& bar = Create< Bar >();
 }
 ```
 **Note** that various type traits exist in C++. 
@@ -243,7 +243,7 @@ std::vector< Foo > g_foos;
 std::vector< Bar > g_bars;
 
 template< typename ResourceT, typename... ConstructorArgsT >
-ResourceT &Create(ConstructorArgsT &&...args) {
+ResourceT& Create(ConstructorArgsT&&... args) {
     if constexpr (std::is_same_v< Foo, ResourceT >) {
         return g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
     } 
@@ -253,8 +253,8 @@ ResourceT &Create(ConstructorArgsT &&...args) {
 }
 
 int main() {
-    auto &foo = Create< Foo >();
-    auto &bar = Create< Bar >();
+    auto& foo = Create< Foo >();
+    auto& bar = Create< Bar >();
 }
 ```
 This looks much more compact, but unfortunately requires us to know all resource types in advance which will not always be the case.
@@ -276,21 +276,21 @@ std::vector< Foo > g_foos;
 std::vector< Bar > g_bars;
 
 template< typename ResourceT, typename... ConstructorArgsT >
-ResourceT &Create(ConstructorArgsT &&...args);
+ResourceT& Create(ConstructorArgsT&&... args);
 
 template< typename... ConstructorArgsT >
-inline Foo &Create(ConstructorArgsT &&...args) {
+inline Foo& Create(ConstructorArgsT&&... args) {
     return g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
 template< typename... ConstructorArgsT >
-inline Bar &Create(ConstructorArgsT &&...args) {
+inline Bar& Create(ConstructorArgsT&&... args) {
     return g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
 int main() {
-    auto &foo = Create< Foo >();
-    auto &bar = Create< Bar >();
+    auto& foo = Create< Foo >();
+    auto& bar = Create< Bar >();
 }
 ```
 
@@ -397,7 +397,7 @@ std::map< int, char > g_map;
 int main() {
     g_map = { {0, 'a'}, {1, 'b'}, {2, 'c'} };
     
-    for (const auto &[key, value] : g_map) {
+    for (const auto& [key, value] : g_map) {
         (void)key; // Unused
         std::cout << value << std::endl;
     }
@@ -417,7 +417,7 @@ std::map< int, char > g_map;
 int main() {
     g_map = { {0, 'a'}, {1, 'b'}, {2, 'c'} };
     
-    for (const auto &[_, value] : g_map) {
+    for (const auto& [_, value] : g_map) {
         std::cout << value << std::endl;
     }
 }
