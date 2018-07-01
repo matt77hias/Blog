@@ -12,7 +12,7 @@
 # [blog](https://matt77hias.github.io/blog)
 My personal [blog](https://matt77hias.github.io/blog).
 
-### Additional licenses:
+## Additional licenses:
 * [Hagura](https://github.com/sharu725/hagura) [[MIT License](https://github.com/sharu725/hagura/blob/gh-pages/LICENCE.md)]
 * [Jekyll](https://github.com/jekyll/jekyll) [[MIT License](https://github.com/jekyll/jekyll/blob/master/LICENSE)]
 * [Jekyll Pygments Themes](https://github.com/jwarby/jekyll-pygments-themes) [[The Unlicense](https://github.com/jwarby/jekyll-pygments-themes/blob/master/UNLICENSE.txt)]
