@@ -3,21 +3,25 @@
 <!doctype html>
 <html>
     <head>
-        <meta name="MobileOptimized" content="true">
-        <meta name="viewport"        content="width=device-width, initial-scale=1">
-		<meta name="twitter:card"    content="summary_large_image">
-		<meta name="twitter:site"    content="@matt77hias">
-		<meta name="twitter:title"   content="Matthias Moulin">
-		<meta name="twitter:image"   content="https://matt77hias.github.io/res/Picture.jpg">
+        <meta charset="utf-8">
+		<meta name='author'           content="Matthias Moulin">
+		<meta name='copyright'        content="Copyright © 2015-2018 Matthias Moulin. All Rights Reserved.">
+		<meta name="HandheldFriendly" content="true">
+		<meta name="MobileOptimized"  content="320">
+		<meta name="twitter:card"     content="summary_large_image">
+		<meta name="twitter:image"    content="https://matt77hias.github.io/res/Picture.jpg">
+		<meta name="twitter:site"     content="@matt77hias">
+		<meta name="twitter:title"    content="Matthias Moulin - Blog">
+		<meta name="viewport"         content="width=device-width, initial-scale=1.0">
         <title>Matthias Moulin</title>
-        <link rel="icon" 		  href="{{site.baseurl}}/favicon.ico"        type="image/x-icon">
-		<link rel="shortcut icon" href="{{site.baseurl}}/favicon.ico"        type="image/x-icon">
-        <link rel="stylesheet"    href="{{site.baseurl}}/css/header.css"     type="text/css">
-		<link rel="stylesheet"    href="{{site.baseurl}}/css/navigation.css" type="text/css">
-		<link rel="stylesheet"    href="{{site.baseurl}}/css/profile.css"    type="text/css">
-        <link rel="stylesheet"    href="{{site.baseurl}}/css/content.css"    type="text/css">
-		<link rel="stylesheet"    href="{{site.baseurl}}/css/footer.css"     type="text/css">
-        <script src="{{site.baseurl}}/js/google-analytics.js" async type="text/javascript"></script>
+        <link rel="icon" 		      href="{{site.baseurl}}/favicon.ico"        type="image/x-icon">
+		<link rel="shortcut icon"     href="{{site.baseurl}}/favicon.ico"        type="image/x-icon">
+        <link rel="stylesheet"        href="{{site.baseurl}}/css/header.css"     type="text/css">
+		<link rel="stylesheet"        href="{{site.baseurl}}/css/navigation.css" type="text/css">
+		<link rel="stylesheet"        href="{{site.baseurl}}/css/profile.css"    type="text/css">
+        <link rel="stylesheet"        href="{{site.baseurl}}/css/content.css"    type="text/css">
+		<link rel="stylesheet"        href="{{site.baseurl}}/css/footer.css"     type="text/css">
+        <script src="{{site.baseurl}}/js/google-analytics.js" async              type="text/javascript"></script>
     </head>
 	
     <body id="blog">
@@ -27,11 +31,11 @@
         </header>
 		
        <nav id="navigationbar">
-            <a class="home"         href="https://matt77hias.github.io/"            >Home</a>
-            <a class="publications" href="https://matt77hias.github.io/publications">Publications</a>
-            <a class="portfolio"    href="https://matt77hias.github.io/portfolio"   >Portfolio</a>
-            <a class="blog"         href="{{site.baseurl}}/"                        >Blog</a>
-			<a class="resume"       href="https://matt77hias.github.io/pdf.js/web/viewer.html?file=%2F../../res/CV.pdf">Resume</a>
+            <a class="home"           href="https://matt77hias.github.io/"            >Home</a>
+            <a class="publications"   href="https://matt77hias.github.io/publications">Publications</a>
+            <a class="portfolio"      href="https://matt77hias.github.io/portfolio"   >Portfolio</a>
+            <a class="blog"           href="{{site.baseurl}}/"                        >Blog</a>
+			<a class="resume"         href="https://matt77hias.github.io/pdf.js/web/viewer.html?file=%2F../../res/CV.pdf">Resume</a>
             <select onchange="window.location = this.value;">
                 <option value=""                                              >Navigation</option>
                 <option value="https://matt77hias.github.io/index.html"       >Home</option>
@@ -48,7 +52,7 @@
 			<a href="https://www.goodreads.com/matt77hias"                   class="icon-goodreads" target="_blank"></a>
 			<a href="https://be.linkedin.com/pub/matthias-moulin/8b/a49/a23" class="icon-linkedin"  target="_blank"></a>
 			<a href="https://twitter.com/matt77hias"               			 class="icon-twitter"   target="_blank"></a>
-			<a href="https://www.youtube.com/user/Matt77hias"                class="icon-youtube"   target="_blank"></a>
+			<a href="https://www.youtube.com/user/matt77hias"                class="icon-youtube"   target="_blank"></a>
 		</div>
 		
 		 <article>
@@ -57,8 +61,7 @@
         
 			<script src="{{site.baseurl}}/js/theme.min.js"></script>
 
-			<ul>
-				{% for post in site.posts %}
+			<ul>{% for post in site.posts %}
 				<li>
 					<a href="{{ post.url | prepend: site.baseurl }}">{{ post.date | date_to_long_string }} {{ post.title }}</a>
 					{% for cat in post.categories %}
@@ -67,13 +70,10 @@
 				</li>
 				{% endfor %}
 			</ul>
-		
 		</article>
         
 		<footer>
-			<div class="container">
 			<p class="copyright">Copyright © 2015-2018 Matthias Moulin. All Rights Reserved.</p>
-			</div>
 		</footer>
 		
     </body>
