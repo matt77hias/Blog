@@ -9,8 +9,8 @@
 [li]: https://raw.githubusercontent.com/matt77hias/matt77hias.github.io/master/LICENSE.txt
 [gi]: https://gitter.im/matt77hias/Lobby
 
-# [blog](https://matt77hias.github.io/blog)
-My personal [blog](https://matt77hias.github.io/blog).
+# [blog](https://matt77hias.github.io/blog.html)
+My personal [blog](https://matt77hias.github.io/blog.html).
 
 ## Additional licenses:
 * [Google Analytics](https://github.com/GoogleWebComponents/google-analytics) [[Apache License 2.0](https://github.com/GoogleWebComponents/google-analytics/blob/master/LICENSE)]
