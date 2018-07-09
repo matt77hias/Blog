@@ -219,7 +219,7 @@ int main() {
     auto& bar = Create< Bar >();
 }
 ```
-**Note** that various type traits exist in C++. 
+**Note** that various [type traits](https://en.cppreference.com/w/cpp/header/type_traits) exist in C++. 
 For example: if you rather want collections of pointers instead of values to exploit polymorphism, 
 you can use [`std::base_of`](http://en.cppreference.com/w/cpp/types/is_base_of) instead of `std::is_same`.
 
