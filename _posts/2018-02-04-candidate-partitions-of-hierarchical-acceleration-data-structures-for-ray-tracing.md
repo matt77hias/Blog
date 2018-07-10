@@ -213,4 +213,4 @@ Note that the papers introducing GK-BVHs and SBVHs are both of the same year and
 
 # General Reference
 
-MOULIN M., DUTRÉ P.: On the use of Local Ray Termination for Efficiently Constructing Qualitative  BSPs, BIHs and (S)BVHs. *To appear*, 2018.
+MOULIN M., DUTRÉ P.: On the Use of Local Ray Termination for Efficiently Constructing Qualitative  BSPs, BIHs and (S)BVHs. *To appear*, 2018.
