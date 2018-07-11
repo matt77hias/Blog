@@ -16,7 +16,6 @@ My personal [blog](https://matt77hias.github.io/blog.html).
 * [Google Analytics](https://github.com/GoogleWebComponents/google-analytics) [[Apache License 2.0](https://github.com/GoogleWebComponents/google-analytics/blob/master/LICENSE)]
 * [Hagura](https://github.com/sharu725/hagura) [[MIT License](https://github.com/sharu725/hagura/blob/gh-pages/LICENCE.md)]
 * [Jekyll](https://github.com/jekyll/jekyll) [[MIT License](https://github.com/jekyll/jekyll/blob/master/LICENSE)]
-* [Jekyll Pygments Themes](https://github.com/jwarby/jekyll-pygments-themes) [[The Unlicense](https://github.com/jwarby/jekyll-pygments-themes/blob/master/UNLICENSE.txt)]
 * [MathJax](https://github.com/mathjax/MathJax) [[Apache License 2.0](https://github.com/mathjax/MathJax/blob/master/LICENSE)]
 
 <p align="center">Copyright © 2015-2018 Matthias Moulin. All Rights Reserved.</p>
