@@ -23,9 +23,9 @@ green     #859900  operators, other keywords
 .highlight .o { color: #93a1a1 } /* Operator */
 .highlight .x { color: #cb4b16 } /* Other */
 .highlight .p { color: #93a1a1 } /* Punctuation */
-.highlight .cm { color: #586e75 } /* Comment.Multiline */
+.highlight .cm { color: #477786 } /* Comment.Multiline */
 .highlight .cp { color: #859900 } /* Comment.Preproc */
-.highlight .c1 { color: #586e75 } /* Comment.Single */
+.highlight .c1 { color: #477786 } /* Comment.Single */
 .highlight .cs { color: #859900 } /* Comment.Special */
 .highlight .gd { color: #2aa198 } /* Generic.Deleted */
 .highlight .ge { color: #93a1a1; font-style: italic } /* Generic.Emph */
