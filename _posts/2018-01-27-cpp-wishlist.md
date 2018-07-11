@@ -332,7 +332,8 @@ This can become quite verbose when using simple arithmetic functions:
 #include <algorithm>
 
 int main() {
-    auto value  = static_cast< signed short >(9); // Assume that this value is not known at compile time...
+    // Assume that this value is not known at compile time...
+    auto value  = static_cast< signed short >(9);
     auto result = std::max(i, static_cast< signed short >(5));
 }
 ```
