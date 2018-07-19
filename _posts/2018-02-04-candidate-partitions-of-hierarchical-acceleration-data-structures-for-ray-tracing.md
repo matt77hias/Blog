@@ -2,7 +2,6 @@
 layout: post
 title:  "Candidate Partitions of Hierarchical Acceleration Data Structures for Ray Tracing"
 date:   2018-02-04
-categories: [ADS, ray-tracing]
 ---
 
 # Partitiong Schemes
