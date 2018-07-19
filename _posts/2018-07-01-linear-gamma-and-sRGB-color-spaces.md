@@ -2,7 +2,6 @@
 layout: post
 title:  "Linear, Gamma and sRGB Color Spaces"
 date:   2018-07-01
-categories: [color, perception]
 ---
 
 *This post is based on a [reply](https://github.com/ocornut/imgui/issues/578#issuecomment-379467586) of mine to an [ImGui](https://github.com/ocornut/imgui/) issue (and discussion) about sRGB and linear color spaces.*
