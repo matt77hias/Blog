@@ -2,7 +2,6 @@
 layout: post
 title:  "NDC to Projection to Camera Space"
 date:   2017-10-19
-categories: transformations
 ---
 
 # Introduction
