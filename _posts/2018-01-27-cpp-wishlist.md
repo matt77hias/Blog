@@ -2,7 +2,6 @@
 layout: post
 title:  "C++ Wishlist"
 date:   2018-01-27
-categories: c++
 ---
 
 This post contains a running list of C++ language features and standard library (`std`) extensions, I would like to see in future C++ standards (C++20 or beyond).
