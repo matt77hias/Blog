@@ -25,7 +25,11 @@ A second generalization consists of separating the container functionality from 
 
 In our vector classes, we do not want to use `__m128` member variables (e.g., `union`), since this imposes a 16-byte boundary alignment and thus does not support custom alignments, and since the size of not all our vector class template instantiations is a multiple of sizeof(`__m128`), resulting in wasted memory usage. Alternatively, we do not want to perform separate `__m128` conversions upon starting and finishing every elementary arithemtic and logical member method. To reduce the number of instructions and transfers between registers of different type, and thus to obtain the best performance, data should be kept as long as possible into `__m128` variables. Therefore, we will provide separate functions to load vectors to SIMD registers, to store SIMD registers to vectors/primitive values, and to perform various arithmetic and logical operations (e.g., [DirectXMath](https://github.com/Microsoft/DirectXMath)).
 
-## Extending `std::array`
+## Extending std::array
+
+Since the arithemtic/logical functionality is not a part of our template class anymore, our template class seems like a convenient extension of `std::array`. The latter provides lots of methods supporting nice interoperability with the `std` (`(c)begin`/`(c)end`, `size`, `empty`. Furthermore `std::array` can be used in range-based for loops and structure bindings.
+
+Unfortunately, `std::array` has no constructors itself, but rather uses aggregate initialization.
 
 ...
 
