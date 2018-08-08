@@ -6,7 +6,7 @@ date:   2018-01-28
 
 ## Problem
 
-I want to apply an [Entity–Component–System](https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system) architecture to my game engine.
+I want to apply an [Entity–Component–System](https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system) architecture to my game engine, [MAGE](https://github.com/matt77hias/MAGE).
 My scene data includes a dynamic array encapsulating a contiguous block of memory (`std::vector`) that stores components by value for each component type.
 That way, I can exploit cache coherence and avoid unnecessary jumps between unrelated memory.
 This design imposes two immediate problems that need to be handled properly:
