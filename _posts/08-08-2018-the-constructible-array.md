@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Constructible Array"
-date:   2018-01-28
+date:   2018-08-08
 ---
 
 ## Problem
