@@ -11,7 +11,7 @@ Originally, we used separate template classes for vectors of different dimension
 
 ## Adding dimension and alignment
 
-A first generalization consists of combining all these different template classes into a single template class by adding two additional template parameters: one for the dimension (`size_t`) and one for the alignment (`size_t`). The latter can use a default value equal to the alignement of the template parameter (e.g., `alignas(T)`) in case no value is provided by the programmer. This approach supports vectors of arbitrary dimensions similar to the [Tungsten](https://github.com/tunabrain/tungsten/blob/master/src/core/math/Vec.hpp) renderer. Overloaded arithemtic and logical operators will typically require a for loop over the coefficients of the vector for each dimension. Since the dimension template parameter/value is known at compile time, these loops can be unrolled by the compilers.
+A first generalization consists of combining all these different template classes into a single template class by adding two additional template parameters: one for the dimension (`size_t`) and one for the alignment (`size_t`). The latter can use a default value equal to the alignment of the template parameter (e.g., `alignas(T)`) in case no value is provided by the programmer. This approach supports vectors of arbitrary dimensions similar to the [Tungsten](https://github.com/tunabrain/tungsten/blob/master/src/core/math/Vec.hpp) renderer. Overloaded arithemtic and logical operators will typically require a for loop over the coefficients of the vector for each dimension. Since the dimension template parameter/value is known at compile time, these loops can be unrolled by the compilers.
 
 ## Separating container from the arithemtic/logic
 
