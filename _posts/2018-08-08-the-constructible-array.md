@@ -7,7 +7,7 @@ date:   2018-08-08
 ## Problem
 [MAGE](https://github.com/matt77hias/MAGE)'s (mathematical) vector types have come a long way:
 
-Originally, we used separate template classes for vectors of different dimensions (e.g., 1x2, 1x3 and 1x4) with the primitive type (e.g., `F32`, `U32`, `S32`, etc.) as template parameter, using various [alignments](https://en.cppreference.com/w/cpp/language/alignas) (e.g., alignment of template type, [16-byte boundary](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-packing-rules)). These classes provide both explicit and implicit constructors for constructing vectors from vectors with a different dimension and/or template parameter, and overload common arithemtic and logical operators (e.g., vectors may implicitly be converted to vectors with a larger dimension, `F32` vectors may implicitly be converted to `F64` vectors of the same dimension).
+Originally, we used separate template classes for vectors of different dimensions (e.g., 1x2, 1x3 and 1x4) with the primitive type (e.g., `F32`, `U32`, `S32`, etc.) as template parameter, using various [alignments](https://en.cppreference.com/w/cpp/language/alignas) (e.g., alignment of template type, [16-byte boundary](https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-packing-rules)). These classes provide both explicit and implicit constructors for constructing vectors from vectors with a different dimension and/or template parameter (e.g., vectors may implicitly be converted to vectors with a larger dimension, `F32` vectors may implicitly be converted to `F64` vectors of the same dimension), and overload common arithemtic and logical operators.
 
 ## Adding dimension and alignment
 
