@@ -21,16 +21,16 @@ Note that the template class can use a C-style array or `std::array< T, N >` (po
 A second generalization consists of separating the container functionality from the arithemtic/logical functionality (similar to the [MAML](https://github.com/matt77hias/MAML) project). On the one hand, we can think of our vectors rather as packs of data values without imposing any fixed interpretation. This way, the same packing template class and its interface (e.g., constructors, indexing mechanisms, etc.) can be used to store and access color data (e.g., linear RGB, sRGB, XYZ, LogLUV, etc.), geometrical data (e.g., point, normal, direction, plane, etc.) and abstract mathematical data (e.g., real, complex, dual, hyperbolic and quaternion numbers). On the other hand, arithmetic/logical functionality can be implemented using SIMD instructions for better performance: 
 
 1. Load the vector into an SIMD register (e.g., `__m128`);
-2. Perform all arithmetic and logical operations using SIMD intrinsics. 
-3. Store the result from an SIMD register in some new vector (e.g., cross product) or primitive values (e.g., dot product). 
+2. Perform all arithmetic and logical operations using SIMD intrinsics; 
+3. Store the result from an SIMD register into some new vector (e.g., cross product) or primitive value (e.g., dot product). 
 
-In our vector classes, we do not want to use `__m128` member variables (e.g., `union`), since this imposes a 16-byte boundary alignment and thus does not support custom alignments, and since the size of not all our vector class template instantiations is a multiple of sizeof(`__m128`), resulting in wasted memory usage. Alternatively, we do not want to perform separate `__m128` conversions upon starting and finishing every elementary arithemtic and logical member method. To reduce the number of instructions and transfers between registers of different type, and thus to obtain the best performance, data should be kept as long as possible into `__m128` variables. Therefore, we will provide separate functions to load vectors to SIMD registers, to store SIMD registers to vectors/primitive values, and to perform various arithmetic and logical operations (e.g., [DirectXMath](https://github.com/Microsoft/DirectXMath)).
+In our vector classes, we do not want to use `__m128` member variables (e.g., `union`), since this imposes a 16-byte boundary alignment and thus does not support custom alignments, and since the size of not all our vector class template instantiations is a multiple of sizeof(`__m128`), resulting in wasted memory usage. Alternatively, we do not want to perform separate `__m128` conversions upon starting and finishing every elementary arithmetic and logical member method. To reduce the number of instructions and transfers between registers of different type, and thus to obtain the best performance, data should be kept as long as possible into `__m128` variables. Therefore, we will provide separate functions to load vectors to SIMD registers, to store SIMD registers to vectors/primitive values, and to perform various arithmetic and logical operations (e.g., [DirectXMath](https://github.com/Microsoft/DirectXMath)).
 
 ## Extending std::array
 
-Since the arithemtic/logical functionality is not a part of our template class anymore, our template class seems like a convenient extension of `std::array`. The latter provides lots of methods supporting nice interoperability with the `std` (`(c)begin`/`(c)end`, `size`, `empty`. Furthermore `std::array` can be used in range-based for loops and structure bindings.
+Since the arithemtic/logical functionality is not a part of our template class any more, our template class seems like a convenient extension of `std::array`. The latter provides lots of methods supporting nice interoperability with the `std` (e.g., `(c)begin`/`(c)end`, `size`, `empty`. Furthermore `std::array` can be used in range-based for loops and structure bindings.
 
-Unfortunately, `std::array` has no constructors itself, but rather uses aggregate initialization. Therefore, constructing vectors from vectors with a different dimension and/or template parameter does not work straight out of the box. To achieve this, we will define a new class `Array` deriving from `std::array` that provides all the necessary constructors. Furthermore, we will provide some additional utility methods to construct and return `std::array`s (using C++17's guaranteed copy elision) which will be passed to the base class `std::array` inside these constructors.
+Unfortunately, `std::array` has no constructors itself, but rather uses aggregate initialization. Therefore, constructing vectors from vectors with a different dimension and/or template parameter does not work straight out of the box. To achieve this, we will define a new class `Array` deriving from `std::array`, providing all the necessary constructors. Furthermore, we will provide some additional utility methods to construct and return `std::array`s (using C++17's guaranteed copy elision) which will be passed to the base class `std::array` inside these `Array` constructors.
 
 Construct an `std::array< T, N >` containing `N` elements with the same value:
 
@@ -174,7 +174,7 @@ struct alignas(A) Array : public std::array< T, N > {
 }
 ```
 
-Besides a template parameter, `T`,  for the type and size, `N`, we also provide a template parameter for the alignment, `A`, which by default uses the alignment of `T`. Furthermore, to facilitate our definitions (especially the [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae) usage), we do not support `Array< T, N, A >`s with a size of zero or one. Arrays with at most one element have no practical use case in isolation, but can be useful as the degenerate cases to simplify algorithms implemented via template meta programming. We also explicitly store the size as a class member variable to support structure bindings for derived classes.
+Besides a template parameter, `T`,  for the type and size, `N`, we also provide a template parameter for the alignment, `A`, which by default uses the alignment of `T`. Furthermore, to facilitate our member method declarations (especially the [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae) usage), we do not support `Array< T, N, A >`s with a size of zero or one. Arrays with at most one element have no practical use case in isolation, but can be useful as degenerate cases in order to simplify algorithms implemented via template meta programming. We also explicitly store the size as a class member variable to support structure bindings for derived classes.
 
 Construct an `Array< T, N, A >` containing `N` elements with the same value:
 
@@ -245,7 +245,7 @@ constexpr explicit Array(const Array< FromT, N, FromA >& a) noexcept
 
 Note the `explicit` keyword.
 
-Finally, we add structure binding support:
+Finally, we add structure binding support for our `Array< T, N, A >` in the `std`:
 
 ```c++
 namespace std {
@@ -265,7 +265,7 @@ namespace std {
 
 Try it online:
 * [WandBox](https://wandbox.org/permlink/09FzgvqnrLqatvkW)
-* [Godbolt](https://tinyurl.com/ybb2lhmn): note the folding of methods in the assembly code :-)
+* [Godbolt](https://tinyurl.com/ybb2lhmn): note the "aggressive" folding of methods in the assembly code :-)
 
 ```c++
 template< typename T, size_t N >
