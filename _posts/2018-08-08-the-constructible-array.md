@@ -255,21 +255,52 @@ namespace std {
 
 ## Examples
 
+Try it online:
+* [WandBox](https://wandbox.org/permlink/09FzgvqnrLqatvkW)
+* [Godbolt](https://tinyurl.com/ybb2lhmn): note the folding of methods in the assembly code :-)
 
+```c++
+template< typename T, size_t N >
+std::ostream& operator<<(std::ostream& os, const std::array< T, N >& a) {
+    for (auto i : a) { 
+		os << i << ' '; 
+	}
+    return os << '\n';
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-...
+int main() {
+    constexpr Array< float, 5 > a;
+    std::cout << a; // 0 0 0 0 0
+  
+    constexpr Array< float, 5 > b( 1.5f, 2.5f, 3.5f, 4.5f, 5.5f );
+    std::cout << b; // 1.5 2.5 3.5 4.5 5.5
+    
+    constexpr Array< float, 5 > c{ 1.5f, 2.5f, 3.5f, 4.5f, 5.5f };
+    std::cout << c; // 1.5 2.5 3.5 4.5 5.5
+    
+    constexpr Array< float, 6 > d(c);
+    std::cout << d; // 1.5 2.5 3.5 4.5 5.5 0
+    
+    constexpr Array< float, 6 > e(c, 6.5f);
+    std::cout << e; // 1.5 2.5 3.5 4.5 5.5 6.5
+    
+    constexpr Array< int, 6 > f(e);
+    std::cout << f; // 1 2 3 4 5 6
+    
+    constexpr Array< int, 6 > g(5);
+    std::cout << g; // 5 5 5 5 5 5
+    
+    constexpr Array< Array< float, 5 >, 5 > h(c);
+    std::cout << h;
+	// 1.5 2.5 3.5 4.5 5.5 
+    // 	1.5 2.5 3.5 4.5 5.5 
+    // 	1.5 2.5 3.5 4.5 5.5 
+    // 	1.5 2.5 3.5 4.5 5.5 
+    // 	1.5 2.5 3.5 4.5 5.5 
+    
+    return 0;
+}
+```
 
 ## References
 
