@@ -29,7 +29,245 @@ In our vector classes, we do not want to use `__m128` member variables (e.g., `u
 
 Since the arithemtic/logical functionality is not a part of our template class anymore, our template class seems like a convenient extension of `std::array`. The latter provides lots of methods supporting nice interoperability with the `std` (`(c)begin`/`(c)end`, `size`, `empty`. Furthermore `std::array` can be used in range-based for loops and structure bindings.
 
-Unfortunately, `std::array` has no constructors itself, but rather uses aggregate initialization.
+Unfortunately, `std::array` has no constructors itself, but rather uses aggregate initialization. Therefore, constructing vectors from vectors with a different dimension and/or template parameter does not work straight out of the box. To achieve this, we will define a new class `Array` deriving from `std::array` that provides all the necessary constructors. Furthermore, we will provide some additional utility methods to construct and return `std::array`s (using C++17's guaranteed copy elision) which will be passed to the base class `std::array` inside these constructors.
+
+Construct an `std::array< T, N >` containing `N` elements with the same value:
+
+```c++
+namespace details {
+
+	template< typename T, size_t...I >
+	constexpr const auto FillArray(const T& value, std::index_sequence< I... >) {
+		 return std::array< T, sizeof...(I) >{ (static_cast< void >(I), value)... };
+	}
+}
+
+template< typename T, size_t N >
+constexpr const auto FillArray(const T& value) {
+	return details::FillArray(value, std::make_index_sequence< N >());
+}
+```
+
+Construct an `std::array< T, ToN >` from a smaller `std::array< T, FromN >` by appending `ToN-FromN` zero-initialized values:
+
+```c++
+namespace details {
+
+	template< size_t ToN, typename T, size_t...I >
+	constexpr const auto EnlargeArray(const std::array< T, sizeof...(I) >& a, std::index_sequence< I... >) {
+		return std::array< T, ToN >{ a[I]... };
+	}
+}
+
+template< size_t ToN, typename T, size_t FromN >
+constexpr const auto EnlargeArray(const std::array< T, FromN >& a) {
+	return details::EnlargeArray< ToN >(a, std::make_index_sequence< FromN >());
+}
+```
+
+Construct an `std::array< ToT, N >` from a `std::array< FromT, N >` by transforming (i.e. map function) all elements of the array:
+
+```c++
+namespace details {
+
+template< typename ActionT, typename FromT, size_t...I >
+constexpr const auto TransformArray(ActionT&& action, const std::array< FromT, sizeof...(I) >& a, std::index_sequence< I... >) {
+	using ToT = decltype(std::declval< ActionT >()(std::declval< FromT >()));
+	return std::array< ToT, sizeof...(I) >{ action(a[I])... };
+}
+
+template< typename ToT, typename FromT, size_t N >
+constexpr const auto StaticCastArray(const std::array< FromT, N >& a) {
+	constexpr auto f = [](const FromT& v) {
+		return static_cast< ToT >(v); 
+	};
+	return TransformArray(f, a);
+}
+
+template< typename ToT, typename FromT, size_t N >
+constexpr const auto DynamicCastArray(const std::array< FromT, N >& a) {
+	constexpr auto f = [](const FromT& v) {
+		return dynamic_cast< ToT >(v); 
+	};
+	return TransformArray(f, a);
+}
+
+template< typename ToT, typename FromT, size_t N >
+constexpr const auto ConstCastArray(const std::array< FromT, N >& a) {
+	constexpr auto f = [](const FromT& v) {
+		return const_cast< ToT >(v); 
+	};
+	return TransformArray(f, a);
+}
+
+template< typename ToT, typename FromT, size_t N >
+constexpr const auto ReinterpretCastArray(const std::array< FromT, N >& a) {
+	constexpr auto f = [](const FromT& v) {
+		return reinterpret_cast< ToT >(v); 
+	};
+	return TransformArray(f, a);
+}
+```
+
+Convert `std::array< T , N >` to `std::tupple< T, ..., T >` and vice versa:
+
+```c++
+namespace details {
+
+	template< typename T, typename TupleT, std::size_t... I >
+	constexpr const auto TuppleToArray(const TupleT& t, std::index_sequence< I... >) {
+		return std::array< T, sizeof...(I) >{ std::get< I >(t)... };
+	}
+
+	template< typename T, size_t...I >
+	constexpr const auto ArrayToTupple(const std::array< T, sizeof...(I) >& a, std::index_sequence< I... >) noexcept {
+		return std::make_tuple(a[I]...);
+	}
+}
+
+template< typename T, typename... Ts >
+constexpr const auto TuppleToArray(const std::tuple< T, Ts... >& t) {
+	constexpr auto N = sizeof...(Ts) + 1u;
+	return details::TuppleToArray< T >(t, std::make_index_sequence< N >());
+}
+
+template< typename T, size_t N >
+constexpr const auto ArrayToTupple(const std::array< T, N >& a) noexcept {
+	return details::ArrayToTupple(a, std::make_index_sequence< N >());
+}
+```
+
+Our `std::array< T, N >` wrapper, `Array< T, N, A >` using inheritance:
+
+```c++
+template< typename T, size_t N, size_t A = alignof(T), 
+		  typename = std::enable_if_t< (N > 1) > >
+struct alignas(A) Array : public std::array< T, N > {
+
+	public:
+		static constexpr size_t s_size = N;
+		
+		constexpr Array() noexcept
+			: std::array< T, N >{} {}
+		
+		...
+		
+		constexpr Array(const Array& a) noexcept = default;
+		
+		constexpr Array(Array&& a) noexcept = default;
+
+		...
+
+		~Array() = default;
+		
+		constexpr Array& operator=(const Array& a) noexcept = default;
+
+		constexpr Array& operator=(Array&& a) noexcept = default;
+}
+```
+
+Besides a template parameter, `T`,  for the type and size, `N`, we also provide a template parameter for the alignment, `A`, which by default uses the alignment of `T`. Furthermore, to facilitate our definitions (especially the [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae) usage), we do not support `Array< T, N, A >`s with a size of zero or one. Arrays with at most one element have no practical use case in isolation, but can be useful as the degenerate cases to simplify algorithms implemented via template meta programming. We also explicitly store the size as a class member variable to support structure bindings for derived classes.
+
+Construct an `Array< T, N, A >` containing `N` elements with the same value:
+
+```c++
+constexpr explicit Array(const T& value) noexcept
+	: std::array< T, N >(FillArray< T, N >(value)) {}
+```
+
+Construct an `Array< T, N, A >` containing the `N` given values:
+
+```c++
+template< typename... ArgsT, 
+		  typename = std::enable_if_t< (N == sizeof...(ArgsT)) > >
+constexpr Array(ArgsT&&... args) noexcept
+	: std::array< T, N >{ std::forward< ArgsT >(args)... } {}
+```
+
+Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, A >` by appending `N-FromN` zero-initialized values:
+
+```c++
+template< size_t FromN, 
+		  typename = std::enable_if_t< (FromN < N) > >
+constexpr Array(const Array< T, FromN, A >& a) noexcept
+	: std::array< T, N >(EnlargeArray< N >(a)) {}
+```
+
+Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, FromA >` by appending `N-FromN` zero-initialized values:
+
+```c++
+template< size_t FromN, size_t FromA,
+		  typename = std::enable_if_t< (FromN < N && FromA != A) > >
+constexpr explicit Array(const Array< T, FromN, FromA >& a) noexcept
+	: std::array< T, N >(EnlargeArray< N >(a)) {}
+```
+
+Note the `explicit` keyword.
+
+Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, A >` and `N-FromN` given values:
+
+```c++
+template< size_t FromN, typename... ArgsT, 
+		  typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N) > >
+constexpr Array(const Array< T, FromN, A >& a, ArgsT&&... args) noexcept
+	: std::array< T, N >(TuppleToArray(std::tuple_cat(ArrayToTupple(a), 
+						 std::make_tuple(std::forward< ArgsT >(args)...)))) {}
+```
+
+Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, FromA >` and `N-FromN` given values:
+
+```c++
+template< size_t FromN, size_t FromA, typename... ArgsT, 
+		  typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N && FromA != A) > >
+constexpr explicit Array(const Array< T, FromN, FromA >& a, ArgsT&&... args) noexcept
+	: std::array< T, N >(TuppleToArray(std::tuple_cat(ArrayToTupple(a), 
+						 std::make_tuple(std::forward< ArgsT >(args)...)))) {}
+```
+
+Note the `explicit` keyword.
+
+Construct an `Array< T, N, A >` from a `Array< FromT, N, A >` or `Array< FromT, N, FromA >`:
+
+```c++
+template< typename FromT, size_t FromA, 
+		  typename = std::enable_if_t< std::is_convertible_v< FromT, T > > >
+constexpr explicit Array(const Array< FromT, N, FromA >& a) noexcept
+	: std::array< T, N >(StaticCastArray< T >(a)) {}
+```
+
+Note the `explicit` keyword.
+
+Finally, we add structure binding support:
+
+```c++
+namespace std {
+
+	template< typename T, size_t N, size_t A >
+	struct tuple_size< Array< T, N, A > >
+		: public integral_constant< size_t, N > {};
+
+	template< size_t I, typename T, size_t N, size_t A >
+	struct tuple_element< I, Array< T, N, A > > {
+		using type = T;
+	};
+}
+```
+
+## Examples
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ...
 
