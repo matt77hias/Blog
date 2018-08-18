@@ -55,7 +55,9 @@ Construct an `std::array< T, ToN >` from a smaller `std::array< T, FromN >` by a
 namespace details {
 
 	template< size_t ToN, typename T, size_t...I >
-	constexpr const auto EnlargeArray(const std::array< T, sizeof...(I) >& a, std::index_sequence< I... >) {
+	constexpr const auto EnlargeArray(const std::array< T, sizeof...(I) >& a, 
+	                                  std::index_sequence< I... >) {
+		
 		return std::array< T, ToN >{ a[I]... };
 	}
 }
@@ -72,7 +74,10 @@ Construct an `std::array< ToT, N >` from a `std::array< FromT, N >` by transform
 namespace details {
 
 template< typename ActionT, typename FromT, size_t...I >
-constexpr const auto TransformArray(ActionT&& action, const std::array< FromT, sizeof...(I) >& a, std::index_sequence< I... >) {
+constexpr const auto TransformArray(ActionT&& action, 
+                                    const std::array< FromT, sizeof...(I) >& a, 
+									std::index_sequence< I... >) {
+	
 	using ToT = decltype(std::declval< ActionT >()(std::declval< FromT >()));
 	return std::array< ToT, sizeof...(I) >{ action(a[I])... };
 }
@@ -121,7 +126,9 @@ namespace details {
 	}
 
 	template< typename T, size_t...I >
-	constexpr const auto ArrayToTupple(const std::array< T, sizeof...(I) >& a, std::index_sequence< I... >) noexcept {
+	constexpr const auto ArrayToTupple(const std::array< T, sizeof...(I) >& a, 
+	                                   std::index_sequence< I... >) noexcept {
+		
 		return std::make_tuple(a[I]...);
 	}
 }
