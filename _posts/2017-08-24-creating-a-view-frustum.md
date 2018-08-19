@@ -24,7 +24,7 @@ $$\begin{align}
 0 &\le z_{\mathrm{n}} \le 1
 \end{align}$$
 
-A point primitive is culled if its vertex does not satisfy these equations and thus is positioned outside the view frustum. A triangle primitive is culled if all three of its vertices do not satisy these equations.
+A point primitive is culled if its vertex does not satisfy these equations and thus is positioned outside the view frustum. A triangle primitive is culled if all three of its vertices do not satisfy these equations.
 
 By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to `projection space` (denoted with a subscript $$\mathrm{p}$$). In this space, the following six equations need to be satisfied:
 
