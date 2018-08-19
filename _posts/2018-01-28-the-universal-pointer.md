@@ -4,7 +4,7 @@ title:  "The Universal Pointer"
 date:   2018-01-28
 ---
 
-## Problem
+# Problem
 
 I want to apply an [Entity–Component–System](https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system) architecture to my game engine, [MAGE](https://github.com/matt77hias/MAGE).
 My scene data includes a dynamic array encapsulating a contiguous block of memory (`std::vector`) that stores components by value for each component type.
@@ -43,7 +43,7 @@ This virtual method will certainly incur some additional cost at runtime.
 
 There is an alternative. We can encapsulate all the data we need inside a [`std::function`](http://en.cppreference.com/w/cpp/utility/functional/function).
 
-## ProxyPtr
+# ProxyPtr
 I call our universal pointer, `ProxyPtr`, after the [Proxy design pattern](https://en.wikipedia.org/wiki/Proxy_pattern). *(If someone will ever be tempted to add it to the `std`, you may call it std::proxy_ptr inside `<memory>` ;) )*.
 
 Lets start with the member variables:
@@ -267,6 +267,6 @@ inline ProxyPtr< ToT > reinterpret_pointer_cast(ProxyPtr< FromT >&& ptr) noexcep
 ```
 Note that we directly access our `m_getter` member variable inside the capture of the lambdas. This explains the public access modifier.
 
-## References
+# References
 
 The `ProxyPtr` was designed for and initially used in [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Utilities/src/memory/memory.hpp#L351).
