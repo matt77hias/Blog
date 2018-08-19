@@ -234,6 +234,3 @@ virtual const XMMATRIX XM_CALLCONV
     };
 }
 ```
-
-# References
-The construction of view frustums in [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Math/src/geometry/bounding_volume.cpp#L242).
