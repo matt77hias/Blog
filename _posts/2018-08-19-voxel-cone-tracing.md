@@ -6,7 +6,7 @@ date:   2018-08-19
 
 # Illumination components
 
-If the scenes only contain point lights (e.g., omni lights, spotlights, etc.) and emissive surfaces, the illumination contributions at a surface position, \\(x\\), are computed as follows:
+If the scenes only contain point lights (e.g., omni lights, spotlights, etc.) and emissive surfaces, the illumination contributions at a surface position, \$x\$, are computed as follows:
 
  1. The self emission associated with the emissive surface (i.e. 0 bounces/surface interactions) is computed as usual (without using the voxelization; as is the case for adding this contribution to the scene's voxelization);
  2. The direct illumination associated with the point lights (i.e. 1 bounce/surface interaction) is computed as usual (without using the voxelization; as is the case for adding this contribution to the scene's voxelization);
