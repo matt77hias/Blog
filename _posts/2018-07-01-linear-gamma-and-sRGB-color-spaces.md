@@ -45,7 +45,7 @@ Similarly for blending (i.e. all blending except opaque blending). By using an e
 
 `blending -> hardware linear-to-sRGB conversion != user defined linear-to-sRGB conversion -> blending`
 
-Alternatively, a render target with a half-precision floating-point format can and should be used, if linear color values need to be stored instead. This, however, is not the responsibility of ImGui. ImGui should output linear colors, and the user of ImGui should provide an appropriate render target (i.e. `R8G8B8A8_SRGB` or `R16G16B16A16`). Most games let the user use a custom gamma encoding to adjust brightness instead of using the default sRGB encoding. So in these uses cases, ImGui will output to a halffloat render target in a first pass. The final pass will apply the custom gamma encoding and output **without blending** to a R8G8B8A8 render target.
+Alternatively, a render target with a half-precision floating-point format can and should be used, if linear color values need to be stored instead. This, however, is not the responsibility of ImGui. ImGui should output linear colors, and the user of ImGui should provide an appropriate render target (i.e. `R8G8B8A8_SRGB` or `R16G16B16A16`). Most games let the user use a custom gamma encoding to adjust brightness instead of using the default sRGB encoding. So in these uses cases, ImGui will output to a render target with a half-precision floating-point format in a first pass. The final pass will apply the custom gamma encoding and output **without blending** to a R8G8B8A8 render target.
 
 # Use cases
 
