@@ -28,7 +28,7 @@ In our vector classes, we do not want to use `__m128` member variables (e.g., `u
 
 # Extending std::array
 
-Since the arithmetic/logical functionality is not a part of our template class any more, our template class seems like a convenient extension of `std::array`. The latter provides lots of methods supporting nice interoperability with the `std` (e.g., `(c)begin`/`(c)end`, `size`, `empty`. Furthermore `std::array` can be used in range-based for loops and structure bindings.
+Since the arithmetic/logical functionality is not a part of our template class any more, our template class seems like a convenient extension of [`std::array`](https://en.cppreference.com/w/cpp/container/array). The latter provides lots of methods supporting nice interoperability with the `std` (e.g., `(c)begin`/`(c)end`, `size`, `empty`. Furthermore `std::array` can be used in range-based for loops and structure bindings.
 
 Unfortunately, `std::array` has no constructors itself, but rather uses [aggregate initialization](https://en.cppreference.com/w/cpp/language/aggregate_initialization). Therefore, constructing vectors from vectors with a different dimension and/or template parameter does not work straight out of the box. To achieve this, we will define a new class `Array` deriving from `std::array`, providing all the necessary constructors. Furthermore, we will provide some additional utility methods to construct and return `std::array`s (using C++17's guaranteed copy elision) which will be passed to the base class `std::array` inside these `Array` constructors.
 
