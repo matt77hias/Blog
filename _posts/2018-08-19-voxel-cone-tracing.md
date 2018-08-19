@@ -41,7 +41,7 @@ $$L_o\!\left(x, \hat\omega_o\right) \approx k_d \sum_{j = 1}^{N} \hat{W}_j L_{v,
 
 We can use for example the following six cones, each with an aperture of $\frac{\pi}{6}$:
 
-[![enter image description here][1]][1]
+<p align="center"><img src="https://i.stack.imgur.com/TbALB.png"></p>
 
 The normalized weight of the blue cone about the surface normal is equal to:
 
@@ -78,8 +78,4 @@ Marching continues until we reach an accumulated opacity of 1 or more:
     	distance ← distance + cone_step // marching -> diameter and mip_level will increase
     return Lv
 
-[![enter image description here][2]][2]
-
-
-  [1]: https://i.stack.imgur.com/TbALB.png
-  [2]: https://i.stack.imgur.com/dGx7V.png
+<p align="center"><img src="https://i.stack.imgur.com/dGx7V.png"></p>
