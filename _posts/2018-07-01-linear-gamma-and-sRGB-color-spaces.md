@@ -6,7 +6,7 @@ date:   2018-07-01
 
 *This post is based on a [reply](https://github.com/ocornut/imgui/issues/578#issuecomment-379467586) of mine to an [ImGui](https://github.com/ocornut/imgui/) issue (and discussion) about sRGB and linear color spaces.*
 
-## Gamma color space
+# Gamma color space
 
 The actual color of a pixel, outputted on a monitor, does not linearly depend on the applied voltage signal for that pixel. For CRT monitors, the actual color is approximately proportional to the applied voltage raised to the power of a so-called *gamma* value, which depends on the monitor. This gamma value typically lies between 2.2 and 2.5 for CRT monitors. (*Hence, the ubiquitous appearances of the magical constant 2.2 in rendering applications.*) 
 
@@ -25,13 +25,13 @@ From a perceptual point of view, removing the need for gamma correction and usin
 
 <p align="center"><img src="https://user-images.githubusercontent.com/2464019/38454812-917ffe76-3a6e-11e8-9776-262e1e229f4c.png"></p>
 
-## sRGB color space
+# sRGB color space
 
 The sRGB color space has similar goals, assigning a perceptual linear range of (computed) color values to the available 256 different (actual) color values. A rough approximation of transforming linear to sRGB color values consists of raising to a power of 2.2. A more accurate approximation would distinguish between a more linear correspondence near black and a gamma (2.4) encoding near white. And finally, you can just use the exact transformation between linear and sRGB color space as well. The more accurate, the more expensive the computation will be. 
 
 The sRGB color space is obviously used for sRGB monitors which are primarily used for content creation (e.g., textures, etc.). Images with a R8G8B8A8 format are in most cases represented in sRGB color space and definitely not in linear color space (*as a user, you obviously do not need to guess, but just need to know which color space is used for the encoding*). RGB color pickers typically operate in sRGB color space as well.
 
-## Color operations
+# Color operations
 
 Colors represented in linear color space can be mutually added and multiplied. Colors represented in *a* gamma color space cannot be mutually added, but can be mutually multiplied. Colors represented in sRGB color space can neither be mutually added nor multiplied. Note that I explicitly differentiate between a gamma and sRGB color space, since not everyone will use the most cheapest linear-to-sRGB approximation. 
 
@@ -46,6 +46,8 @@ Similarly for blending (i.e. all blending except opaque blending). By using an e
 `blending -> hardware linear-to-sRGB conversion != user defined linear-to-sRGB conversion -> blending`
 
 Alternatively, a halffloat render target can and should be used, if linear color values need to be stored instead. This, however, is not the responsibility of ImGui. ImGui should output linear colors, and the user of ImGui should provide an appropriate render target (i.e. `R8G8B8A8_SRGB` or `R16G16B16A16`). Most games let the user use a custom gamma encoding to adjust brightness instead of using the default sRGB encoding. So in these uses cases, ImGui will output to a halffloat render target in a first pass. The final pass will apply the custom gamma encoding and output **without blending** to a R8G8B8A8 render target.
+
+# Use cases
 
 ## ImGui
 
