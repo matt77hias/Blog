@@ -41,29 +41,29 @@ Typically, a `Bounding Volume` (BV) is associated with and expressed in the loca
 
 Now that we have BVs (the entities we are going to cull against the view frustum), all that remains is creating a view frustum in the local coordinate space of the BV and thus the local coordinate space of the submodel. A view frustum consists of six bounding planes. A plane $$\left(\hat{n} \vert d\right)$$ is mathematically characterized by a normal vector $$\hat{n}$$ (rotation) and a signed distance $$d$$ (translation) from the origin in the direction of its normal $$\hat{n}$$. 
 
-A point $$p=\left(p_x,p_y,p_z\right)$$ satisfies the following relations:
+A point $$p = \left(p_x,p_y,p_z\right)$$ satisfies the following relations:
 * If $$\hat{n} \cdot p + d  =  0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\hat{n} \cdot p + d \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\hat{n} \cdot p + d \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
-Alternatively, a homogeneous point $$p^{\mathrm{proj}}=\left(p_x^{\mathrm{proj}},p_y^{\mathrm{proj}},p_z^{\mathrm{proj}},1\right)$$ satisfies the following relations:
+Alternatively, a homogeneous point $$p^{\mathrm{proj}} = \left(p_x^{\mathrm{proj}},p_y^{\mathrm{proj}},p_z^{\mathrm{proj}},1\right)$$ satisfies the following relations:
 * If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}}  =  0$$, then $$p^{\mathrm{proj}}$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} \gt 0$$, then $$p^{\mathrm{proj}}$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} \lt 0$$, then $$p^{\mathrm{proj}}$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
 If we use six inward facing planes for our view frustum, all points $$p^{\mathrm{proj}}$$ satisfying $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} \lt 0$$ for at least one plane of the view frustum will be culled.
 
-But how do you obtain the six planes? Lets look at the transformation from $$s$$ (local, world, or camera) space to projection space:
+But how do you obtain the six planes? Lets look at the transformation from local|world|camera) space (denoted with a superscript $$\mathrm{proj}$$) to projection space:
 
 $$\begin{align}
-\mathrm{p_{p}} 
-&= \left( x_{\mathrm{p}}, y_{\mathrm{p}}, z_{\mathrm{p}}, w_{\mathrm{p}} \right) \\
-&= \left( x_{s}, y_{s}, z_{s}, 1 \right) \mathrm{T}^{s \rightarrow \mathrm{p}} \\
-&= \mathrm{p}_{s} \mathrm{T}^{s \rightarrow \mathrm{p}} \\
-&= \begin{bmatrix}p_{s} \cdot \mathrm{T}_{.,1}^{s \rightarrow \mathrm{p}} \\p_{s} \cdot \mathrm{T}_{.,2}^{s \rightarrow \mathrm{p}} \\p_{s} \cdot \mathrm{T}_{.,3}^{s \rightarrow \mathrm{p}} \\p_{s} \cdot \mathrm{T}_{.,4}^{s \rightarrow \mathrm{p}} \end{bmatrix}.
+p^{\mathrm{proj}}
+&= \left( p_x^{\mathrm{proj}}, p_y^{\mathrm{proj}}, p_z^{\mathrm{proj}}, p_w^{\mathrm{proj}} \right) \\
+&= \left( p_x^s, p_y^s, p_z^s, 1 \right) \mathrm{T}^{s \rightarrow \mathrm{proj}} \\
+&= p^s \mathrm{T}^{s \rightarrow \mathrm{proj}} \\
+&= \begin{bmatrix}p^{s} \cdot \mathrm{T}_{.,1}^{s \rightarrow \mathrm{proj}} \\p_{s} \cdot \mathrm{T}_{.,2}^{s \rightarrow \mathrm{proj}} \\p_{s} \cdot \mathrm{T}_{.,3}^{s \rightarrow \mathrm{proj}} \\p_{s} \cdot \mathrm{T}_{.,4}^{s \rightarrow \mathrm{proj}} \end{bmatrix}.
 \end{align}$$
 
-Here, we see that the coordinates of $$p_{p}$$ (projection space coordinates) can be expressed as the dot product of $$p_{s}$$ ($$s$$ space coordinates) and one of the columns of the transform matrix $$\mathrm{T}^{s \rightarrow \mathrm{p}}$$. Combining this with the equations used for culling in projection space (see above), results in a substitution of the projection space coordinates which directly leads to the six planes of the view frustum (one for each equation).
+Here, we see that the coordinates of $$p^{proj}$$ (projection space coordinates) can be expressed as the dot product of $$p^{s}$$ and one of the columns of the transform matrix $$\mathrm{T}^{s \rightarrow \mathrm{proj}}$$. Combining this with the equations used for culling in projection space (see above), results in a substitution of the projection space coordinates which directly leads to the six planes of the view frustum (one for each equation).
 
 # Code
 If we use an `SIMD` library such as `DirectXMath`, matrices are represented in row-major order. Each row of a matrix will be put in an SIMD register. To perform additions and subtractions between columns, one could retrieve the individual elements and perform the arithmetic operations without using SIMD. Alternatively, one could take the transpose of the matrix (*columns become rows and vice versa*) to perform the arithmetic operations using SIMD:
