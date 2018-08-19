@@ -10,14 +10,14 @@ If our scenes only contain point lights (e.g., omni lights, spotlights, etc.) an
 
  1. The self emission associated with the emissive surface (i.e. 0 bounces/surface interactions) is computed as usual without using the scene's voxelization (as is the case for adding this illumination contribution to the scene's voxelization);
  2. The direct illumination associated with the point lights (i.e. 1 bounce/surface interaction) is computed as usual without using the scene's voxelization (as is the case for adding this illumination contribution to the scene's voxelization);
- 3. The direct illumination associated with the emissive surface (i.e. 1 bounce/surface interaction) is obtained from the scene's voxelization using voxel cone tracing;
+ 3. The direct illumination associated with the emissive surfaces (i.e. 1 bounce/surface interaction) is obtained from the scene's voxelization using voxel cone tracing;
  4. The indirect illumination associated with the point lights (i.e. 2 bounces/surface interactions) is obtained from the scene's voxelization using voxel cone tracing.
 
-By computing the diffuse illumination for all the voxels from the scene's voxelization using voxel cone tracing, the diffuse illumination from additional bounces/surface interactions can be accumulated inside the voxels. This requires each voxel to store (an approximation) to the normal distribution of the scene's surfaces as well overlapping those voxels.
+By computing the diffuse illumination for all the voxels from the scene's voxelization using voxel cone tracing, the diffuse illumination from additional bounces/surface interactions can be (optionally) accumulated inside the voxels. This requires each voxel to store (an approximation) to the normal distribution of the scene's surfaces overlapping those voxels as well.
 
 # Illumination from the scene's voxelization (3)-(4)
 
-The outgoing radiance obtained from the scene's voxelization (subscript \\(L_v\\)):
+The outgoing radiance obtained from the scene's voxelization (\\(L_v\\)):
 
 $$L_o\!\left(x, \hat\omega_o\right) = \int_\Omega f_{r}\!\left(x, \hat\omega_o, \hat\omega_i\right) L_v\!\left(x, \hat\omega_i\right) \left(\hat{n} \cdot \hat\omega_i\right) \mathrm{d}\hat\omega_i$$
 
@@ -25,11 +25,11 @@ For a **diffuse BRDF** \\(f_{r}\left(x, \hat\omega_o, \hat\omega_i\right) = \fra
 
 $$L_o\!\left(x, \hat\omega_o\right) = \frac{k_d}{\pi} \int_\Omega L_v\!\left(x, \hat\omega_i\right) \left(\hat{n} \cdot \hat\omega_i\right) \mathrm{d}\hat\omega_i$$
 
-For a partitioning of \\(\Omega\\) in \\(N\\) disjunct subdomains, \\(\Omega_j\\), (e.g., \\(\approx\\) cones) (i.e. \\(\Omega_1 \cup~...~\cup \Omega_N = \Omega\\) with \\(\Omega_i \cap \Omega_j = \emptyset\\) for each \\(i \ne j\\)):
+For a partitioning of \\(\Omega\\) in \\(N\\) disjunct subdomains, \\(\Omega_j\\), (e.g., \\(\approx\\) cones) (i.e. \\(\Omega_1 \cup~...~\cup \Omega_N = \Omega\\) and \\(\Omega_i \cap \Omega_j = \emptyset\\) for each \\(i \ne j\\)):
 
 $$L_o\!\left(x, \hat\omega_o\right) = \frac{k_d}{\pi} \sum_{j = 1}^{N} \int_{\Omega_{j}}  L_v\!\left(x, \hat\omega_{j,i}\right) \left(\hat{n} \cdot \hat\omega_{j,i}\right) \mathrm{d}\hat\omega_{j,i}$$
 
-Relying on a single cone with a direction, \\(\hat\omega_{j}\\), and an aperture, \\(\alpha_{j}\\), instead of individual rays for each subdomain, \\(\Omega_j\\): 
+Relying on a single cone with a direction, \\(\hat\omega_{j}\\), and an aperture, \\(\alpha_{j}\\), instead of individual rays with a direction, \\(\omega_{j,i}\\), for each subdomain, \\(\Omega_j\\): 
 
 $$L_o\!\left(x, \hat\omega_o\right) \approx \frac{k_d}{\pi} \sum_{j = 1}^{N} L_v\!\left(x, \hat\omega_{j}, \alpha_{j}\right) \int_{\Omega_{j}} \left(\hat{n} \cdot \hat\omega_{j,i}\right) \mathrm{d}\hat\omega_{j,i}$$
 
