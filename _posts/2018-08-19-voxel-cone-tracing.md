@@ -17,7 +17,7 @@ If the scenes only contain point lights (e.g., omni lights, spotlights, etc.) an
 
 # Illumination from the scene's voxelization (3)-(4)
 
-The outgoing radiance obtained from the scene's voxelization (subscript \$v\$) using ray tracing (subscript \$r\$):
+The outgoing radiance obtained from the scene's voxelization (subscript $v$) using ray tracing (subscript $r$):
 
 $$L_o\!\left(x, \hat\omega_o\right) = \int_\Omega f_{r}\!\left(x, \hat\omega_o, \hat\omega_i\right) L_{v,r}\!\left(x, \hat\omega_i\right) \left(\hat{n} \cdot \hat\omega_i\right) \mathrm{d}\hat\omega_i$$
 
