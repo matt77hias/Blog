@@ -71,9 +71,9 @@ Marching continues until we reach an accumulated opacity of 1 or more:
     	compute position at distance
     	if mip_level >= max_mip_level or position ∉ [0,1]^3
     	    break
-    	sample Lv_k(position, mip_level)
-    	Lv ← Lv + (1-Lv.alpha) * Lv_k   // blend equation
-    	distance ← distance + cone_step // marching -> diameter and mip_level will increase
+    	sample Lv_step(position, mip_level)
+    	Lv ← Lv + (1-Lv.alpha) * Lv_step // blend equation
+    	distance ← distance + cone_step  // marching -> diameter and mip_level will increase
     return Lv
 
 <p align="center"><img src="https://i.stack.imgur.com/dGx7V.png"></p>
