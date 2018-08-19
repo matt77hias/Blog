@@ -4,7 +4,7 @@ title:  "Voxel Cone Tracing"
 date:   2018-08-19
 ---
 
-## Illumination components
+# Illumination components
 
 If our scenes only contain point lights (e.g., omni lights, spotlights, etc.) and emissive surfaces, the illumination contributions at a surface position, $$x$$, are computed as follows:
 
@@ -15,7 +15,7 @@ If our scenes only contain point lights (e.g., omni lights, spotlights, etc.) an
 
 By computing the diffuse illumination for all the voxels from the scene's voxelization using voxel cone tracing, the diffuse illumination from additional bounces/surface interactions can be (optionally) accumulated inside the voxels. This requires each voxel to store (an approximation) to the normal distribution of the scene's surfaces overlapping those voxels as well.
 
-## Illumination from the scene's voxelization (3)-(4)
+# Illumination from the scene's voxelization (3)-(4)
 
 The outgoing radiance obtained from the scene's voxelization ($$L_v$$):
 
@@ -51,7 +51,7 @@ $$\hat{W}_{\mathrm{purple|red|green|orange|brown}} \approx \frac{1-\hat{W}_{\mat
 
 For a **specular BRDF**, one typically uses a single cone with a direction, $$2 \left(\hat{n} \cdot \hat\omega_o\right) \hat{n}-\hat\omega_o$$ (i.e. reflected direction of $$\hat\omega_o$$ about $$\hat{n}$$), and an aperture based on the roughness of the surface material.
 
-## Voxel Cone Tracing
+# Voxel Cone Tracing
 
 $$L_v\!\left(x, \hat\omega_{j}, \alpha_{j}\right)$$ is computed using voxel cone tracing, which can be implemented by marching the mip-mapped 3D voxel texture in UVW texture space.
 
@@ -78,6 +78,5 @@ Marching continues until we reach an accumulated opacity of 1 or more:
 
 <p align="center"><img src="https://i.stack.imgur.com/dGx7V.png"></p>
 
-## References
-
+# References
 The voxel cone tracing as used in [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Shaders/shaders/vct.hlsli).
