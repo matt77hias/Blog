@@ -66,7 +66,7 @@ $$\begin{align}
 Here, we see that the coordinates of $$p_{p}$$ (projection space coordinates) can be expressed as the dot product of $$p_{s}$$ ($$s$$ space coordinates) and one of the columns of the transform matrix $$\mathrm{T}^{s \rightarrow \mathrm{p}}$$. Combining this with the equations used for culling in projection space (see above), results in a substitution of the projection space coordinates which directly leads to the six planes of the view frustum (one for each equation).
 
 # Code
-If we use an `SIMD` library such as `DirectXMath`, matrices are represented in row-major order. Each row of a matrix will be put in an SIMD register. To perform additions and subtractions between columns, one could retrieve the individual elements and perform the arithmetic operations without using SIMD. Alternatively, one could take the transpose of the matrix (*columns become rows and vice versa*) to perform the arithmetic operations using SIMD (See [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Math/src/geometry/bounding_volume.cpp#L242)):
+If we use an `SIMD` library such as `DirectXMath`, matrices are represented in row-major order. Each row of a matrix will be put in an SIMD register. To perform additions and subtractions between columns, one could retrieve the individual elements and perform the arithmetic operations without using SIMD. Alternatively, one could take the transpose of the matrix (*columns become rows and vice versa*) to perform the arithmetic operations using SIMD:
 
 ```c++
 /**
@@ -130,3 +130,7 @@ BoundingFrustum::BoundingFrustum(CXMMATRIX transform) noexcept {
 	}
 }
 ```
+
+# References
+
+The construction of view frustums in [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Math/src/geometry/bounding_volume.cpp#L242).
