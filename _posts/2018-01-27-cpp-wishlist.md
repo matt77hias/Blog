@@ -6,7 +6,7 @@ date:   2018-01-27
 
 This post contains a running list of C++ language features and standard library (`std`) extensions, I would like to see in future C++ standards (C++20 or beyond).
 
-## Full and partial template specilization for alias templates
+# Full and partial template specilization for alias templates
 
 [Alias templates](http://en.cppreference.com/w/cpp/language/type_alias) are introduced in C++11. 
 They basically extent [typedefs](http://en.cppreference.com/w/cpp/language/typedef) 
@@ -99,7 +99,7 @@ return_t< T > convert(T value) {
 Unfortunately, (full) specialization of alias templates is not permitted in C++ (<= C++17). 
 This also implies that partial specialization of alias templates is not permitted either.
 
-## Partial template specilization for functions and member methods
+# Partial template specilization for functions and member methods
 
 Assume that we want to create resources in a uniform way by calling a function `Create` 
 with a template parameter matching the resource we want to create and 
@@ -297,14 +297,14 @@ Unfortunately, partial specialization of template functions is not permitted in 
 This is also the case when we want to encapsulate our resource collections inside a class: 
 partial specialization of member methods is not permitted in C++ (<= C++17). 
 
-## Anonymous structs
+# Anonymous structs
 C11 added anonymous unions (originally only a GNU extension) and anonymous structs to the C standard.
 C++98 (the first C++ standard) includes anonymous unions but not anonymous structs.
 
 Though, anonymous structs work out-of-the-box with MVC++, gcc and Clang for all C++ standards and are ubiquitous in APIs aiming at both a C and C++ audience, such as the Windows API (try to disable C++ language extensions in the compiler and see for yourself). 
 So the only reason I can imagine for not adding anonymous structs to the C++ standard, is that one simply forgot that this language feature is non-standard.
 
-## Integer suffixes
+# Integer suffixes
 
 There exist no integer suffix for (un)signed chars and (un)signed shorts. 
 Therefore, (implicit/explicit) casts are required to initialize these types:
@@ -337,14 +337,14 @@ int main() {
 }
 ```
 
-## noexcept move constructor and assignment operators in std
+# noexcept move constructor and assignment operators in std
 Move constructors and move assignment operators should be declared [`noexcept`](http://en.cppreference.com/w/cpp/language/noexcept), especially in the `std`.
 Unfortunately, this is not true for all `std` classes:
 * [std::function](http://en.cppreference.com/w/cpp/utility/functional/function);
 * [std::map](http://en.cppreference.com/w/cpp/container/map/map), [std::unordered_map](http://en.cppreference.com/w/cpp/container/unordered_map/unordered_map), [std::multimap](http://en.cppreference.com/w/cpp/container/multimap/multimap), [std::unordered_multimap](http://en.cppreference.com/w/cpp/container/unordered_multimap/unordered_multimap);
 * ...
 
-## noexcept as part of the std::function type
+# noexcept as part of the std::function type
 C++17 adds C++11's noexcept to the type system. Though, this is not the case for std::function.
 Ideally, we want the compiler to reject the following code:
 
@@ -364,14 +364,14 @@ int main() {
 }
 ```
 
-## Remove and replace [[nodiscard]] with [[maybe_discard]].
+# Remove and replace [[nodiscard]] with [[maybe_discard]].
 I add C++17's `[[nodiscard]]` attribute everywhere it makes sense. For functions returning error codes, the returned value should be used, since I return these codes for a reason and do not intent or allow the continuation of the program without handling them appropriately (where the user may use his preferred programming style: total, normal, defensive, etc.). For functions returning values that could leak resources (allocators) or could break the goal (async) in case of not using them, the returned values should be used.  
 
 Most of the remaining functions or member methods (i.e. getters) that return a value are pure or nearly pure (if no exceptions are thrown or assertions are failed). This last category comprises more than 90% of my codebase. Calling these functions without using the returned value makes no sense and should be dealt with to obtain proper code. So in that sense, I like to be warned or even receive an error in such cases. On the other hand, interfaces become quite verbose since you will nearly see the attribute once in every two functions. 
 
 Ideally C++17 should have broken backwards compatibility by adding the opposite keyword `[[maybe_discarded]]`. Note that this is not strictly breaking backwards compatibility, but merely adds extra warnings to existing codebases. Compilers will always become better at analyzing code, so you should expect more future warnings anyway.
 
-## CPU clock
+# CPU clock
 I really like the [`chrono`](http://en.cppreference.com/w/cpp/chrono) library and more specifically, I like the way it handles different storage types (e.g., integer or floating point) with varying degrees of timestamp precision. The available clocks can only handle wall clock time. I would like to handle kernel and/or user mode time as well, since these are more accurate. *(If you have a Windows operating system, I encourage you to compare the difference for yourself with this [project](https://github.com/matt77hias/Timing/blob/master/Timing/Timing/src/Timing.cpp). More particularly, compare the results obtained after running the program once versus twice at the same time.)*
 
 It would be handy to have a clock that handles kernel and/or user mode timestamps in the `std`, since it could be used on all platforms. The surprising thing is that C++ already has such a clock from its C legacy: [`clock`](http://www.cplusplus.com/reference/ctime/clock/). 
@@ -384,7 +384,7 @@ Unfortunately, there is a rather large caveat when looking at the documentation 
 
 The aforementioned `GetProcessTimes` is, as one would guess, only available for Windows operating systems. The `std` leaves us thus empty-handed. But even if C's `clock` worked the way it is supposed to on all platforms, we still need a clock inside `<chrono>` with an interface similar to the other clocks (`std::chrono::system_clock`, `std::chrono::steady_clock`, `std::chrono::high_resolution_clock`).
 
-## Unused values in structured bindings
+# Unused values in structured bindings
 A typical application of C++17's [structured bindings](http://en.cppreference.com/w/cpp/language/structured_binding) is a ranged-based loop. Not every value obtained from the structured binding, however, needs to be used. For example: consider that we only want to output the values of a map data structure. 
 So we do not care about the keys. Then we can write something like this:
 
@@ -425,8 +425,8 @@ int main() {
 Of course this will not work since `_` is a valid variable name in C++. 
 Alternatively, the [paper](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0144r2.pdf) of structured bindings proposes `std::ignore`, but arguments not to add it to the standard since it is too premature in the absence of pattern matching.
 
-## Pattern matching
+# Pattern matching
 
-## Reflection
+# Reflection
 
-## Serialization and deserialization
+# Serialization and deserialization
