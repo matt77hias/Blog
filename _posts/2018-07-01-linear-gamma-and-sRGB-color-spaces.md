@@ -12,7 +12,7 @@ The actual color of a pixel, outputted on a monitor, does not linearly depend on
 
 $$L_\mathrm{actual} \sim V^\gamma$$
 
-To bypass this gamma value in your computations, you need to *gamma correct* the computed colors of each pixel before presenting. By raising the computed color to a power of the reciprocal of that same gamma value, the computed color becomes proportional to the actual color.
+To bypass this gamma value in your computations, you need to [*gamma correct*](https://en.wikipedia.org/wiki/Gamma_correction) the computed colors of each pixel before presenting. By raising the computed color to a power of the reciprocal of that same gamma value, the computed color becomes proportional to the actual color.
 
 $$V \sim L_\mathrm{computed}^{1/\gamma} \\
 L_\mathrm{actual} \sim L_\mathrm{computed}$$
@@ -27,7 +27,7 @@ From a perceptual point of view, removing the need for gamma correction and usin
 
 # sRGB color space
 
-The sRGB color space has similar goals, assigning a perceptual linear range of (computed) color values to the available 256 different (actual) color values. A rough approximation of transforming linear to sRGB color values consists of raising to a power of 2.2. A more accurate approximation would distinguish between a more linear correspondence near black and a gamma (2.4) encoding near white. And finally, you can just use the exact transformation between linear and sRGB color space as well. The more accurate, the more expensive the computation will be. 
+The [sRGB color space](https://en.wikipedia.org/wiki/SRGB) has similar goals, assigning a perceptual linear range of (computed) color values to the available 256 different (actual) color values. A rough approximation of transforming linear to sRGB color values consists of raising to a power of 2.2. A more accurate approximation would distinguish between a more linear correspondence near black and a gamma (2.4) encoding near white. And finally, you can just use the exact transformation between linear and sRGB color space as well. The more accurate, the more expensive the computation will be. 
 
 The sRGB color space is obviously used for sRGB monitors which are primarily used for content creation (e.g., textures, etc.). Images with a R8G8B8A8 format are in most cases represented in sRGB color space and definitely not in linear color space (*as a user, you obviously do not need to guess, but just need to know which color space is used for the encoding*). RGB color pickers typically operate in sRGB color space as well.
 
@@ -45,13 +45,12 @@ Similarly for blending (i.e. all blending except opaque blending). By using an e
 
 `blending -> hardware linear-to-sRGB conversion != user defined linear-to-sRGB conversion -> blending`
 
-Alternatively, a halffloat render target can and should be used, if linear color values need to be stored instead. This, however, is not the responsibility of ImGui. ImGui should output linear colors, and the user of ImGui should provide an appropriate render target (i.e. `R8G8B8A8_SRGB` or `R16G16B16A16`). Most games let the user use a custom gamma encoding to adjust brightness instead of using the default sRGB encoding. So in these uses cases, ImGui will output to a halffloat render target in a first pass. The final pass will apply the custom gamma encoding and output **without blending** to a R8G8B8A8 render target.
+Alternatively, a render target with a half-precision floating-point format can and should be used, if linear color values need to be stored instead. This, however, is not the responsibility of ImGui. ImGui should output linear colors, and the user of ImGui should provide an appropriate render target (i.e. `R8G8B8A8_SRGB` or `R16G16B16A16`). Most games let the user use a custom gamma encoding to adjust brightness instead of using the default sRGB encoding. So in these uses cases, ImGui will output to a halffloat render target in a first pass. The final pass will apply the custom gamma encoding and output **without blending** to a R8G8B8A8 render target.
 
 # Use cases
 
 ## ImGui
-
-The changes required to ImGui:
+The changes required to [ImGui](https://github.com/ocornut/imgui):
 - ImGui uses one font texture by default. This texture should be formatted correctly: sRGB if appropriate. Though, it just contains completely black and white color values which should map to the same values independent of the used color space.
 - If ImGui performs (sRGB) color additions and/or multiplications on the CPU, the involved colors should be transformed first to linear color space, then the additions and/or multiplications are applied, finally the resulting colors are transformed back to sRGB color space.
 - The vertex shader should transform the vertex color attribute from sRGB to linear color space.
