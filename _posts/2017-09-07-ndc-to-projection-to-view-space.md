@@ -12,7 +12,7 @@ There is no need, however, for storing an explicit surface position in the GBuff
 (*For the remainder, we assume that the lighting calculations take place in camera space. 
 If you want to use world space instead, you need to additionally transform the reconstructed surface position from camera to world space before applying your lighting calculations.*)
 
-## Perspective Camera Only Approach
+# Perspective Camera Only Approach
 A (row-major) perspective transformation matrix has the following format:
 
 $$\begin{align} 
@@ -23,28 +23,28 @@ $$\begin{align}
 0 &0 &\mathrm{T}_{22} &1 \\ 
 0 &0 &\mathrm{T}_{32} &0 \end{bmatrix}
 =\begin{bmatrix} 
-1/x &0 &0 &0 \\ 
-0 &1/y &0 &0 \\ 
-0 &0 &-w &1 \\ 
-0 &0 &z &0 \end{bmatrix} \! . 
+1/X &0 &0 &0 \\ 
+0 &1/Y &0 &0 \\ 
+0 &0 &-W &1 \\ 
+0 &0 &Z &0 \end{bmatrix} \! . 
 \end{align}$$
 
 This transformation matrix is used to transform (*homogeneous*) points from camera ($$p^{\mathrm{cam}}$$) to projection ($$p^{\mathrm{proj}}$$) space, after which the homogeneous divide ($$p_{w}^{\mathrm{proj}}$$) is applied to transform to NDC (Normalized Device Coordinate, $$p^{\mathrm{ndc}}$$) space. (*NDC space is technically a 3D space, but for ease of notation, I use 4D points with a $$w=1$$*). If we explicitly write down this chain of transformations, we obtain:
 
 $$\begin{align}
-p^{\mathrm{cam}} \mathrm{T}^{\mathrm{cam} \rightarrow \mathrm{proj}}  &= \left(\frac{1}{x} p_{x}^\mathrm{cam}, \frac{1}{y} p_{y}^\mathrm{cam}, -w~p_{z}^\mathrm{cam} + z, p_{z}^\mathrm{cam}\right) = p^{\mathrm{proj}} \\
-p^{\mathrm{proj}}/p_{w}^{\mathrm{proj}} &= \left(\frac{1}{x} \frac{p_{x}^\mathrm{cam}}{p_{z}^\mathrm{cam}}, \frac{1}{y} \frac{p_{y}^\mathrm{cam}}{p_{z}^\mathrm{cam}}, -w + \frac{z}{p_{z}^\mathrm{cam}}, 1\right) = p^{\mathrm{ndc}}.
+p^{\mathrm{cam}} \mathrm{T}^{\mathrm{cam} \rightarrow \mathrm{proj}}  &= \left(\frac{1}{X} p_{x}^\mathrm{cam}, \frac{1}{Y} p_{y}^\mathrm{cam}, -W~p_{z}^\mathrm{cam} + Z, p_{z}^\mathrm{cam}\right) = p^{\mathrm{proj}} \\
+p^{\mathrm{proj}}/p_{w}^{\mathrm{proj}} &= \left(\frac{1}{X} \frac{p_{x}^\mathrm{cam}}{p_{z}^\mathrm{cam}}, \frac{1}{Y} \frac{p_{y}^\mathrm{cam}}{p_{z}^\mathrm{cam}}, -W + \frac{Z}{p_{z}^\mathrm{cam}}, 1\right) = p^{\mathrm{ndc}}.
 \end{align}$$
 
-In a deferred renderer, we need to go the other way around while resolving the GBuffer and could use four components ($$x$$, $$y$$, $$z$$, $$w$$, see above) to transform a point from NDC to camera space:
+In a deferred renderer, we need to go the other way around while resolving the GBuffer and could use four components ($$X$$, $$Y$$, $$Z$$, $$W$$, see above) to transform a point from NDC to camera space:
 
 $$\begin{align}
-p_{z}^\mathrm{ndc} &= -w + \frac{z}{p_{z}^\mathrm{cam}} 
-&\Leftrightarrow p_{z}^\mathrm{cam} &= \frac{z}{p_{z}^\mathrm{ndc} + w}\\
-p_{x}^\mathrm{ndc} &= \frac{1}{x} \frac{p_{x}^\mathrm{cam}}{p_{z}^\mathrm{cam}} 
-&\Leftrightarrow p_{x}^\mathrm{cam} &= x~p_{x}^\mathrm{ndc}~p_{z}^\mathrm{cam}\\
-p_{y}^\mathrm{ndc} &= \frac{1}{y} \frac{p_{y}^\mathrm{cam}}{p_{z}^\mathrm{cam}} 
-&\Leftrightarrow p_{y}^\mathrm{cam} &= y~p_{y}^\mathrm{ndc}~p_{z}^\mathrm{cam}.
+p_{z}^\mathrm{ndc} &= -W + \frac{Z}{p_{z}^\mathrm{cam}} 
+&\Leftrightarrow p_{z}^\mathrm{cam} &= \frac{Z}{p_{z}^\mathrm{ndc} + W}\\
+p_{x}^\mathrm{ndc} &= \frac{1}{X} \frac{p_{x}^\mathrm{cam}}{p_{z}^\mathrm{cam}} 
+&\Leftrightarrow p_{x}^\mathrm{cam} &= X~p_{x}^\mathrm{ndc}~p_{z}^\mathrm{cam}\\
+p_{y}^\mathrm{ndc} &= \frac{1}{Y} \frac{p_{y}^\mathrm{cam}}{p_{z}^\mathrm{cam}} 
+&\Leftrightarrow p_{y}^\mathrm{cam} &= Y~p_{y}^\mathrm{ndc}~p_{z}^\mathrm{cam}.
 \end{align}$$
 
 ```c++
@@ -90,10 +90,10 @@ $$\begin{align} \mathrm{T}^{\mathrm{cam \rightarrow proj}}
 0 &0 &\mathrm{T}_{22} &0 \\ 
 0 &0 &\mathrm{T}_{32} &1 \end{bmatrix}
 =\begin{bmatrix} 
-1/x &0 &0 &0 \\ 
-0 &1/y &0 &0 \\ 
-0 &0 &1/z &0 \\ 
-0 &0 &-w &1 \end{bmatrix} \! . 
+1/X &0 &0 &0 \\ 
+0 &1/Y &0 &0 \\ 
+0 &0 &1/Z &0 \\ 
+0 &0 &-W &1 \end{bmatrix} \! . 
 \end{align}$$
 
 This transformation matrix is used to transform (*homogeneous*) points from camera ($$p^{\mathrm{cam}}$$) to projection ($$p^{\mathrm{proj}}$$) space, after which the homogeneous divide (no-op) is applied to transform to NDC (= projection) space. (*So basically a non-uniform scaling followed by a translation of the z component*).
@@ -101,18 +101,18 @@ This transformation matrix is used to transform (*homogeneous*) points from came
 If we explicitly write down this chain of transformations, we obtain:
 
 $$\begin{align}
-p^{\mathrm{cam}} \mathrm{T}^{\mathrm{cam} \rightarrow \mathrm{proj}}  &= \left(\frac{1}{x} p_{x}^\mathrm{cam}, \frac{1}{y} p_{y}^\mathrm{cam}, \frac{1}{z} p_{z}^\mathrm{cam} - w, 1\right) = p^{\mathrm{proj}} = p^{\mathrm{ndc}}.
+p^{\mathrm{cam}} \mathrm{T}^{\mathrm{cam} \rightarrow \mathrm{proj}}  &= \left(\frac{1}{X} p_{x}^\mathrm{cam}, \frac{1}{Y} p_{y}^\mathrm{cam}, \frac{1}{Z} p_{z}^\mathrm{cam} - W, 1\right) = p^{\mathrm{proj}} = p^{\mathrm{ndc}}.
 \end{align}$$
 
-Again, we could use four components ($$x$$, $$y$$, $$z$$, $$w$$, see above) to transform a point from NDC to camera space:
+Again, we could use four components ($$X$$, $$Y$$, $$Z$$, $$W$$, see above) to transform a point from NDC to camera space:
 
 $$\begin{align}
-p_{z}^\mathrm{ndc} &= \frac{1}{z} p_{z}^\mathrm{cam} - w
-&\Leftrightarrow p_{z}^\mathrm{cam} &= z~\left(p_{z}^\mathrm{ndc} + w\right) \\
-p_{x}^\mathrm{ndc} &= \frac{1}{x} p_{x}^\mathrm{cam} 
-&\Leftrightarrow p_{x}^\mathrm{cam} &= x~p_{x}^\mathrm{ndc} \\
-p_{y}^\mathrm{ndc} &= \frac{1}{y} p_{y}^\mathrm{cam} 
-&\Leftrightarrow p_{y}^\mathrm{cam} &= y~p_{y}^\mathrm{ndc}.
+p_{z}^\mathrm{ndc} &= \frac{1}{Z} p_{z}^\mathrm{cam} - W
+&\Leftrightarrow p_{z}^\mathrm{cam} &= Z~\left(p_{z}^\mathrm{ndc} + W\right) \\
+p_{x}^\mathrm{ndc} &= \frac{1}{X} p_{x}^\mathrm{cam} 
+&\Leftrightarrow p_{x}^\mathrm{cam} &= X~p_{x}^\mathrm{ndc} \\
+p_{y}^\mathrm{ndc} &= \frac{1}{Y} p_{y}^\mathrm{cam} 
+&\Leftrightarrow p_{y}^\mathrm{cam} &= Y~p_{y}^\mathrm{ndc}.
 \end{align}$$
 
 ```c++
@@ -234,3 +234,6 @@ virtual const XMMATRIX XM_CALLCONV
     };
 }
 ```
+
+# References
+The construction of view frustums in [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Math/src/geometry/bounding_volume.cpp#L242).
