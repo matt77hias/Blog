@@ -16,22 +16,22 @@ The fixed-function (i.e. non-programmable, but configurable) [Rasterizer Stage](
 
 The first operation, Primitive Culling, implies both back face culling (if enabled) and view frustum culling. From here on, we will only focus on the latter type of culling. 
 
-If view frustum culling takes place after the homogeneous divide, the associated culling space corresponds to the `Normalized Device Coordinate` (NDC) space (denoted with a subscript $$\mathrm{n}$$). In this space, the following six equations need to be satisfied:
+If view frustum culling takes place after the homogeneous divide, the associated culling space corresponds to the `Normalized Device Coordinate` (NDC) space (denoted with a superscript $$\mathrm{ndc}$$). In this space, the following six equations need to be satisfied:
 
 $$\begin{align}
--1 &\le x_{\mathrm{n}} \le 1\\
--1 &\le y_{\mathrm{n}} \le 1\\
-0 &\le z_{\mathrm{n}} \le 1
+-1 &\le p_x^{\mathrm{ndc}} \le 1\\
+-1 &\le p_y^{\mathrm{ndc}} \le 1\\
+ 0 &\le p_z^{\mathrm{ndc}} \le 1
 \end{align}$$
 
 A point primitive is culled if its vertex does not satisfy these equations and thus is positioned outside the view frustum. A triangle primitive is culled if all three of its vertices do not satisfy these equations.
 
-By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to `projection space` (denoted with a subscript $$\mathrm{p}$$). In this space, the following six equations need to be satisfied:
+By performing culling before the homogeneous divide, an expensive divide operation can be omitted for every culled primitive. The associated culling space corresponds to `projection space` (denoted with a superscript $$\mathrm{proj}$$). In this space, the following six equations need to be satisfied:
 
 $$\begin{align}
--w_{\mathrm{p}} &\le x_{\mathrm{p}} \le w_{\mathrm{p}}\\
--w_{\mathrm{p}} &\le y_{\mathrm{p}} \le w_{\mathrm{p}}\\
-0 &\le z_{\mathrm{p}} \le w_{\mathrm{p}}
+-p_w^{\mathrm{proj}} &\le p_x^{\mathrm{proj}} \le p_w^{\mathrm{proj}}\\
+-p_w^{\mathrm{proj}} &\le p_y^{\mathrm{proj}} \le p_w^{\mathrm{proj}}\\
+ 0                   &\le p_z^{\mathrm{proj}} \le p_w^{\mathrm{proj}}
 \end{align}$$
 
 We will use the same equations to perform culling outside of the graphics pipeline, on the CPU. This way we can decrease the number of draw calls and decrease the number of wasted (*the primitives will be culled anyway*) VS, DS, TS, HS and GS invocations on the GPU. Instead of culling individual primitives themselves, culling will be performed on a coarser (e.g., (sub)model) level. Furthermore, we can even cull entities which only have an associated volume, but no associated geometry (e.g., lights).
@@ -42,12 +42,12 @@ Typically, a `Bounding Volume` (BV) is associated with and expressed in the loca
 Now that we have BVs (the entities we are going to cull against the view frustum), all that remains is creating a view frustum in the local coordinate space of the BV and thus the local coordinate space of the submodel. A view frustum consists of six bounding planes. A plane $$\left(\hat{n} \vert d\right)$$ is mathematically characterized by a normal vector $$\hat{n}$$ (rotation) and a signed distance $$d$$ (translation) from the origin in the direction of its normal $$\hat{n}$$. 
 
 A point $$p=\left(p_x,p_y,p_z\right)$$ satisfies the following relations:
-* If $$\hat{n} \cdot p + d = 0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
+* If $$\hat{n} \cdot p + d  =  0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\hat{n} \cdot p + d \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\hat{n} \cdot p + d \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
 Alternatively, a homogeneous point $$p^{\mathrm{proj}}=\left(p_x^{\mathrm{proj}},p_y^{\mathrm{proj}},p_z^{\mathrm{proj}},1\right)$$ satisfies the following relations:
-* If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} = 0$$, then $$p^{\mathrm{proj}}$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
+* If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}}  =  0$$, then $$p^{\mathrm{proj}}$$ lies on the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} \gt 0$$, then $$p^{\mathrm{proj}}$$ lies above the plane $$\left(\hat{n} \vert d\right)$$.
 * If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} \lt 0$$, then $$p^{\mathrm{proj}}$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
