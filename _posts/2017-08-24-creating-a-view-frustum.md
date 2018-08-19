@@ -53,7 +53,7 @@ Alternatively, a homogeneous point $$p^{\mathrm{proj}} = \left(p_x^{\mathrm{proj
 
 If we use six inward facing planes for our view frustum, all points $$p^{\mathrm{proj}}$$ satisfying $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} \lt 0$$ for at least one plane of the view frustum will be culled.
 
-But how do you obtain the six planes? Lets look at the transformation from local|world|camera space (denoted with a superscript $$\mathrm{proj}$$) to projection space:
+But how do you obtain the six planes? Lets look at the transformation from local\|world\|camera space (denoted with a superscript $$\mathrm{proj}$$) to projection space:
 
 $$\begin{align}
 p^{\mathrm{proj}}
