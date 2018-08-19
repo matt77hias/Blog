@@ -137,12 +137,12 @@ inline const XMVECTOR XM_CALLCONV
     // 2) p_ndc.x = p_camera.x/X    <=> p_camera.x = X * p_ndc.x
     // 3) p_ndc.y = p_camera.y/Y    <=> p_camera.y = Y * p_ndc.y
 
-    const auto x = 1.0f / XMVectorGetX(projection_matrix.r[0]);
-    const auto y = 1.0f / XMVectorGetY(projection_matrix.r[1]);
-    const auto z = 1.0f / XMVectorGetZ(projection_matrix.r[2]);
-    const auto w = -XMVectorGetZ(projection_matrix.r[3]);
+    const auto X = 1.0f / XMVectorGetX(projection_matrix.r[0]);
+    const auto Y = 1.0f / XMVectorGetY(projection_matrix.r[1]);
+    const auto Z = 1.0f / XMVectorGetZ(projection_matrix.r[2]);
+    const auto W = -XMVectorGetZ(projection_matrix.r[3]);
 
-    return { x, y, z, w };
+    return { X, Y, Z, W };
 }
 ```
 
