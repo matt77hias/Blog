@@ -46,14 +46,14 @@ A point $$p = \left(p_x,p_y,p_z\right)$$ satisfies the following relations:
 * If $$\hat{n} \cdot p + d \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$;
 * If $$\hat{n} \cdot p + d \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
-Alternatively, a homogeneous point $$p^{\mathrm{proj}} = \left(p_x^{\mathrm{proj}},p_y^{\mathrm{proj}},p_z^{\mathrm{proj}},1\right)$$ satisfies the following relations:
-* If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}}  =  0$$, then $$p^{\mathrm{proj}}$$ lies on the plane $$\left(\hat{n} \vert d\right)$$;
-* If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} \gt 0$$, then $$p^{\mathrm{proj}}$$ lies above the plane $$\left(\hat{n} \vert d\right)$$;
-* If $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} \lt 0$$, then $$p^{\mathrm{proj}}$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
+Alternatively, a homogeneous point $$p = \left(p_x,p_y,p_z,1\right)$$ satisfies the following relations:
+* If $$\left(\hat{n}, d\right) \cdot p  =  0$$, then $$p$$ lies on the plane $$\left(\hat{n} \vert d\right)$$;
+* If $$\left(\hat{n}, d\right) \cdot p \gt 0$$, then $$p$$ lies above the plane $$\left(\hat{n} \vert d\right)$$;
+* If $$\left(\hat{n}, d\right) \cdot p \lt 0$$, then $$p$$ lies below the plane $$\left(\hat{n} \vert d\right)$$.
 
-If we use six inward facing planes for our view frustum, all points $$p^{\mathrm{proj}}$$ satisfying $$\left(\hat{n}, d\right) \cdot p^{\mathrm{proj}} \lt 0$$ for at least one plane of the view frustum will be culled.
+If we use six inward facing planes for our view frustum, all points $$p$$ satisfying $$\left(\hat{n}, d\right) \cdot p \lt 0$$ for at least one plane of the view frustum will be culled.
 
-But how do you obtain the six planes? Lets look at the transformation from local\|world\|camera space (denoted with a superscript $$\mathrm{proj}$$) to projection space:
+But how do you obtain the six planes? Lets look at the transformation from local\|world\|camera space (denoted with a superscript $$s$$) to projection space:
 
 $$\begin{align}
 p^{\mathrm{proj}}
