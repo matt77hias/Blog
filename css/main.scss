@@ -25,7 +25,9 @@ $content-width:    800px;
 $on-palm:          600px;
 $on-laptop:        1000px;
 
-
+pre {
+    tab-size: 2;
+}
 
 // Use media queries like this:
 // @include media-query($on-palm) {
@@ -40,9 +42,7 @@ $on-laptop:        1000px;
     }
 }
 
-
-
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
-        "style"
+	"style"
 ;
