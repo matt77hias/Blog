@@ -12,3 +12,9 @@ exclude:
 
 plugins: 
  - jekyll-paginate
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  coderay_tab_width: 4
+	 
