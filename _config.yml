@@ -12,3 +12,6 @@ exclude:
 
 plugins: 
  - jekyll-paginate
+ 
+pygments_options:
+ tabsize: 4
