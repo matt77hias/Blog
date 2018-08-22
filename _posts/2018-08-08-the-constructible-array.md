@@ -76,7 +76,7 @@ namespace details {
 template< typename ActionT, typename FromT, size_t...I >
 constexpr const auto TransformArray(ActionT&& action, 
                                     const std::array< FromT, sizeof...(I) >& a, 
-				    std::index_sequence< I... >) {
+									std::index_sequence< I... >) {
 	
 	using ToT = decltype(std::declval< ActionT >()(std::declval< FromT >()));
 	return std::array< ToT, sizeof...(I) >{ action(a[I])... };
@@ -219,7 +219,7 @@ template< size_t FromN, typename... ArgsT,
           typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N) > >
 constexpr Array(const Array< T, FromN, A >& a, ArgsT&&... args) noexcept
 	: std::array< T, N >(TuppleToArray(std::tuple_cat(ArrayToTupple(a), 
-                                                          std::make_tuple(std::forward< ArgsT >(args)...)))) {}
+                                                      std::make_tuple(std::forward< ArgsT >(args)...)))) {}
 ```
 
 Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, FromA >` and `N-FromN` given values:
@@ -229,7 +229,7 @@ template< size_t FromN, size_t FromA, typename... ArgsT,
           typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N && FromA != A) > >
 constexpr explicit Array(const Array< T, FromN, FromA >& a, ArgsT&&... args) noexcept
 	: std::array< T, N >(TuppleToArray(std::tuple_cat(ArrayToTupple(a), 
-                                                          std::make_tuple(std::forward< ArgsT >(args)...)))) {}
+                                                      std::make_tuple(std::forward< ArgsT >(args)...)))) {}
 ```
 
 Note the `explicit` keyword.
@@ -290,7 +290,7 @@ int main() {
     std::cout << d; // 1.5 2.5 3.5 4.5 5.5 0
     
     constexpr Array< float, 6 > e(c, 6.5f);
-    std::cout << e; // 1.5 2.5 3.5 4.5 5.5 6.5
+	std::cout << e; // 1.5 2.5 3.5 4.5 5.5 6.5
     
     constexpr Array< int, 6 > f(e);
     std::cout << f; // 1 2 3 4 5 6
