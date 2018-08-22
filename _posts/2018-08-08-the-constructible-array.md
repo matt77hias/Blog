@@ -39,7 +39,7 @@ namespace details {
 
 	template< typename T, size_t...I >
 	constexpr const auto FillArray(const T& value, std::index_sequence< I... >) {
-		 return std::array< T, sizeof...(I) >{ (static_cast< void >(I), value)... };
+		return std::array< T, sizeof...(I) >{ (static_cast< void >(I), value)... };
 	}
 }
 
