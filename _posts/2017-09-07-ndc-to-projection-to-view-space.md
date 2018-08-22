@@ -179,7 +179,7 @@ virtual const XMMATRIX XM_CALLCONV
     GetProjectionToCameraMatrix() const noexcept override {
     
     const auto camera_to_projection = GetCameraToProjectionMatrix();
-
+	
     const auto m00 = 1.0f / XMVectorGetX(camera_to_projection.r[0]);
     const auto m11 = 1.0f / XMVectorGetY(camera_to_projection.r[1]);
     const auto m23 = 1.0f / XMVectorGetZ(camera_to_projection.r[3]);
@@ -218,9 +218,9 @@ $$\begin{align}
 [[nodiscard]]
 virtual const XMMATRIX XM_CALLCONV 
     GetProjectionToCameraMatrix() const noexcept override {
-    
+	
     const auto camera_to_projection = GetCameraToProjectionMatrix();
-
+	
     const auto m00 = 1.0f / XMVectorGetX(camera_to_projection.r[0]);
     const auto m11 = 1.0f / XMVectorGetY(camera_to_projection.r[1]);
     const auto m22 = 1.0f / XMVectorGetZ(camera_to_projection.r[2]);
