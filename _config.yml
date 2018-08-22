@@ -14,5 +14,5 @@ plugins:
  - jekyll-paginate
 
 kramdown:
-    coderay :
-       coderay_tab_width : 4
+    coderay:
+       coderay_tab_width: 4
