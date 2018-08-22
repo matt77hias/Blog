@@ -16,5 +16,4 @@ plugins:
 kramdown:
   input: GFM
   syntax_highlighter: rouge
-  coderay_tab_width: 4
-	 
+  coderay_tab_width: 4 
