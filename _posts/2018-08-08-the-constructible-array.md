@@ -76,7 +76,7 @@ namespace details {
 template< typename ActionT, typename FromT, size_t...I >
 constexpr const auto TransformArray(ActionT&& action, 
                                     const std::array< FromT, sizeof...(I) >& a, 
-									std::index_sequence< I... >) {
+				    std::index_sequence< I... >) {
 	
 	using ToT = decltype(std::declval< ActionT >()(std::declval< FromT >()));
 	return std::array< ToT, sizeof...(I) >{ action(a[I])... };
@@ -149,7 +149,7 @@ Our `std::array< T, N >` wrapper, `Array< T, N, A >` using inheritance:
 
 ```c++
 template< typename T, size_t N, size_t A = alignof(T), 
-		  typename = std::enable_if_t< (N > 1) > >
+          typename = std::enable_if_t< (N > 1) > >
 struct alignas(A) Array : public std::array< T, N > {
 
 	public:
@@ -187,7 +187,7 @@ Construct an `Array< T, N, A >` containing the `N` given values:
 
 ```c++
 template< typename... ArgsT, 
-		  typename = std::enable_if_t< (N == sizeof...(ArgsT)) > >
+          typename = std::enable_if_t< (N == sizeof...(ArgsT)) > >
 constexpr Array(ArgsT&&... args) noexcept
 	: std::array< T, N >{ std::forward< ArgsT >(args)... } {}
 ```
@@ -196,7 +196,7 @@ Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, A >` by appendi
 
 ```c++
 template< size_t FromN, 
-		  typename = std::enable_if_t< (FromN < N) > >
+          typename = std::enable_if_t< (FromN < N) > >
 constexpr Array(const Array< T, FromN, A >& a) noexcept
 	: std::array< T, N >(EnlargeArray< N >(a)) {}
 ```
@@ -205,7 +205,7 @@ Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, FromA >` by app
 
 ```c++
 template< size_t FromN, size_t FromA,
-		  typename = std::enable_if_t< (FromN < N && FromA != A) > >
+          typename = std::enable_if_t< (FromN < N && FromA != A) > >
 constexpr explicit Array(const Array< T, FromN, FromA >& a) noexcept
 	: std::array< T, N >(EnlargeArray< N >(a)) {}
 ```
@@ -216,20 +216,20 @@ Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, A >` and `N-Fro
 
 ```c++
 template< size_t FromN, typename... ArgsT, 
-		  typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N) > >
+          typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N) > >
 constexpr Array(const Array< T, FromN, A >& a, ArgsT&&... args) noexcept
 	: std::array< T, N >(TuppleToArray(std::tuple_cat(ArrayToTupple(a), 
-						 std::make_tuple(std::forward< ArgsT >(args)...)))) {}
+                                                          std::make_tuple(std::forward< ArgsT >(args)...)))) {}
 ```
 
 Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, FromA >` and `N-FromN` given values:
 
 ```c++
 template< size_t FromN, size_t FromA, typename... ArgsT, 
-		  typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N && FromA != A) > >
+          typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N && FromA != A) > >
 constexpr explicit Array(const Array< T, FromN, FromA >& a, ArgsT&&... args) noexcept
 	: std::array< T, N >(TuppleToArray(std::tuple_cat(ArrayToTupple(a), 
-						 std::make_tuple(std::forward< ArgsT >(args)...)))) {}
+                                                          std::make_tuple(std::forward< ArgsT >(args)...)))) {}
 ```
 
 Note the `explicit` keyword.
@@ -238,7 +238,7 @@ Construct an `Array< T, N, A >` from a `Array< FromT, N, A >` or `Array< FromT, 
 
 ```c++
 template< typename FromT, size_t FromA, 
-		  typename = std::enable_if_t< std::is_convertible_v< FromT, T > > >
+          typename = std::enable_if_t< std::is_convertible_v< FromT, T > > >
 constexpr explicit Array(const Array< FromT, N, FromA >& a) noexcept
 	: std::array< T, N >(StaticCastArray< T >(a)) {}
 ```
