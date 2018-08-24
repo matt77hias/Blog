@@ -100,12 +100,12 @@ ProxyPtr(ProxyPtr&& ptr) noexcept
     : m_getter(std::move(ptr.m_getter)) {}
 
 template< typename FromT, 
-	  typename = std::enable_if_t< std::is_convertible_v< FromT*, T* > > >
+          typename = std::enable_if_t< std::is_convertible_v< FromT*, T* > > >
 ProxyPtr(const ProxyPtr< FromT >& ptr) noexcept
     : m_getter(ptr.m_getter) {}
 
 template< typename FromT, 
-	  typename = std::enable_if_t< std::is_convertible_v< FromT*, T* > > >
+          typename = std::enable_if_t< std::is_convertible_v< FromT*, T* > > >
 ProxyPtr(ProxyPtr< FromT >&& ptr) noexcept
     : m_getter(std::move(ptr.m_getter)) {}
 ```
