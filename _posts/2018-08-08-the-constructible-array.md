@@ -90,29 +90,6 @@ constexpr const auto StaticCastArray(const std::array< FromT, N >& a) {
 	return TransformArray(f, a);
 }
 
-template< typename ToT, typename FromT, size_t N >
-constexpr const auto DynamicCastArray(const std::array< FromT, N >& a) {
-	constexpr auto f = [](const FromT& v) {
-		return dynamic_cast< ToT >(v); 
-	};
-	return TransformArray(f, a);
-}
-
-template< typename ToT, typename FromT, size_t N >
-constexpr const auto ConstCastArray(const std::array< FromT, N >& a) {
-	constexpr auto f = [](const FromT& v) {
-		return const_cast< ToT >(v); 
-	};
-	return TransformArray(f, a);
-}
-
-template< typename ToT, typename FromT, size_t N >
-constexpr const auto ReinterpretCastArray(const std::array< FromT, N >& a) {
-	constexpr auto f = [](const FromT& v) {
-		return reinterpret_cast< ToT >(v); 
-	};
-	return TransformArray(f, a);
-}
 ```
 
 Convert `std::array< T , N >` to `std::tupple< T, ..., T >` and vice versa:
