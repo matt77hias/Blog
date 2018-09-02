@@ -89,7 +89,6 @@ constexpr const auto StaticCastArray(const std::array< FromT, N >& a) {
 	};
 	return TransformArray(f, a);
 }
-
 ```
 
 Convert `std::array< T , N >` to `std::tupple< T, ..., T >` and vice versa:
