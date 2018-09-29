@@ -103,7 +103,7 @@ namespace details {
 
 	template< typename T, size_t...I >
 	constexpr const auto ArrayToTupple(const std::array< T, sizeof...(I) >& a, 
-	                                   std::index_sequence< I... >) noexcept {
+	                                   std::index_sequence< I... >) {
 		
 		return std::make_tuple(a[I]...);
 	}
@@ -116,7 +116,7 @@ constexpr const auto TuppleToArray(const std::tuple< T, Ts... >& t) {
 }
 
 template< typename T, size_t N >
-constexpr const auto ArrayToTupple(const std::array< T, N >& a) noexcept {
+constexpr const auto ArrayToTupple(const std::array< T, N >& a) {
 	return details::ArrayToTupple(a, std::make_index_sequence< N >());
 }
 ```
