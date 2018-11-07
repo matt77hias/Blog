@@ -143,6 +143,7 @@ T* Get() const noexcept {
 We override `operator*` and `operator->` to let `ProxyPtr` obtain pointer like behavior:
 
 ```c++
+[[nodiscard]]
 T& operator*() const noexcept {
     return *Get();
 }
@@ -155,6 +156,7 @@ T* operator->() const noexcept {
 To allow code of the form `if (ptr)` or `if (!ptr)`, we need to allow casting our `ProxyPtr` to `bool`:
 
 ```c++
+[[nodiscard]]
 explicit operator bool() const noexcept {
     return nullptr != Get();
 }
