@@ -63,7 +63,7 @@ Our cone marching distance is initialized to an offset to avoid sampling the sel
 
     distance ← voxel_offset
 
-Marching continues until we reach an accumulated opacity of 1 or more:
+Marching continues until we reach an accumulated opacity of one or more:
 
     while Lv.alpha < 1:
     	compute diameter (i.e. cone voxel footprint)
