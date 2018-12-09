@@ -142,6 +142,7 @@ typename std::enable_if< std::is_same< Bar, ResourceT >::value, ResourceT& >::ty
 int main() {
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
+	return 0;
 }
 ```
 
@@ -180,6 +181,7 @@ std::enable_if_t< std::is_same< Bar, ResourceT >::value, ResourceT& >
 int main() {
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
+	return 0;
 }
 ```
 
@@ -216,6 +218,7 @@ std::enable_if_t< std::is_same_v< Bar, ResourceT >, ResourceT& >
 int main() {
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
+	return 0;
 }
 ```
 **Note** that various [type traits](https://en.cppreference.com/w/cpp/header/type_traits) exist in C++. 
@@ -254,6 +257,7 @@ ResourceT& Create(ConstructorArgsT&&... args) {
 int main() {
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
+	return 0;
 }
 ```
 This looks much more compact, but unfortunately requires us to know all resource types in advance which will not always be the case.
@@ -290,6 +294,7 @@ inline Bar& Create(ConstructorArgsT&&... args) {
 int main() {
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
+	return 0;
 }
 ```
 
@@ -324,6 +329,8 @@ int main() {
     auto j = static_cast< unsigned short >(10);
     auto k = static_cast<   signed char  >(11);
     auto l = static_cast< unsigned char  >(12);
+	
+	return 0;
 }
 ```
 This can become quite verbose when using simple arithmetic functions:
@@ -334,6 +341,8 @@ int main() {
     // Assume that this value is not known at compile time...
     auto value  = static_cast< signed short >(9);
     auto result = std::max(i, static_cast< signed short >(5));
+	
+	return 0;
 }
 ```
 
@@ -361,6 +370,7 @@ void throwing_func() {
 
 int main() {
     execute(throwing_func);
+	return 0;
 }
 ```
 
@@ -401,6 +411,8 @@ int main() {
         (void)key; // Unused
         std::cout << value << std::endl;
     }
+	
+	return 0;
 }
 ```
 Notice that we still need to "use" the key to avoid any warnings regarding unused local variables. 
@@ -420,6 +432,8 @@ int main() {
     for (const auto& [_, value] : g_map) {
         std::cout << value << std::endl;
     }
+	
+	return 0;
 }
 ```
 Of course this will not work since `_` is a valid variable name in C++. 
