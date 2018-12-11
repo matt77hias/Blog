@@ -44,7 +44,7 @@ This virtual method will certainly incur some additional cost at runtime.
 There is an alternative. We can encapsulate all the data we need inside a [`std::function`](http://en.cppreference.com/w/cpp/utility/functional/function).
 
 # ProxyPtr
-I call our universal pointer, `ProxyPtr`, after the [Proxy design pattern](https://en.wikipedia.org/wiki/Proxy_pattern). *(If someone will ever be tempted to add it to the `std`, you may call it std::proxy_ptr inside `<memory>` ;) )*.
+I call our universal pointer, `ProxyPtr`, after the [Proxy design pattern](https://en.wikipedia.org/wiki/Proxy_pattern). *(If someone will ever be tempted to add it to the `std`, you may name it std::proxy_ptr inside `<memory>` ;-) )*.
 
 Lets start with the member variables:
 ```c++
