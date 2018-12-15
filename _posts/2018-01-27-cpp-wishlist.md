@@ -4,7 +4,7 @@ title:  "C++ Wishlist"
 date:   2018-01-27
 ---
 
-This post contains a running list of C++ language features and standard library (`std`) extensions, I would like to see in future C++ standards (C++20 or beyond).
+This post contains a running list of C++ language features and standard library (i.e. `std`) extensions, I would like to see in future C++ standards (C++20 or beyond).
 
 # Full and partial template specilization for alias templates
 
