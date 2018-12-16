@@ -395,7 +395,7 @@ Unfortunately, there is a rather large caveat when looking at the documentation 
 The aforementioned `GetProcessTimes` is, as one would guess, only available for Windows operating systems. The `std` leaves us thus empty-handed. But even if C's `clock` worked the way it is supposed to on all platforms, we still need a clock inside `<chrono>` with an interface similar to the other clocks (`std::chrono::system_clock`, `std::chrono::steady_clock`, `std::chrono::high_resolution_clock`).
 
 # Unused values in structured bindings
-A typical application of C++17's [structured bindings](http://en.cppreference.com/w/cpp/language/structured_binding) is a ranged-based loop. Not every value obtained from the structured binding, however, needs to be used. For example: consider that we only want to output the values of a map data structure. 
+A typical application of C++17's [structured bindings](http://en.cppreference.com/w/cpp/language/structured_binding) is a [ranged-based for loop](https://en.cppreference.com/w/cpp/language/range-for). Not every value obtained from the structured binding, however, needs to be used. For example: consider that we only want to output the values of a map data structure. 
 So we do not care about the keys. Then we can write something like this:
 
 ```c++
