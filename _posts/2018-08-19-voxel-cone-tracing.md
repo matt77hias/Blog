@@ -45,7 +45,7 @@ The normalized weight of the blue cone about the surface normal is equal to:
 
 $$\hat{W}_{\mathrm{blue}} = \frac{1}{\pi} \int_{0}^{2\pi} \int_{0}^{\frac{\pi}{6}} \cos\!\theta \sin\!\theta \, \mathrm{d}\theta \, \mathrm{d}\phi = \frac{1}{4}.$$
 
-The normalized weight of the other cones is approximately equal to:
+The normalized weight of the other cones is then approximately equal to:
 
 $$\hat{W}_{\mathrm{purple|red|green|orange|brown}} \approx \frac{1-\hat{W}_{\mathrm{blue}}}{5} = \frac{3}{20}.$$
 
