@@ -150,7 +150,7 @@ struct alignas(A) Array : public std::array< T, N > {
 }
 ```
 
-Besides a template parameter, `T`,  for the type and size, `N`, we also provide a template parameter for the alignment, `A`, which by default uses the alignment of `T`. Furthermore, to facilitate our member method declarations (especially the [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae) usage), we do not support `Array< T, N, A >`s with a size of zero or one. Arrays with at most one element have no practical use case in isolation, but can be useful as degenerate cases in order to simplify algorithms implemented via template meta programming. We also explicitly store the size as a class member variable to support structure bindings for derived classes.
+Besides a template parameter, `T`,  for the type and size, `N`, we also provide a template parameter for the alignment, `A`, which by default uses the alignment of `T`. Furthermore, to facilitate our member method declarations (especially the [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae) usage), we do not support `Array< T, N, A >` with a size, `N`, of zero or one. Arrays with at most one element have no practical use case in isolation, but can be useful as degenerate cases in order to simplify algorithms implemented via template meta programming. We also explicitly store the size as a class member variable to support structure bindings for derived classes.
 
 Construct an `Array< T, N, A >` containing `N` elements with the same value:
 
