@@ -37,7 +37,7 @@ $$\hat{W}_j = \frac{1}{\pi} \int_{\Omega_{j}} \left(\hat{n} \cdot \hat\omega_{j,
 
 $$L_o\!\left(x, \hat\omega_o\right) \approx k_d \sum_{j = 1}^{N} \hat{W}_j L_v\!\left(x, \hat\omega_{j}, \alpha_{j}\right).$$
 
-We can use for example the following six cones, each with an aperture of $$\frac{\pi}{6}$$.
+We can use for example, the following six cones, each with an aperture of $$\frac{\pi}{6}$$.
 
 <p align="center"><img src="https://i.stack.imgur.com/TbALB.png"></p>
 
