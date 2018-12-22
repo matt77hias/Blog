@@ -59,7 +59,7 @@ Our accumulated radiance (red, green, blue channels) and opacity (alpha channel)
 
     Lv ← [0, 0, 0, 0]
 
-Our cone marching distance is initialized to an offset to avoid sampling the self emission associated with the emissive surfaces and the direct illumination associated with the point lights twice. We need to basically skip the voxel containing the surface position for which the outgoing radiance needs to be estimated.
+Our cone marching distance is initialized to an offset to avoid sampling the self emission associated with the emissive surfaces and the direct illumination associated with the point lights twice. Basically, we need to skip the voxel containing the surface position for which the outgoing radiance needs to be estimated.
 
     distance ← voxel_offset
 
