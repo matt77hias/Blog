@@ -12,7 +12,7 @@ Originally, we used separate template classes for vectors of different dimension
 
 # Adding dimension and alignment
 
-A first generalization consists of combining all these different template classes into a single template class by adding two additional template parameters: one for the dimension (`size_t`) and one for the alignment (`size_t`). The latter can use a default value equal to the alignment of the template parameter (e.g., `alignas(T)`) in case no value is provided by the programmer. This approach supports vectors of arbitrary dimensions similar to the [Tungsten](https://github.com/tunabrain/tungsten/blob/master/src/core/math/Vec.hpp) renderer. Overloaded arithmetic and logical operators will typically require a `for` loop over the coefficients of each dimension. Since the dimension template parameter is known at compile time, these loops can be unrolled by the compilers.
+A first generalization consists of combining all these different template classes into a single template class by adding two additional template parameters: one for the dimension (`std::size_t`) and one for the alignment (`std::size_t`). The latter can use a default value equal to the alignment of the template parameter (e.g., `alignas(T)`) in case no value is provided by the programmer. This approach supports vectors of arbitrary dimensions similar to the [Tungsten](https://github.com/tunabrain/tungsten/blob/master/src/core/math/Vec.hpp) renderer. Overloaded arithmetic and logical operators will typically require a `for` loop over the coefficients of each dimension. Since the dimension template parameter is known at compile time, these loops can be unrolled by the compilers.
 
 Note that the template class can use a C-style array or `std::array< T, N >` (possibly encapsulating the latter's member methods using proxy member methods as well).
 
@@ -244,7 +244,7 @@ Try it online:
 * [Godbolt](https://tinyurl.com/ybb2lhmn): note the "aggressive" folding of methods in the assembly code :-)
 
 ```c++
-template< typename T, size_t N >
+template< typename T, std::size_t N >
 std::ostream& operator<<(std::ostream& os, const std::array< T, N >& a) {
     for (auto i : a) { 
 		os << i << ' '; 
