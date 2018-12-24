@@ -115,7 +115,7 @@ constexpr const auto TuppleToArray(const std::tuple< T, Ts... >& t) {
 	return details::TuppleToArray< T >(t, std::make_index_sequence< N >());
 }
 
-template< typename T, size_t N >
+template< typename T, std::size_t N >
 constexpr const auto ArrayToTupple(const std::array< T, N >& a) {
 	return details::ArrayToTupple(a, std::make_index_sequence< N >());
 }
