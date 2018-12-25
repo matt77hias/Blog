@@ -99,9 +99,9 @@ static const char* vertexShader =
 [MAGE](https://github.com/matt77hias/MAGE) uses the following clear conventions:
 * All separate colors from material files are expressed in **sRGB** color space;
 * All separate colors from color pickers (i.e. ImGui) are expressed in **sRGB** color space;
-* All separate textures (incl. fonts) are expressed in **linear or sRGB** color space and explicitly encoded as such;
+* All separate textures (including fonts) are expressed in **linear or sRGB** color space and explicitly encoded as such;
 * All internally stored separate colors are expressed in **linear** color space (for both C++ and HLSL). Exceptions: 
   * All internally stored separate colors of ImGui are expressed in **sRGB** color space; 
   * All internally stored separate colors of the voxelization are expressed in **LogLuv** color space;
-* All color calculations (inc. filtering and blending) are performed in **linear** color space (for both C++ and HLSL);
+* All color calculations (including filtering and blending) are performed in **linear** color space (for both C++ and HLSL);
 * Final outputted colors are expressed in a custom **gamma** encoded color space (i.e. brightness adjustment).
