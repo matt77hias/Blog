@@ -12,7 +12,7 @@
 # [blog](https://matt77hias.github.io/blog.html)
 My personal [blog](https://matt77hias.github.io/blog.html).
 
-## Additional licenses:
+## Additional licenses
 * [Google Analytics](https://github.com/GoogleWebComponents/google-analytics) [[Apache License 2.0](https://github.com/GoogleWebComponents/google-analytics/blob/master/LICENSE)]
 * [Hagura](https://github.com/sharu725/hagura) [[MIT License](https://github.com/sharu725/hagura/blob/gh-pages/LICENCE.md)]
 * [Jekyll](https://github.com/jekyll/jekyll) [[MIT License](https://github.com/jekyll/jekyll/blob/master/LICENSE)]
