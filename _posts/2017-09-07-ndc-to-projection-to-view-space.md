@@ -5,7 +5,7 @@ date:   2017-10-19
 ---
 
 # Introduction
-In [deferred shading](https://en.wikipedia.org/wiki/Deferred_shading), geometrical (normal, depth) and material data is stored in a GBuffer in a first pass. 
+In [deferred shading](https://en.wikipedia.org/wiki/Deferred_shading), geometrical (e.g., normal, depth) and material data is stored in a GBuffer in a first pass. 
 The actual lighting takes place in a second pass based on the data stored in the GBuffer.
 With regard to geometrical data, we minimally need a surface position and normal, both expressed in camera or world space coordinates depending on the space used for lighting calculations. 
 There is no need, however, for storing an explicit surface position in the GBuffer (and thus wasting valuable memory resources and bandwidth), since this surface position can be reconstructed.
