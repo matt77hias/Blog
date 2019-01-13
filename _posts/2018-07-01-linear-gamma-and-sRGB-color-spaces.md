@@ -96,7 +96,7 @@ static const char* vertexShader =
 ```
 
 ## MAGE
-[MAGE](https://github.com/matt77hias/MAGE) uses the following clear conventions:
+[MAGE](https://github.com/matt77hias/MAGE) uses the following conventions:
 * All separate colors from material files are expressed in **sRGB** color space;
 * All separate colors from color pickers (i.e. ImGui) are expressed in **sRGB** color space;
 * All separate textures (including fonts) are expressed in **linear or sRGB** color space and explicitly encoded as such;
