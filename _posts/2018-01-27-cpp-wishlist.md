@@ -30,29 +30,33 @@ Lets assume that we want to convert 32-bit numeric values (unsigned/signed integ
 In order to specify this mapping in C++, we can use a class template that will be specialized for each element of the mapping:
 
 ```c++
-#include <stdint.h>
+#include <cstdint>
 
 //  int32_t maps to  int64_t
 // uint32_t maps to uint64_t
 //    float maps to double
 
 template< typename T >
-struct ReturnType {
+struct ReturnType
+{
     using type = T;
 };
 
 template<>
-struct ReturnType< int32_t > {
-    using type = int64_t;
+struct ReturnType< std::int32_t >
+{
+    using type = std::int64_t;
 };
 
 template<>
-struct ReturnType< uint32_t > {
-    using type = uint64_t;
+struct ReturnType< std::uint32_t >
+{
+    using type = std::uint64_t;
 };
 
 template<>
-struct ReturnType< float > {
+struct ReturnType< float >
+{
     using type = double;
 };
 
@@ -60,7 +64,8 @@ template< typename T >
 using return_t = typename ReturnType< T >::type;
 
 template< typename T >
-return_t< T > convert(T value) {
+return_t< T > convert(T value)
+{
     return return_t< T >(value);
 }
 ```
@@ -72,7 +77,7 @@ This code seems pretty verbose for what it actually tries to achieve (e.g., why 
 Ideally, we would like to write something like this:
 
 ```c++
-#include <stdint.h>
+#include <cstdint>
 
 //  int32_t maps to  int64_t
 // uint32_t maps to uint64_t
@@ -82,16 +87,17 @@ template< typename T >
 using return_t = T;
 
 template<>
-using return_t< int32_t > = int64_t;
+using return_t< std::int32_t > = std::int64_t;
 
 template<>
-using return_t< uint32_t > = uint64_t;
+using return_t< std::uint32_t > = std::uint64_t;
 
 template<>
 using return_t< float > = double;
 
 template< typename T >
-return_t< T > convert(T value) {
+return_t< T > convert(T value)
+{
     return return_t< T >(value);
 }
 ```
@@ -113,10 +119,12 @@ If we use [SFINAE](http://en.cppreference.com/w/cpp/language/sfinae) on the retu
 #include <type_traits>
 #include <vector>
 
-struct Foo {
+struct Foo
+{
     // Contains various constructors
 };
-struct Bar {
+struct Bar
+{
     // Contains various constructors
 };
 
@@ -125,21 +133,22 @@ std::vector< Bar > g_bars;
 
 template< typename ResourceT, typename... ConstructorArgsT >
 typename std::enable_if< std::is_same< Foo, ResourceT >::value, ResourceT& >::type 
-    Create(ConstructorArgsT&&... args) {
-    
+    Create(ConstructorArgsT&&... args)
+{
     g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
     return *g_foos.end();
 }
 
 template< typename ResourceT, typename... ConstructorArgsT >
 typename std::enable_if< std::is_same< Bar, ResourceT >::value, ResourceT& >::type 
-    Create(ConstructorArgsT&&... args) {
-    
+    Create(ConstructorArgsT&&... args)
+{
     g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
     return *g_bars.end();
 }
 
-int main() {
+int main()
+{
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
 	return 0;
@@ -152,10 +161,12 @@ int main() {
 #include <type_traits>
 #include <vector>
 
-struct Foo {
+struct Foo
+{
     // Contains various constructors
 };
-struct Bar {
+struct Bar
+{
     // Contains various constructors
 };
 
@@ -164,21 +175,22 @@ std::vector< Bar > g_bars;
 
 template< typename ResourceT, typename... ConstructorArgsT >
 std::enable_if_t< std::is_same< Foo, ResourceT >::value, ResourceT& > 
-    Create(ConstructorArgsT&&... args) {
-    
+    Create(ConstructorArgsT&&... args)
+{
     g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
     return *g_foos.end();
 }
 
 template< typename ResourceT, typename... ConstructorArgsT >
 std::enable_if_t< std::is_same< Bar, ResourceT >::value, ResourceT& > 
-    Create(ConstructorArgsT&&... args) {
-    
+    Create(ConstructorArgsT&&... args)
+{
     g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
     return *g_bars.end();
 }
 
-int main() {
+int main()
+{
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
 	return 0;
@@ -191,10 +203,12 @@ int main() {
 #include <type_traits>
 #include <vector>
 
-struct Foo {
+struct Foo
+{
     // Contains various constructors
 };
-struct Bar {
+struct Bar
+{
     // Contains various constructors
 };
 
@@ -203,19 +217,20 @@ std::vector< Bar > g_bars;
 
 template< typename ResourceT, typename... ConstructorArgsT >
 std::enable_if_t< std::is_same_v< Foo, ResourceT >, ResourceT& > 
-    Create(ConstructorArgsT&&... args) {
-    
+    Create(ConstructorArgsT&&... args)
+{
     return g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
 template< typename ResourceT, typename... ConstructorArgsT >
 std::enable_if_t< std::is_same_v< Bar, ResourceT >, ResourceT& > 
-    Create(ConstructorArgsT&&... args) {
-    
+    Create(ConstructorArgsT&&... args)
+{
     return g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
-int main() {
+int main()
+{
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
 	return 0;
@@ -234,10 +249,12 @@ Alternatively, we can use C++17's [`if constexpr`](http://en.cppreference.com/w/
 #include <type_traits>
 #include <vector>
 
-struct Foo {
+struct Foo
+{
     // Contains various constructors
 };
-struct Bar {
+struct Bar
+{
     // Contains various constructors
 };
 
@@ -245,16 +262,20 @@ std::vector< Foo > g_foos;
 std::vector< Bar > g_bars;
 
 template< typename ResourceT, typename... ConstructorArgsT >
-ResourceT& Create(ConstructorArgsT&&... args) {
-    if constexpr (std::is_same_v< Foo, ResourceT >) {
+ResourceT& Create(ConstructorArgsT&&... args)
+{
+    if constexpr (std::is_same_v< Foo, ResourceT >)
+	{
         return g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
     } 
-    else if constexpr (std::is_same_v< Bar, ResourceT >) {
+    else if constexpr (std::is_same_v< Bar, ResourceT >)
+	{
         return g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
     } 
 }
 
-int main() {
+int main()
+{
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
 	return 0;
@@ -268,10 +289,12 @@ Ideally, we would like to write something like this:
 #include <type_traits>
 #include <vector>
 
-struct Foo {
+struct Foo
+{
     // Contains various constructors
 };
-struct Bar {
+struct Bar
+{
     // Contains various constructors
 };
 
@@ -282,16 +305,19 @@ template< typename ResourceT, typename... ConstructorArgsT >
 ResourceT& Create(ConstructorArgsT&&... args);
 
 template< typename... ConstructorArgsT >
-inline Foo& Create(ConstructorArgsT&&... args) {
+inline Foo& Create(ConstructorArgsT&&... args)
+{
     return g_foos.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
 template< typename... ConstructorArgsT >
-inline Bar& Create(ConstructorArgsT&&... args) {
+inline Bar& Create(ConstructorArgsT&&... args)
+{
     return g_bars.emplace_back(std::forward< ConstructorArgsT >(args)...);
 }
 
-int main() {
+int main()
+{
     auto& foo = Create< Foo >();
     auto& bar = Create< Bar >();
 	return 0;
@@ -314,7 +340,8 @@ So the only reason I can imagine for not adding anonymous structs to the C++ sta
 There exist no integer suffix for (un)signed chars and (un)signed shorts. 
 Therefore, (implicit/explicit) casts are required to initialize these types:
 ```c++
-int main() {
+int main()
+{
     auto a = 1;    //   signed int
     auto b = 2u;   // unsigned int
     auto c = 3l;   //   signed long
@@ -337,7 +364,8 @@ This can become quite verbose when using simple arithmetic functions:
 ```c++
 #include <algorithm>
 
-int main() {
+int main()
+{
     // Assume that this value is not known at compile time...
     auto value  = static_cast< signed short >(9);
     auto result = std::max(i, static_cast< signed short >(5));
@@ -360,15 +388,18 @@ Ideally, we want the compiler to reject the following code:
 ```c++
 #include <functional>
 
-void execute(std::function< void() noexcept > func) { 
+void execute(std::function< void() noexcept > func)
+{ 
     func(); 
 }
 
-void throwing_func() { 
+void throwing_func()
+{ 
     throw 3; 
 }
 
-int main() {
+int main()
+{
     execute(throwing_func);
 	return 0;
 }
@@ -404,10 +435,12 @@ So we do not care about the keys. Then we can write something like this:
 
 std::map< int, char > g_map;
 
-int main() {
+int main()
+{
     g_map = { {0, 'a'}, {1, 'b'}, {2, 'c'} };
     
-    for (const auto& [key, value] : g_map) {
+    for (const auto& [key, value] : g_map)
+	{
         (void)key; // Unused
         std::cout << value << std::endl;
     }
@@ -426,10 +459,12 @@ Maybe in a Python kind of fashion:
 
 std::map< int, char > g_map;
 
-int main() {
+int main()
+{
     g_map = { {0, 'a'}, {1, 'b'}, {2, 'c'} };
     
-    for (const auto& [_, value] : g_map) {
+    for (const auto& [_, value] : g_map)
+	{
         std::cout << value << std::endl;
     }
 	

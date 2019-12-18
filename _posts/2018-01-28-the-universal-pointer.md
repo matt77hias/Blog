@@ -49,7 +49,8 @@ I call our universal pointer, `ProxyPtr`, after the [Proxy design pattern](https
 Lets start with the member variables:
 ```c++
 template< typename T >
-class ProxyPtr final {
+class ProxyPtr final
+{
 
 public:
   
@@ -64,50 +65,59 @@ Lets continue with the constructors, destructors and assignment operators. We ha
 
 ```c++
 ProxyPtr() noexcept 
-    : ProxyPtr([]() noexcept -> T* {
+    : ProxyPtr([]() noexcept -> T*
+	{
         return nullptr;
-    }) {}
+    })
+	{}
 ```
     
 We have a constructor accepting an argument of the `nullptr` type, [`nullptr_t`](http://en.cppreference.com/w/cpp/types/nullptr_t) (`typedef decltype(nullptr) nullptr_t;`). This way we can write the following code: `ProxyPtr< Widget > ptr = nullptr;`. We do not need to use the argument itself, since we know that `m_getter` needs to return `nullptr` in this case:
 
 ```c++
 ProxyPtr(std::nullptr_t) noexcept
-    : ProxyPtr() {}
-
+    : ProxyPtr()
+	{}
 ```
 
 Furthermore, we provide a constructor accepting a `std::function` and a constructor for commonly used collections such as a C-style array, `std::array` and `std::vector` that will create the `std::function` for us:
 
 ```c++
 explicit ProxyPtr(std::function< T*() > getter) noexcept
-    : m_getter(std::move(getter)) {}
+    : m_getter(std::move(getter))
+	{}
 
 template< typename ContainerT >
 explicit ProxyPtr(ContainerT& container, size_t index) noexcept
-    : ProxyPtr([&container, index]() noexcept {
+    : ProxyPtr([&container, index]() noexcept
+	{
         return &container[index];
-    }) {}
+    })
+	{}
 ```
 
 We provide a copy and move constructor, and a generalized copy and move constructor to facilitate casting from child to base `ProxyPtr`s:
 
 ```c++
 ProxyPtr(const ProxyPtr& ptr) noexcept
-    : m_getter(ptr.m_getter) {}
+    : m_getter(ptr.m_getter)
+	{}
 		
 ProxyPtr(ProxyPtr&& ptr) noexcept
-    : m_getter(std::move(ptr.m_getter)) {}
+    : m_getter(std::move(ptr.m_getter))
+	{}
 
 template< typename FromT, 
           typename = std::enable_if_t< std::is_convertible_v< FromT*, T* > > >
 ProxyPtr(const ProxyPtr< FromT >& ptr) noexcept
-    : m_getter(ptr.m_getter) {}
+    : m_getter(ptr.m_getter)
+	{}
 
 template< typename FromT, 
           typename = std::enable_if_t< std::is_convertible_v< FromT*, T* > > >
 ProxyPtr(ProxyPtr< FromT >&& ptr) noexcept
-    : m_getter(std::move(ptr.m_getter)) {}
+    : m_getter(std::move(ptr.m_getter))
+	{}
 ```
 
 The destructor, copy and move assignment operator are defined as follows:
@@ -115,12 +125,14 @@ The destructor, copy and move assignment operator are defined as follows:
 ```c++
 ~ProxyPtr() = default;
 
-ProxyPtr& operator=(const ProxyPtr& ptr) noexcept {
+ProxyPtr& operator=(const ProxyPtr& ptr) noexcept
+{
     m_getter = ptr.m_getter;
     return *this;
 }
 		
-ProxyPtr& operator=(ProxyPtr&& ptr) noexcept {
+ProxyPtr& operator=(ProxyPtr&& ptr) noexcept
+{
     m_getter = std::move(ptr.m_getter);
     return *this;
 }
@@ -135,7 +147,8 @@ For ease of use, we provide a member method to return a raw pointer (similar to 
 
 ```c++
 [[nodiscard]]
-T* Get() const noexcept {
+T* Get() const noexcept
+{
     return m_getter();
 }
 ```
@@ -144,11 +157,13 @@ We override `operator*` and `operator->` to let `ProxyPtr` obtain pointer like b
 
 ```c++
 [[nodiscard]]
-T& operator*() const noexcept {
+T& operator*() const noexcept
+{
     return *Get();
 }
 
-T* operator->() const noexcept {
+T* operator->() const noexcept
+{
     return Get();
 }
 ```
@@ -157,7 +172,8 @@ To allow code of the form `if (ptr)` or `if (!ptr)`, we need to allow casting ou
 
 ```c++
 [[nodiscard]]
-explicit operator bool() const noexcept {
+explicit operator bool() const noexcept
+{
     return nullptr != Get();
 }
 ```
@@ -167,13 +183,15 @@ To allow `ProxyPtr` comparisons of the same or different types, we provide a gen
 ```c++
 template< typename U >
 [[nodiscard]]
-bool operator==(const ProxyPtr< U >& rhs) const noexcept {
+bool operator==(const ProxyPtr< U >& rhs) const noexcept
+{
     return Get() == rhs.Get(); 
 }
 		
 template< typename U >
 [[nodiscard]]
-bool operator!=(const ProxyPtr< U >& rhs) const noexcept {
+bool operator!=(const ProxyPtr< U >& rhs) const noexcept
+{
     return !(*this == rhs);
 }
 ```
@@ -183,25 +201,29 @@ To avoid needless invocations of our constructor accepting an argument of type `
 ```c++
 template< typename T >
 [[nodiscard]]
-inline bool operator==(const ProxyPtr< T >& lhs, std::nullptr_t) noexcept {
+inline bool operator==(const ProxyPtr< T >& lhs, std::nullptr_t) noexcept
+{
     return !bool(lhs);
 }
 
 template< typename T >
 [[nodiscard]]
-inline bool operator!=(const ProxyPtr< T >& lhs, std::nullptr_t) noexcept {
+inline bool operator!=(const ProxyPtr< T >& lhs, std::nullptr_t) noexcept
+{
     return bool(lhs);
 }
 
 template< typename T >
 [[nodiscard]]
-inline bool operator==(std::nullptr_t, const ProxyPtr< T >& rhs) noexcept {
+inline bool operator==(std::nullptr_t, const ProxyPtr< T >& rhs) noexcept
+{
     return !bool(rhs);
 }
 
 template< typename T >
 [[nodiscard]]
-inline bool operator!=(std::nullptr_t, const ProxyPtr< T >& rhs) noexcept {
+inline bool operator!=(std::nullptr_t, const ProxyPtr< T >& rhs) noexcept
+{
     return bool(rhs);
 }
 ```
@@ -212,57 +234,73 @@ For this purpose, we provide some functions similar to their equivalents of [`st
 
 ```c++
 template< typename ToT, typename FromT >
-inline ProxyPtr< ToT > static_pointer_cast(const ProxyPtr< FromT >& ptr) noexcept {
-	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept {
+inline ProxyPtr< ToT > static_pointer_cast(const ProxyPtr< FromT >& ptr) noexcept
+{
+	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept
+	{
 		return static_cast< ToT* >(getter());
 	});
 }
 
 template< typename ToT, typename FromT >
-inline ProxyPtr< ToT > static_pointer_cast(ProxyPtr< FromT >&& ptr) noexcept {
-	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept {
+inline ProxyPtr< ToT > static_pointer_cast(ProxyPtr< FromT >&& ptr) noexcept
+{
+	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept
+	{
 		return static_cast< ToT* >(getter());
 	});
 }
 
 template< typename ToT, typename FromT >
-inline ProxyPtr< ToT > dynamic_pointer_cast(const ProxyPtr< FromT >& ptr) noexcept {
-	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept {
+inline ProxyPtr< ToT > dynamic_pointer_cast(const ProxyPtr< FromT >& ptr) noexcept
+{
+	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept
+	{
 		return dynamic_cast< ToT* >(getter());
 	});
 }
 
 template< typename ToT, typename FromT >
-inline ProxyPtr< ToT > dynamic_pointer_cast(ProxyPtr< FromT >&& ptr) noexcept {
-	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept {
+inline ProxyPtr< ToT > dynamic_pointer_cast(ProxyPtr< FromT >&& ptr) noexcept
+{
+	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept
+	{
 		return dynamic_cast< ToT* >(getter());
 	});
 }
 
 template< typename ToT, typename FromT >
-inline ProxyPtr< ToT > const_pointer_cast(const ProxyPtr< FromT >& ptr) noexcept {
-	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept {
+inline ProxyPtr< ToT > const_pointer_cast(const ProxyPtr< FromT >& ptr) noexcept
+{
+	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept
+	{
 		return const_cast< ToT* >(getter());
 	});
 }
 
 template< typename ToT, typename FromT >
-inline ProxyPtr< ToT > const_pointer_cast(ProxyPtr< FromT >&& ptr) noexcept {
-	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept {
+inline ProxyPtr< ToT > const_pointer_cast(ProxyPtr< FromT >&& ptr) noexcept
+{
+	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept
+	{
 		return const_cast< ToT* >(getter());
 	});
 }
 
 template< typename ToT, typename FromT >
-inline ProxyPtr< ToT > reinterpret_pointer_cast(const ProxyPtr< FromT >& ptr) noexcept {
-	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept {
+inline ProxyPtr< ToT > reinterpret_pointer_cast(const ProxyPtr< FromT >& ptr) noexcept
+{
+	return ProxyPtr< ToT >([getter(ptr.m_getter)]() noexcept
+	{
 		return reinterpret_cast< ToT* >(getter());
 	});
 }
 
 template< typename ToT, typename FromT >
-inline ProxyPtr< ToT > reinterpret_pointer_cast(ProxyPtr< FromT >&& ptr) noexcept {
-	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept {
+inline ProxyPtr< ToT > reinterpret_pointer_cast(ProxyPtr< FromT >&& ptr) noexcept
+{
+	return ProxyPtr< ToT >([getter(std::move(ptr.m_getter))]() noexcept
+	{
 		return reinterpret_cast< ToT* >(getter());
 	});
 }

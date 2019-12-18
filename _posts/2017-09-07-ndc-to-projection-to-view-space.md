@@ -57,7 +57,8 @@ p_{y}^\mathrm{ndc} &= \frac{1}{Y} \frac{p_{y}^\mathrm{cam}}{p_{z}^\mathrm{cam}}
  */
 [[nodiscard]]
 inline const XMVECTOR XM_CALLCONV 
-    GetCameraPositionConstructionValues(FXMMATRIX projection_matrix) noexcept {
+    GetCameraPositionConstructionValues(FXMMATRIX projection_matrix) noexcept
+{
 
     //          [ 1/X  0   0  0 ]
     // p_camera [  0  1/Y  0  0 ] = [p_camera.x 1/X, p_camera.y 1/Y, p_camera.z (-W) + Z, p_camera.z] = p_proj
@@ -125,7 +126,8 @@ p_{y}^\mathrm{ndc} &= \frac{1}{Y} p_{y}^\mathrm{cam}
  */
 [[nodiscard]]
 inline const XMVECTOR XM_CALLCONV 
-    GetCameraPositionConstructionValues(FXMMATRIX projection_matrix) noexcept {
+    GetCameraPositionConstructionValues(FXMMATRIX projection_matrix) noexcept
+{
 
     //          [ 1/X  0   0  0 ]
     // p_camera [  0  1/Y  0  0 ] = [p_camera.x 1/X, p_camera.y 1/Y, p_camera.z 1/Z -W, 1] = p_proj = p_ndc
@@ -174,7 +176,8 @@ $$\begin{align}
  */
 [[nodiscard]]
 virtual const XMMATRIX XM_CALLCONV 
-    GetProjectionToCameraMatrix() const noexcept override {
+    GetProjectionToCameraMatrix() const noexcept override
+{
     
     const auto camera_to_projection = GetCameraToProjectionMatrix();
 	
@@ -183,7 +186,8 @@ virtual const XMMATRIX XM_CALLCONV
     const auto m23 = 1.0f / XMVectorGetZ(camera_to_projection.r[3]);
     const auto m33 = -XMVectorGetZ(camera_to_projection.r[2]) * m23;
 
-    return {
+    return
+	{
         m00, 0.0f, 0.0f, 0.0f,
         0.0f,  m11, 0.0f, 0.0f,
         0.0f, 0.0f, 0.0f,  m23,
@@ -215,7 +219,8 @@ $$\begin{align}
  */
 [[nodiscard]]
 virtual const XMMATRIX XM_CALLCONV 
-    GetProjectionToCameraMatrix() const noexcept override {
+    GetProjectionToCameraMatrix() const noexcept override
+{
 	
     const auto camera_to_projection = GetCameraToProjectionMatrix();
 	
@@ -224,7 +229,8 @@ virtual const XMMATRIX XM_CALLCONV
     const auto m22 = 1.0f / XMVectorGetZ(camera_to_projection.r[2]);
     const auto m32 = -XMVectorGetZ(camera_to_projection.r[3]) * m22;
 
-    return {
+    return
+	{
          m00, 0.0f, 0.0f, 0.0f,
         0.0f,  m11, 0.0f, 0.0f,
         0.0f, 0.0f,  m22, 0.0f,

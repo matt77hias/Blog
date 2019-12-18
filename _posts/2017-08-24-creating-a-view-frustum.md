@@ -82,7 +82,8 @@ If we use an `SIMD` library such as `DirectXMath`, matrices are represented in r
  @param[in]		transform
 			The transform.
  */
-BoundingFrustum::BoundingFrustum(CXMMATRIX transform) noexcept {
+BoundingFrustum::BoundingFrustum(CXMMATRIX transform) noexcept
+{
 	const auto C = XMMatrixTranspose(transform);
 
 	// Extract the view frustum planes from the given transform.

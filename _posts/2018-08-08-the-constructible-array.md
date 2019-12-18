@@ -35,16 +35,19 @@ Unfortunately, `std::array` has no constructors itself, but rather uses [aggrega
 Construct an `std::array< T, N >` containing `N` elements with the same value:
 
 ```c++
-namespace details {
+namespace details
+{
 
 	template< typename T, std::size_t...I >
-	constexpr const auto FillArray(const T& value, std::index_sequence< I... >) {
+	constexpr const auto FillArray(const T& value, std::index_sequence< I... >)
+	{
 		return std::array< T, sizeof...(I) >{ (static_cast< void >(I), value)... };
 	}
 }
 
 template< typename T, std::size_t N >
-constexpr const auto FillArray(const T& value) {
+constexpr const auto FillArray(const T& value)
+{
 	return details::FillArray(value, std::make_index_sequence< N >());
 }
 ```
@@ -52,18 +55,20 @@ constexpr const auto FillArray(const T& value) {
 Construct an `std::array< T, ToN >` from a smaller `std::array< T, FromN >` by appending `ToN-FromN` zero-initialized values:
 
 ```c++
-namespace details {
-
+namespace details
+{
 	template< std::size_t ToN, typename T, std::size_t...I >
 	constexpr const auto EnlargeArray(const std::array< T, sizeof...(I) >& a, 
-	                                  std::index_sequence< I... >) {
+	                                  std::index_sequence< I... >)
+	{
 		
 		return std::array< T, ToN >{ a[I]... };
 	}
 }
 
 template< std::size_t ToN, typename T, std::size_t FromN >
-constexpr const auto EnlargeArray(const std::array< T, FromN >& a) {
+constexpr const auto EnlargeArray(const std::array< T, FromN >& a)
+{
 	return details::EnlargeArray< ToN >(a, std::make_index_sequence< FromN >());
 }
 ```
@@ -71,52 +76,59 @@ constexpr const auto EnlargeArray(const std::array< T, FromN >& a) {
 Construct an `std::array< ToT, N >` from a `std::array< FromT, N >` by transforming (i.e. map function) all elements of the array:
 
 ```c++
-namespace details {
+namespace details
+{
+	template< typename ActionT, typename FromT, std::size_t...I >
+	constexpr const auto TransformArray(ActionT&& action, 
+										const std::array< FromT, sizeof...(I) >& a, 
+										std::index_sequence< I... >)
+	{
+		
+		using ToT = decltype(std::declval< ActionT >()(std::declval< FromT >()));
+		return std::array< ToT, sizeof...(I) >{ action(a[I])... };
+	}
 
-template< typename ActionT, typename FromT, std::size_t...I >
-constexpr const auto TransformArray(ActionT&& action, 
-                                    const std::array< FromT, sizeof...(I) >& a, 
-									std::index_sequence< I... >) {
-	
-	using ToT = decltype(std::declval< ActionT >()(std::declval< FromT >()));
-	return std::array< ToT, sizeof...(I) >{ action(a[I])... };
-}
-
-template< typename ToT, typename FromT, std::size_t N >
-constexpr const auto StaticCastArray(const std::array< FromT, N >& a) {
-	constexpr auto f = [](const FromT& v) {
-		return static_cast< ToT >(v); 
-	};
-	return TransformArray(f, a);
+	template< typename ToT, typename FromT, std::size_t N >
+	constexpr const auto StaticCastArray(const std::array< FromT, N >& a)
+	{
+		constexpr auto f = [](const FromT& v)
+		{
+			return static_cast< ToT >(v); 
+		};
+		return TransformArray(f, a);
+	}
 }
 ```
 
 Convert `std::array< T , N >` to `std::tupple< T, ..., T >` and vice versa:
 
 ```c++
-namespace details {
-
+namespace details
+{
 	template< typename T, typename TupleT, std::size_t... I >
-	constexpr const auto TuppleToArray(const TupleT& t, std::index_sequence< I... >) {
+	constexpr const auto TuppleToArray(const TupleT& t, std::index_sequence< I... >)
+	{
 		return std::array< T, sizeof...(I) >{ std::get< I >(t)... };
 	}
 
 	template< typename T, std::size_t...I >
 	constexpr const auto ArrayToTupple(const std::array< T, sizeof...(I) >& a, 
-	                                   std::index_sequence< I... >) {
-		
+	                                   std::index_sequence< I... >)
+	{
 		return std::make_tuple(a[I]...);
 	}
 }
 
 template< typename T, typename... Ts >
-constexpr const auto TuppleToArray(const std::tuple< T, Ts... >& t) {
+constexpr const auto TuppleToArray(const std::tuple< T, Ts... >& t)
+{
 	constexpr auto N = sizeof...(Ts) + 1u;
 	return details::TuppleToArray< T >(t, std::make_index_sequence< N >());
 }
 
 template< typename T, std::size_t N >
-constexpr const auto ArrayToTupple(const std::array< T, N >& a) {
+constexpr const auto ArrayToTupple(const std::array< T, N >& a)
+{
 	return details::ArrayToTupple(a, std::make_index_sequence< N >());
 }
 ```
@@ -126,13 +138,15 @@ Our `std::array< T, N >` wrapper, `Array< T, N, A >` using inheritance:
 ```c++
 template< typename T, std::size_t N, std::size_t A = alignof(T), 
           typename = std::enable_if_t< (N > 1) > >
-struct alignas(A) Array : public std::array< T, N > {
+struct alignas(A) Array : public std::array< T, N >
+{
 
 	public:
 		static constexpr std::size_t s_size = N;
 		
 		constexpr Array() noexcept
-			: std::array< T, N >{} {}
+			: std::array< T, N >{}
+		{}
 		
 		...
 		
@@ -156,7 +170,8 @@ Construct an `Array< T, N, A >` containing `N` elements with the same value:
 
 ```c++
 constexpr explicit Array(const T& value) noexcept
-	: std::array< T, N >(FillArray< T, N >(value)) {}
+	: std::array< T, N >(FillArray< T, N >(value))
+	{}
 ```
 
 Construct an `Array< T, N, A >` containing the `N` given values:
@@ -165,7 +180,8 @@ Construct an `Array< T, N, A >` containing the `N` given values:
 template< typename... ArgsT, 
           typename = std::enable_if_t< (N == sizeof...(ArgsT)) > >
 constexpr Array(ArgsT&&... args) noexcept
-	: std::array< T, N >{ std::forward< ArgsT >(args)... } {}
+	: std::array< T, N >{ std::forward< ArgsT >(args)... }
+	{}
 ```
 
 Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, A >` by appending `N-FromN` zero-initialized values:
@@ -174,7 +190,8 @@ Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, A >` by appendi
 template< std::size_t FromN, 
           typename = std::enable_if_t< (FromN < N) > >
 constexpr Array(const Array< T, FromN, A >& a) noexcept
-	: std::array< T, N >(EnlargeArray< N >(a)) {}
+	: std::array< T, N >(EnlargeArray< N >(a))
+	{}
 ```
 
 Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, FromA >` by appending `N-FromN` zero-initialized values:
@@ -183,7 +200,8 @@ Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, FromA >` by app
 template< std::size_t FromN, std::size_t FromA,
           typename = std::enable_if_t< (FromN < N && FromA != A) > >
 constexpr explicit Array(const Array< T, FromN, FromA >& a) noexcept
-	: std::array< T, N >(EnlargeArray< N >(a)) {}
+	: std::array< T, N >(EnlargeArray< N >(a))
+	{}
 ```
 
 Note the `explicit` keyword.
@@ -195,7 +213,8 @@ template< std::size_t FromN, typename... ArgsT,
           typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N) > >
 constexpr Array(const Array< T, FromN, A >& a, ArgsT&&... args) noexcept
 	: std::array< T, N >(TuppleToArray(std::tuple_cat(ArrayToTupple(a), 
-                                                      std::make_tuple(std::forward< ArgsT >(args)...)))) {}
+                                                      std::make_tuple(std::forward< ArgsT >(args)...))))
+	{}
 ```
 
 Construct an `Array< T, N, A >` from a smaller `Array< T, FromN, FromA >` and `N-FromN` given values:
@@ -205,7 +224,8 @@ template< std::size_t FromN, std::size_t FromA, typename... ArgsT,
           typename = std::enable_if_t< (FromN < N && (FromN + sizeof...(ArgsT)) == N && FromA != A) > >
 constexpr explicit Array(const Array< T, FromN, FromA >& a, ArgsT&&... args) noexcept
 	: std::array< T, N >(TuppleToArray(std::tuple_cat(ArrayToTupple(a), 
-                                                      std::make_tuple(std::forward< ArgsT >(args)...)))) {}
+                                                      std::make_tuple(std::forward< ArgsT >(args)...))))
+	{}
 ```
 
 Note the `explicit` keyword.
@@ -216,7 +236,8 @@ Construct an `Array< T, N, A >` from a `Array< FromT, N, A >` or `Array< FromT, 
 template< typename FromT, std::size_t FromA, 
           typename = std::enable_if_t< std::is_convertible_v< FromT, T > > >
 constexpr explicit Array(const Array< FromT, N, FromA >& a) noexcept
-	: std::array< T, N >(StaticCastArray< T >(a)) {}
+	: std::array< T, N >(StaticCastArray< T >(a))
+	{}
 ```
 
 Note the `explicit` keyword.
@@ -224,14 +245,17 @@ Note the `explicit` keyword.
 Finally, we add structure binding support for our `Array< T, N, A >` in the `std`:
 
 ```c++
-namespace std {
+namespace std
+{
 
 	template< typename T, size_t N, size_t A >
 	struct tuple_size< Array< T, N, A > >
-		: public integral_constant< size_t, N > {};
+		: public integral_constant< size_t, N >
+	{};
 
 	template< size_t I, typename T, size_t N, size_t A >
-	struct tuple_element< I, Array< T, N, A > > {
+	struct tuple_element< I, Array< T, N, A > >
+	{
 		using type = T;
 	};
 }
@@ -245,14 +269,17 @@ Try it online:
 
 ```c++
 template< typename T, std::size_t N >
-std::ostream& operator<<(std::ostream& os, const std::array< T, N >& a) {
-    for (auto i : a) { 
+std::ostream& operator<<(std::ostream& os, const std::array< T, N >& a)
+{
+    for (auto i : a)
+	{ 
 		os << i << ' '; 
 	}
     return os << '\n';
 }
 
-int main() {
+int main()
+{
     constexpr Array< float, 5 > a;
     std::cout << a; // 0 0 0 0 0
   
