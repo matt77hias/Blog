@@ -142,3 +142,50 @@ The trick consists of ignoring any logging. For expressions that are not evaluat
 	#define MAGE_ASSERT MAGE_UNEVALUATED_EXPRESSION
 #endif // MAGE_DEBUG
 ```
+
+In addition, we can define a non-conditional fail:
+
+```c++
+//-----------------------------------------------------------------------------
+// Engine Defines: Fail
+//-----------------------------------------------------------------------------
+
+#define MAGE_FAIL(...)                                                        \
+	do                                                                        \
+	{                                                                         \
+		if (std::is_constant_evaluated())                                     \
+		{                                                                     \
+			std::abort();                                                     \
+		}                                                                     \
+		else                                                                  \
+		{                                                                     \
+			::mage::details::LogFail(MAGE_SOURCE_LOCATION, __VA_ARGS__);      \
+			MAGE_BREAK;                                                       \
+		}                                                                     \
+	}                                                                         \
+	while(false)
+```
+
+Which can be used for `constexpr` enum-to-enum conversion functions:
+
+```c++
+[[nodiscard]]
+constexpr D3D12_FILL_MODE
+	Convert(RasterizerState::FillMode input) noexcept
+{
+	switch (input)
+	{
+
+	using enum RasterizerState::FillMode;
+
+	case Solid:
+		return D3D12_FILL_MODE_SOLID;
+	case Wireframe:
+		return D3D12_FILL_MODE_WIREFRAME;
+	[[unlikely]] default:
+		MAGE_FAIL("Rasterizer: invalid fill mode: {}",
+				  underlying_cast(input));
+		return {};
+	}
+}
+```
