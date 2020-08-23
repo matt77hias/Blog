@@ -98,7 +98,7 @@ Fortunately, C++20 added [std::is_constant_evaluated](https://en.cppreference.co
 	while(false)
 ```
 
-So what could our custom assert do inside the constant-evaluated context? We cannot use [`assert`](https://en.cppreference.com/w/cpp/error/assert), as Microsoft's STL for example defines it as:
+So what can `MAGE_ENSURE` do inside the constant-evaluated context? We cannot use [`assert`](https://en.cppreference.com/w/cpp/error/assert), as Microsoft's STL for example defines it as:
 
 ```c++
 #ifdef NDEBUG
