@@ -6,12 +6,12 @@ date:   2020-08-25
 
 # MAGE: Asserts
 
-While browsing Microsoft's public [STL](https://github.com/microsoft/STL) implementation, I noticed to my surprise that the `assert` macro ([`<cassert>`](https://en.cppreference.com/w/cpp/header/cassert)) can be evaluated within a constant-evaluated context (e.g., compile-time evaluation). Due to the [Relaxing constraints on constexpr functions](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3652.html), it became possible to use `assert` in `constexpr` functions in C++14 (some [custom assert workarounds](http://ericniebler.com/2014/09/27/assert-and-constexpr-in-cxx11/) are possible in C++11). This is great! On the one hand, more and more functions could be made `constexpr` as newer C++ standards tend to further relax the constraints on `constexpr` functions and tend to make the existing standard library more `constexpr` as well. On the other hand, my mostly used defensive strategy to validate program correctness depends on asserts checking invariants, pre- and post conditions (as opposed to total and defensive programming).
+While browsing Microsoft's public [STL](https://github.com/microsoft/STL) implementation, I noticed to my surprise that the [`assert`](https://en.cppreference.com/w/cpp/error/assert) macro ([`<cassert>`](https://en.cppreference.com/w/cpp/header/cassert)) can be evaluated within a constant-evaluated context (e.g., compile-time evaluation). Due to the [Relaxing constraints on constexpr functions](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3652.html), it became possible to use `assert` in `constexpr` functions in C++14 (some [custom assert workarounds](http://ericniebler.com/2014/09/27/assert-and-constexpr-in-cxx11/) are possible in C++11). This is great! On the one hand, more and more functions could be made `constexpr` as newer C++ standards tend to further relax the constraints on `constexpr` functions and tend to make the existing standard library more `constexpr` as well. On the other hand, my mostly used defensive strategy to validate program correctness depends on asserts checking invariants, pre- and post conditions (as opposed to total and defensive programming).
 
-Unfortunately, MAGE already uses custom asserts (`MAGE_ASSERT`) with logging support through [spdlog](https://github.com/gabime/spdlog), which could not be used in `constexpr` functions. Replacing these with `assert` in `constexpr` functions only is not a viable solution:
+Unfortunately, MAGE already uses custom asserts (`MAGE_ASSERT`) with logging support through [spdlog](https://github.com/gabime/spdlog), which could not be used in `constexpr` functions. Replacing these with [`assert`](https://en.cppreference.com/w/cpp/error/assert) in `constexpr` functions only is not a viable solution:
 * having different assert macros depending on the evaluation context is confusing;
-* when `assert` is not evaluated at compile time, our custom logger is bypassed, since `constexpr` functions are not guaranteed to be evaluated at compile time;
-* `MAGE_ASSERT` is implemented using `MAGE_ENSURE`, which guarantees to evaluate the given expression independent of the configuration (i.e. [`NDEBUG`](https://en.cppreference.com/w/c/error/assert)) compared to `assert`.
+* when [`assert`](https://en.cppreference.com/w/cpp/error/assert) is not evaluated at compile time, our custom logger is bypassed, since `constexpr` functions are not guaranteed to be evaluated at compile time;
+* `MAGE_ASSERT` is implemented using `MAGE_ENSURE`, which guarantees to evaluate the given expression independent of the configuration (i.e. [`NDEBUG`](https://en.cppreference.com/w/c/error/assert)) compared to [`assert`](https://en.cppreference.com/w/cpp/error/assert).
 
 ```c++
 //-----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ Fortunately, C++20 added [std::is_constant_evaluated](https://en.cppreference.co
 	while(false)
 ```
 
-So what could our custom assert do inside the constant-evaluated context? We cannot use `assert`, as Microsoft's STL for example defines it as:
+So what could our custom assert do inside the constant-evaluated context? We cannot use [`assert`](https://en.cppreference.com/w/cpp/error/assert), as Microsoft's STL for example defines it as:
 
 ```c++
 #ifdef NDEBUG
@@ -99,7 +99,7 @@ So what could our custom assert do inside the constant-evaluated context? We can
 #endif
 ```
 
-It is not possible to define the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol, include [`<cassert>`](https://en.cppreference.com/w/cpp/header/cassert), define `MAGE_ENSURE` using `assert` and undefine the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol, as `MAGE_ENSURE` itself is a macro definition that will be require the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol to be defined upon expansion. Furthermore, `assert` does not support [`std::string_view`](https://en.cppreference.com/w/cpp/string/basic_string_view), but requires null-terminated strings.
+It is not possible to define the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol, include [`<cassert>`](https://en.cppreference.com/w/cpp/header/cassert), define `MAGE_ENSURE` using [`assert`](https://en.cppreference.com/w/cpp/error/assert) and undefine the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol, as `MAGE_ENSURE` itself is a macro definition that will be require the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol to be defined upon expansion. Furthermore, [`assert`](https://en.cppreference.com/w/cpp/error/assert) does not support [`std::string_view`](https://en.cppreference.com/w/cpp/string/basic_string_view), but requires null-terminated strings.
 
 It is not possible to use [`static_assert`](https://en.cppreference.com/w/cpp/language/static_assert), as that cannot evaluate expressions based on function parameters.
 
