@@ -121,7 +121,7 @@ So what can `MAGE_ENSURE` do inside the constant-evaluated context? We cannot us
 #endif
 ```
 
-It is not possible to define the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol, include [`<cassert>`](https://en.cppreference.com/w/cpp/header/cassert), define `MAGE_ENSURE` using [`assert`](https://en.cppreference.com/w/cpp/error/assert) and undefine the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol, as `MAGE_ENSURE` itself is a macro definition that will be require the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol to be defined upon expansion. Furthermore, [`assert`](https://en.cppreference.com/w/cpp/error/assert) does not support [`std::string_view`](https://en.cppreference.com/w/cpp/string/basic_string_view), but requires null-terminated strings.
+It is not possible to define the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol, include [`<cassert>`](https://en.cppreference.com/w/cpp/header/cassert), define `MAGE_ENSURE` using [`assert`](https://en.cppreference.com/w/cpp/error/assert) and undefine the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol, as `MAGE_ENSURE` itself is a macro definition that will require the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol to be defined upon expansion. Furthermore, [`assert`](https://en.cppreference.com/w/cpp/error/assert) does not support [`std::string_view`](https://en.cppreference.com/w/cpp/string/basic_string_view), but requires null-terminated strings.
 
 It is not possible to use [`static_assert`](https://en.cppreference.com/w/cpp/language/static_assert), as that cannot evaluate expressions based on function parameters.
 
