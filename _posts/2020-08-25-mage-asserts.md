@@ -33,7 +33,7 @@ This is great! On the one hand, more and more functions can be made `constexpr` 
 Unfortunately, MAGE already uses custom asserts (`MAGE_ASSERT`) with logging support through [spdlog](https://github.com/gabime/spdlog), which could not be used in `constexpr` functions. Replacing these with [`assert`](https://en.cppreference.com/w/cpp/error/assert) in `constexpr` functions only is not a viable solution:
 * having different assert macros depending on the context is confusing;
 * when the given expression to [`assert`](https://en.cppreference.com/w/cpp/error/assert) is not evaluated at compile time in a `constexpr` function, since `constexpr` functions are not guaranteed to be evaluated at compile time, our custom logger is not used;
-* [`assert`](https://en.cppreference.com/w/cpp/error/assert) will not be evaluated if the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol is defined, as is the case for `MAGE_ASSERT`. But the latter is actually implemented using `MAGE_ENSURE`, which guarantees to evaluate the given expression independent of the configuration, and for which no equivalent exists in the C++ standard library.
+* [`assert`](https://en.cppreference.com/w/cpp/error/assert) will not be evaluated if the [`NDEBUG`](https://en.cppreference.com/w/c/error/assert) symbol is defined, as is the case for `MAGE_ASSERT`. But the latter is actually implemented using `MAGE_ENSURE`, which guarantees to evaluate the given expression independent of the configuration. No equivalent macro for this exists in the C++ standard library.
 
 ```c++
 //-----------------------------------------------------------------------------
