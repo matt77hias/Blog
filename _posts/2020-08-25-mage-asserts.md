@@ -4,7 +4,7 @@ title:  "MAGE: Asserts"
 date:   2020-08-25
 ---
 
-While browsing Microsoft's public [STL](https://github.com/microsoft/STL) implementation, I noticed to my surprise that the [`assert`](https://en.cppreference.com/w/cpp/error/assert) macro ([`<cassert>`](https://en.cppreference.com/w/cpp/header/cassert)) can be evaluated within a constant-evaluated context (e.g., compile-time evaluation). Due to the [relaxing constraints on constexpr functions](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3652.html), it becomes possible to use [`assert`](https://en.cppreference.com/w/cpp/error/assert) in `constexpr` functions in C++14 (some [custom assert workarounds](http://ericniebler.com/2014/09/27/assert-and-constexpr-in-cxx11/) are possible in C++11). 
+While browsing Microsoft's public [STL](https://github.com/microsoft/STL) implementation, I noticed to my surprise that the [`assert`](https://en.cppreference.com/w/cpp/error/assert) macro ([`<cassert>`](https://en.cppreference.com/w/cpp/header/cassert)) can be evaluated within a constant-evaluated context (e.g., compile time evaluation). Due to the [relaxing constraints on constexpr functions](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3652.html), it becomes possible to use [`assert`](https://en.cppreference.com/w/cpp/error/assert) in `constexpr` functions in C++14 (some [custom assert workarounds](http://ericniebler.com/2014/09/27/assert-and-constexpr-in-cxx11/) are possible in C++11). 
 
 [Example](https://godbolt.org/z/vTccnx)
 
@@ -125,7 +125,7 @@ It is not possible to define the [`NDEBUG`](https://en.cppreference.com/w/c/erro
 
 It is not possible to use [`static_assert`](https://en.cppreference.com/w/cpp/language/static_assert), because that cannot evaluate expressions based on function parameters.
 
-The trick consists of ignoring any logging. For expressions that are not evaluated at compile-time, but at runtime instead, we want to redirect the assert messages to our logger. At compile-time itself, we can obviously not use that same logger. But should we use a logger or output at all? As long as we guarantee the compilation to fail, the compiler will provide us some information about the cause without us having to customize this. The question then becomes how can we let the compilation fail within a constant-evaluated context? Well, we can try to evaluate something that could never be evaluated within such a context. There are many possible combinations, but my personal favourite is [`std::abort`](https://en.cppreference.com/w/cpp/utility/program/abort).
+The trick consists of ignoring any logging. For expressions that are not evaluated at compile time, but at runtime instead, we want to redirect the assert messages to our logger. At compile time itself, we can obviously not use that same logger. But should we use a logger or output at all? As long as we guarantee the compilation to fail, the compiler will provide us some information about the cause without us having to customize this. The question then becomes how can we let the compilation fail within a constant-evaluated context? Well, we can try to evaluate something that could never be evaluated within such a context. There are many possible combinations, but my personal favourite is [`std::abort`](https://en.cppreference.com/w/cpp/utility/program/abort).
 
 ```c++
 //-----------------------------------------------------------------------------
