@@ -44,7 +44,7 @@ Unfortunately, MAGE already uses custom asserts (`MAGE_ASSERT`) with logging sup
 #endif // MAGE_DEBUG
 ```
 
-Fortunately, C++20 added [std::is_constant_evaluated](https://en.cppreference.com/w/cpp/types/is_constant_evaluated) for the purpose of querying whether a function call occurs within a constant-evaluated context, allowing us to refine the previous macro definitions.
+Fortunately, C++20 added [std::is_constant_evaluated](https://en.cppreference.com/w/cpp/types/is_constant_evaluated) for the purpose of querying whether a function call occurs within a constant-evaluated context, allowing us to refine the previous macro definitions by distinguishing between both contexts: 
 
 ```c++
 //-----------------------------------------------------------------------------
@@ -101,7 +101,7 @@ It is not possible to define the [`NDEBUG`](https://en.cppreference.com/w/c/erro
 
 It is not possible to use [`static_assert`](https://en.cppreference.com/w/cpp/language/static_assert), as that cannot evaluate expressions based on function parameters.
 
-The trick consists of ignoring any logging. For expressions that are not evaluated at compile-time, but at runtime instead, we want to redirect the assert messages to our logger. At compile-time itself, we can obviously not use that same logger. But should we use a logger or output at all? As long as we guarantee the compilation to fail, the compiler will provide us some information about the cause without having us to customize the message. The question then becomes how can we let the compilation fail within a constant-evaluated context? Well, we can try to evaluate something that could never be evaluated within such a context. There are many possible combinations, but my personal favorite is [`std::abort`](https://en.cppreference.com/w/cpp/utility/program/abort).
+The trick consists of ignoring any logging. For expressions that are not evaluated at compile-time, but at runtime instead, we want to redirect the assert messages to our logger. At compile-time itself, we can obviously not use that same logger. But should we use a logger or output at all? As long as we guarantee the compilation to fail, the compiler will provide us some information about the cause without having us to customize the message. The question then becomes how can we let the compilation fail within a constant-evaluated context? Well, we can try to evaluate something that could never be evaluated within such a context. There are many possible combinations, but my personal favourite is [`std::abort`](https://en.cppreference.com/w/cpp/utility/program/abort).
 
 ```c++
 //-----------------------------------------------------------------------------
