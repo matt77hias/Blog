@@ -44,7 +44,7 @@ Unfortunately, MAGE already uses custom asserts (`MAGE_ASSERT`) with logging sup
 #endif // MAGE_DEBUG
 ```
 
-Fortunately, C++20 added [std::is_constant_evaluated](https://en.cppreference.com/w/cpp/types/is_constant_evaluated) for the purpose of querying whether a function call occurs within a constant-evaluated context, allowing us to refine the previous macro definitions by distinguishing between both contexts: 
+Fortunately, C++20 added [std::is_constant_evaluated](https://en.cppreference.com/w/cpp/types/is_constant_evaluated) for the purpose of querying whether a function call occurs within a constant-evaluated context, allowing us to refine the previous macro definitions by explicitly distinguishing between both cases: 
 
 ```c++
 //-----------------------------------------------------------------------------
