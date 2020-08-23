@@ -167,7 +167,7 @@ The trick consists of ignoring any logging. For expressions that are not evaluat
 #endif // MAGE_DEBUG
 ```
 
-In addition, we can define a non-conditional fail:
+In addition, we can define a non-conditional fail macro:
 
 ```c++
 //-----------------------------------------------------------------------------
