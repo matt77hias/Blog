@@ -190,7 +190,7 @@ In addition, we can define a non-conditional fail:
 	while(false)
 ```
 
-Which can be used for `constexpr` enum-to-enum conversion functions:
+Which can be used in `constexpr` enum-to-enum conversion functions:
 
 ```c++
 [[nodiscard]]
