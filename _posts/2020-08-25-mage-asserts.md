@@ -182,7 +182,7 @@ constexpr D3D12_FILL_MODE Convert(RasterizerState::FillMode input) noexcept
 	case Wireframe:
 		return D3D12_FILL_MODE_WIREFRAME;
 	[[unlikely]] default:
-		MAGE_FAIL("Rasterizer: invalid fill mode: {}",
+		MAGE_FAIL("Invalid rasterization fill mode: {}",
 				  underlying_cast(input));
 		return {};
 	}
