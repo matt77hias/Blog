@@ -170,8 +170,7 @@ Which can be used for `constexpr` enum-to-enum conversion functions:
 
 ```c++
 [[nodiscard]]
-constexpr D3D12_FILL_MODE
-	Convert(RasterizerState::FillMode input) noexcept
+constexpr D3D12_FILL_MODE Convert(RasterizerState::FillMode input) noexcept
 {
 	switch (input)
 	{
