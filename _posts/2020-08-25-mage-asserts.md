@@ -8,7 +8,7 @@ While browsing Microsoft's public [STL](https://github.com/microsoft/STL) implem
 
 Unfortunately, MAGE already uses custom asserts (`MAGE_ASSERT`) with logging support through [spdlog](https://github.com/gabime/spdlog), which could not be used in `constexpr` functions. Replacing these with [`assert`](https://en.cppreference.com/w/cpp/error/assert) in `constexpr` functions only is not a viable solution:
 * having different assert macros depending on the context is confusing;
-* when [`assert`](https://en.cppreference.com/w/cpp/error/assert) is not evaluated at compile time, our custom logger is bypassed, since `constexpr` functions are not guaranteed to be evaluated at compile time;
+* when [`assert`](https://en.cppreference.com/w/cpp/error/assert) is not evaluated at compile time in a `constexpr` function, since `constexpr` functions are not guaranteed to be evaluated at compile time, our custom logger is will not be used;
 * `MAGE_ASSERT` is implemented using `MAGE_ENSURE`, which guarantees to evaluate the given expression independent of the configuration (i.e. [`NDEBUG`](https://en.cppreference.com/w/c/error/assert)) compared to [`assert`](https://en.cppreference.com/w/cpp/error/assert). This allows for more compact code when validating error codes.
 
 ```c++
