@@ -1,9 +1,12 @@
-MathJax.Hub.Config({ 
-    TeX: {
+MathJax.Hub.Config(
+{ 
+    TeX:
+	{
         equationNumbers: { autoNumber: "AMS" },
         extensions: ["AMScd.js"]
     },
-    tex2jax: {
+    tex2jax:
+	{
       inlineMath: [ ['$','$'] ],
       displayMath: [ ['$$','$$'] ],
       processEscapes: true
