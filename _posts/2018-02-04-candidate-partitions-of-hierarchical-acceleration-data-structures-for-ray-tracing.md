@@ -34,7 +34,7 @@ As we will see, the structure of these candidate partitions differ between diffe
 
 In case of a binary tree with axis-aligned voxels, the BSP is called a *kd-tree* or *rectilinear BSP*.
 
-<p align="center"><img src="http://i.stack.imgur.com/Q40LG.jpg"></p>
+<div align="center"><img src="http://i.stack.imgur.com/Q40LG.jpg"></div>
 
 ##### Geometric primitives of the child voxels
 * Geometric primitives whose AABB is to the left of the <span style="color:purple;">splitting plane</span> belong to the <span style="color:green;">left</span> child voxel. 
@@ -78,7 +78,7 @@ KAPLAN M. R.: The Use of Spatial Coherence in Ray Tracing. *ACM SIGGRAPH Course 
 * (non-)axis-aligned voxels
 * 6 planes of the voxels are tight
 
-<p align="center"><img src="http://i.stack.imgur.com/AhKBT.jpg"></p>
+<div align="center"><img src="http://i.stack.imgur.com/AhKBT.jpg"></div>
 
 ##### Geometric primitives of the child voxels
 * Geometric primitives whose centroid is to the left of the <span style="color:purple;">splitting plane</span> belong to the <span style="color:green;">left</span> child voxel. 
@@ -109,7 +109,7 @@ RUBIN S. M., WHITTED T.: A 3-dimensional Representation for Fast Rendering of Co
 
 BIHs are also known as *Spatial Kd trees* (SKds) and *Bounded Kd trees* (B-Kds).
 
-<p align="center"><img src="http://i.stack.imgur.com/rUlS6.jpg"></p>
+<div align="center"><img src="http://i.stack.imgur.com/rUlS6.jpg"></div>
 
 ##### Geometric primitives of the child voxels
 * Geometric primitives whose centroid is to the left of the <span style="color:purple;">splitting plane</span> belong to the <span style="color:green;">left</span> child voxel. 
@@ -144,7 +144,7 @@ Note that the papers introducing SKds, B-Kds and BIHs in computer graphics are a
 * (non-)axis-aligned voxels
 * 6 planes of the voxels are tight, but constrained by the <span style="color:purple;">splitting plane</span>
 
-<p align="center"><img src="http://i.stack.imgur.com/01qkt.jpg"></p>
+<div align="center"><img src="http://i.stack.imgur.com/01qkt.jpg"></div>
 
 ##### Geometric primitives of the child voxels
 * Geometric primitives to the left of the <span style="color:purple;">splitting plane</span> belong to the <span style="color:green;">left</span> child voxel. 
@@ -189,7 +189,7 @@ POPOV S., GEORGIEV I., DIMOV R., SLUSALLEK P.: Object Partitioning Considered Ha
 * (non-)axis-aligned voxels
 * combination of BVH and GK-BVH candidate partitions
 
-<p align="center"><img src="http://i.stack.imgur.com/0IkdU.jpg"></p>
+<div align="center"><img src="http://i.stack.imgur.com/0IkdU.jpg"></div>
 
 SBVHs are built with a combination of a BVH and GK-BVH candidate partions.
 
