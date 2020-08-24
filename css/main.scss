@@ -25,7 +25,8 @@ $content-width:    800px;
 $on-palm:          600px;
 $on-laptop:        1000px;
 
-pre {
+pre
+{
     tab-size: 4;
 }
 
@@ -36,8 +37,10 @@ pre {
 //         padding-left: $spacing-unit / 2;
 //     }
 // }
-@mixin media-query($device) {
-    @media screen and (max-width: $device) {
+@mixin media-query($device)
+{
+    @media screen and (max-width: $device)
+	{
         @content;
     }
 }
