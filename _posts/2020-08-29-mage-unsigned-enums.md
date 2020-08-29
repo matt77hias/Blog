@@ -69,3 +69,7 @@ int main()
 Fortunately, we can explicitly overload the bitwise operators for our enum types to encapsulate this boilerplate.
 We will need to provide each overloaded operator for each enum type, though.
 Luckily, [SFINAE](https://www.strikerx3.dev/cpp/2019/02/27/typesafe-enum-class-bitmasks-in-cpp.html) can be used to define each overloaded operator for all enum types at once.
+
+... WIP ...
+
+🧙
