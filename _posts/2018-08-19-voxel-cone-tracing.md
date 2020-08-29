@@ -80,4 +80,7 @@ Marching continues until we reach an accumulated opacity of one or more:
 <div align="center"><img src="https://i.stack.imgur.com/dGx7V.png"></div>
 
 # References
-The voxel cone tracing as used in [MAGE](https://github.com/matt77hias/MAGE/).
+
+MOULIN M.: [MAGE](https://github.com/matt77hias/MAGE).
+
+MOULIN M.: [Specular Voxel Cone Tracing](https://matt77hias.github.io/res/Publications/Moulin2019-1/Publication.html), *Internal Presentation*, Department of Computer Science, KU Leuven, January 2019.
