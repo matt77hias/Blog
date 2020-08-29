@@ -4,7 +4,7 @@ title:  "Candidate Partitions of Hierarchical Acceleration Data Structures for R
 date:   2018-02-04
 ---
 
-# Partitiong Schemes
+# Partitioning Schemes
 
 Given some geometric primitives in a scene, it is possible to partition and organize these primitives in multiple ways in a hierarchical or non-hierarchical data structure to exploit spatial coherence during ray tracing. We can partition the geometric primitives into two or more disjoint groups without taking the scene (explicitly) into consideration during the partitioning itself. Or we can do the complete opposite by partitioning the scene's space into two or more disjoint groups without taking the geometric primitives (explicitly) into consideration during the partitioning itself. Or we can use a combination of these two extremes. More formerly:
 * *Spatial partitioning schemes* (recursively) subdivide a given space into spatially disjoint groups. This makes an efficient ray traversal possible at the expense of referencing geometric primitives multiple times.
@@ -19,9 +19,9 @@ For *closest-hit ray queries* (e.g., camera rays, indirect rays, etc.), we want 
 
 Various *acceleration data structures* exist for exploiting spatial coherence during ray tracing. The faster these structures can be traversed and the less geometric primitives that need to be tested for intersection by rays, the more effective these structures are. Currently, the most effective acceleration data structures are hierarchical, adaptive tree structures of which the leaf nodes reference the geometric primitives and the internal nodes contain spatial information (i.e. splitting plane position, bounding box) to cull the associated part of the scene.
 
-I will give a short overview of some of these structures, and more particularly the considered *candidate partitions*. Assuming a top-down tree construction, we start with a voxel containing all the geometric primitives that need to be partitioned, and an associated AABB (e.g., the AABB of the complete scene or the AABB of a highly tesselated model). We typically propose a certain number of candidate partitions for the current parent voxel which consists of all child voxels (i.e. the AABB constituting the voxel and the geometric primitives contained in that voxel). We select the best one according to some heuristic/cost function (e.g., SAH) and then decide whether we apply that best candidate partition (i.e. create an intermediate node) or not (i.e. create a leaf node).
+I will give a short overview of some of these structures, and more particularly the considered *candidate partitions*. Assuming a top-down tree construction, we start with a voxel containing all the geometric primitives that need to be partitioned, and an associated AABB (e.g., the AABB of the complete scene or the AABB of a highly tessellated model). We typically propose a certain number of candidate partitions for the current parent voxel which consists of all child voxels (i.e. the AABB constituting the voxel and the geometric primitives contained in that voxel). We select the best one according to some heuristic/cost function (e.g., SAH) and then decide whether we apply that best candidate partition (i.e. create an intermediate node) or not (i.e. create a leaf node).
 
-As we will see, the structure of these candidate partitions differ between different acceleration data structures. But in all cases, a candidate partition is completely determined given a parent voxel and a splitting plane. For object partitioning schemes, the geometric primitives are mapped to their centroids (or an other point) to determine the positioning relative to the splitting plane.
+As we will see, the structure of these candidate partitions differ between different acceleration data structures. But in all cases, a candidate partition is completely determined given a parent voxel and a splitting plane. For object partitioning schemes, the geometric primitives are mapped to their centroids (or another point) to determine the positioning relative to the splitting plane.
 
 <hr>
 
@@ -191,7 +191,7 @@ POPOV S., GEORGIEV I., DIMOV R., SLUSALLEK P.: Object Partitioning Considered Ha
 
 <div align="center"><img src="http://i.stack.imgur.com/0IkdU.jpg"></div>
 
-SBVHs are built with a combination of a BVH and GK-BVH candidate partions.
+SBVHs are built with a combination of a BVH and GK-BVH candidate partitions.
 
 * (-) $$\mathcal{O}\left(N \log N\right)$$ full sweeping-plane SAH build algorithm is **not** possible for constructing complete SBVHs due to the inclusion of GK-BVH candidate partitions (*see above*).
 * (+) $$\mathcal{O}\left(N \log N\right)$$ binned SAH build algorithm for constructing complete SBVHs (in parallel) is possible.
