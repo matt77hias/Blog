@@ -6,8 +6,6 @@ date:   2020-08-25
 
 While browsing Microsoft's public [STL](https://github.com/microsoft/STL) implementation, I noticed to my surprise that the [`assert`](https://en.cppreference.com/w/cpp/error/assert) macro ([`<cassert>`](https://en.cppreference.com/w/cpp/header/cassert)) can be evaluated within a constant-evaluated context (e.g., compile time evaluation). Due to the [relaxing constraints on constexpr functions](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3652.html), it becomes possible to use [`assert`](https://en.cppreference.com/w/cpp/error/assert) in `constexpr` functions in C++14 (some [custom assert workarounds](http://ericniebler.com/2014/09/27/assert-and-constexpr-in-cxx11/) are possible in C++11). 
 
-[Example](https://godbolt.org/z/vTccnx)
-
 ```c++
 // assert
 #include <cassert>
@@ -23,6 +21,7 @@ int main()
     return f(-1); // Pass negative integer
 }
 ```
+[Compiler Explorer](https://godbolt.org/z/vTccnx)
 
 ```
 output.s: ./example.cpp:6: int f(int): Assertion `0 <= i' failed.
