@@ -28,7 +28,7 @@ int main()
 output.s: ./example.cpp:6: int f(int): Assertion `0 <= i' failed.
 ```
 
-This is great! On the one hand, more and more functions can be made `constexpr` as newer C++ standards tend to further relax the constraints and tend to make the already existing functionality of the standard library more `constexpr` as well (e.g., [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string), [`std::vector`](https://en.cppreference.com/w/cpp/container/vector)). On the other hand, my mostly used defensive strategy to validate program correctness depends on asserts checking invariants, pre- and post conditions (as opposed to total and defensive programming).
+This is great! On the one hand, more and more functions can be made `constexpr` as newer C++ standards tend to further relax the constraints and tend to make the already existing functionality of the standard library more `constexpr` as well (e.g., [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string), [`std::vector`](https://en.cppreference.com/w/cpp/container/vector)). On the other hand, my mostly used defensive strategy to validate program correctness depends on asserts checking invariants, pre- and postconditions (as opposed to total and defensive programming).
 
 Unfortunately, MAGE already uses custom asserts (`MAGE_ASSERT`) with logging support through [spdlog](https://github.com/gabime/spdlog), which could not be used in `constexpr` functions. Replacing these with [`assert`](https://en.cppreference.com/w/cpp/error/assert) in `constexpr` functions only is not a viable solution:
 * having different assert macros depending on the context is confusing;
