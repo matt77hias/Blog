@@ -80,4 +80,4 @@ Marching continues until we reach an accumulated opacity of one or more:
 <div align="center"><img src="https://i.stack.imgur.com/dGx7V.png"></div>
 
 # References
-The voxel cone tracing as used in [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Shaders/shaders/vct.hlsli).
+The voxel cone tracing as used in [MAGE](https://github.com/matt77hias/MAGE/).
