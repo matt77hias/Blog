@@ -22,3 +22,7 @@ exclude:
 
 plugins: 
  - jekyll-paginate
+ - jekyll-seo-tag
+ 
+ twitter:
+  username: matt77hias
