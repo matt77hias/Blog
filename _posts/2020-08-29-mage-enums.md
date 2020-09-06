@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "🧙 MAGE: Unsigned Enums"
+title:  "🧙 MAGE: Enums"
 date:   2020-08-29
 ---
 
