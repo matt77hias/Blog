@@ -49,7 +49,7 @@ Unfortunately, MAGE already uses custom asserts (`MAGE_ASSERT`) with logging sup
 			::mage::details::LogAssert(#expression,                           \
 									   MAGE_SOURCE_LOCATION,                  \
 									   __VA_ARGS__);                          \
-			MAGE_BREAK;                                                       \
+			MAGE_DEBUG_BREAK;                                                       \
 		}                                                                     \
 	}                                                                         \
 	while(false)
@@ -90,7 +90,7 @@ Fortunately, C++20 added [std::is_constant_evaluated](https://en.cppreference.co
 				::mage::details::LogAssert(#expression,                       \
 										   MAGE_SOURCE_LOCATION,              \
 										   __VA_ARGS__);                      \
-				MAGE_BREAK;                                                   \
+				MAGE_DEBUG_BREAK;                                                   \
 			}                                                                 \
 		}                                                                     \
 	}                                                                         \
@@ -147,7 +147,7 @@ The trick consists of ignoring any logging. For expressions that are not evaluat
 				::mage::details::LogAssert(#expression,                       \
 										   MAGE_SOURCE_LOCATION,              \
 										   __VA_ARGS__);                      \
-				MAGE_BREAK;                                                   \
+				MAGE_DEBUG_BREAK;                                                   \
 			}                                                                 \
 		}                                                                     \
 	}                                                                         \
@@ -183,7 +183,7 @@ In addition, we can define a non-conditional fail macro:
 		else                                                                  \
 		{                                                                     \
 			::mage::details::LogFail(MAGE_SOURCE_LOCATION, __VA_ARGS__);      \
-			MAGE_BREAK;                                                       \
+			MAGE_DEBUG_BREAK;                                                       \
 		}                                                                     \
 	}                                                                         \
 	while(false)
