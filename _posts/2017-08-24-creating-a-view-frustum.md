@@ -126,7 +126,8 @@ BoundingFrustum::BoundingFrustum(CXMMATRIX transform) noexcept
 	m_far_plane = C.r[3] - C.r[2];
 
 	// Normalize the view frustum planes.
-	for (size_t i = 0; i < std::size(m_planes); ++i) {
+	for (size_t i = 0; i < std::size(m_planes); ++i)
+	{
 		m_planes[i] = XMPlaneNormalize(m_planes[i]);
 	}
 }
