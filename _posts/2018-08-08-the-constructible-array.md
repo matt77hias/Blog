@@ -4,7 +4,7 @@ title:  "The Constructible Array"
 date:   2018-08-08
 ---
 
-[MAGE](https://github.com/matt77hias/MAGE)'s (mathematical) vector types have come a long way.
+[MAGE v0](https://github.com/matt77hias/MAGE-v0)'s (mathematical) vector types have come a long way.
 
 # Starting point
 
@@ -314,4 +314,4 @@ int main()
 ```
 
 # References
-The `Array` was designed for and initially used in [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Utilities/src/collection/array.hpp#L127).
+The `Array` was designed for and initially used in [MAGE-v0](https://github.com/matt77hias/MAGE-v0/blob/master/MAGE/Utilities/src/collection/array.hpp#L127).

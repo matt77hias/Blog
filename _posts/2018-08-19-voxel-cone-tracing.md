@@ -81,6 +81,6 @@ Marching continues until we reach an accumulated opacity of one or more:
 
 # References
 
-MOULIN M.: [MAGE](https://github.com/matt77hias/MAGE).
+MOULIN M.: [MAGE v0](https://github.com/matt77hias/MAGE-v0).
 
 MOULIN M.: [Specular Voxel Cone Tracing](https://matt77hias.github.io/res/Publications/Moulin2019-1/Publication.html), *Internal Presentation*, Department of Computer Science, KU Leuven, January 2019.

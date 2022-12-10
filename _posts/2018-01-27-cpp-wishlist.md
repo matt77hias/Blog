@@ -70,7 +70,7 @@ return_t< T > convert(T value)
 }
 ```
 
-*For a more advanced example, see [resource_manager.hpp](https://github.com/matt77hias/MAGE/blob/master/MAGE/Rendering/src/resource/rendering_resource_manager.hpp#L23), 
+*For a more advanced example, see [resource_manager.hpp](https://github.com/matt77hias/MAGE-v0/blob/master/MAGE/Rendering/src/resource/rendering_resource_manager.hpp#L23), 
 containing a resource manager that manages mutable/immutable resources of different types through different resource pools of different types via one interface for all resources.*
 
 This code seems pretty verbose for what it actually tries to achieve (e.g., why do we need structs for type mappings?), making our intentions less clear for fellow programmers. 

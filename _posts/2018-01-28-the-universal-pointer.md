@@ -6,7 +6,7 @@ date:   2018-01-28
 
 # Problem
 
-I want to apply an [Entity–Component–System](https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system) architecture to my game engine, [MAGE](https://github.com/matt77hias/MAGE).
+I want to apply an [Entity–Component–System](https://en.wikipedia.org/wiki/Entity%E2%80%93component%E2%80%93system) architecture to my game engine, [MAGE v0](https://github.com/matt77hias/MAGE-v0).
 My scene data includes a dynamic array encapsulating a contiguous block of memory (`std::vector`) that stores components by value for each component type.
 That way, I can exploit cache coherence and avoid unnecessary jumps between unrelated memory.
 This design imposes two immediate problems that need to be handled properly:
@@ -309,4 +309,4 @@ Note that we directly access our `m_getter` member variable inside the capture o
 
 # References
 
-The `ProxyPtr` was designed for and initially used in [MAGE](https://github.com/matt77hias/MAGE/blob/master/MAGE/Utilities/src/memory/memory.hpp#L353).
+The `ProxyPtr` was designed for and initially used in [MAGE v0](https://github.com/matt77hias/MAGE-v0/blob/master/MAGE/Utilities/src/memory/memory.hpp#L353).
