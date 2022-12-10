@@ -314,4 +314,4 @@ int main()
 ```
 
 # References
-The `Array` was designed for and initially used in [MAGE-v0](https://github.com/matt77hias/MAGE-v0/blob/master/MAGE/Utilities/src/collection/array.hpp#L127).
+The `Array` was designed for and initially used in [MAGE-v0](https://github.com/matt77hias/MAGE-v0/blob/master/MAGE/Code/Engine/Utilities/collection/array.hpp#L127).

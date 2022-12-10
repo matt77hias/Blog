@@ -309,4 +309,4 @@ Note that we directly access our `m_getter` member variable inside the capture o
 
 # References
 
-The `ProxyPtr` was designed for and initially used in [MAGE v0](https://github.com/matt77hias/MAGE-v0/blob/master/MAGE/Utilities/src/memory/memory.hpp#L353).
+The `ProxyPtr` was designed for and initially used in [MAGE v0](https://github.com/matt77hias/MAGE-v0/blob/master/MAGE/Code/Engine/Utilities/memory/memory.hpp#L353).

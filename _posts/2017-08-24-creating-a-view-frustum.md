@@ -134,4 +134,4 @@ BoundingFrustum::BoundingFrustum(CXMMATRIX transform) noexcept
 ```
 
 # References
-The construction of view frustums in [MAGE v0](https://github.com/matt77hias/MAGE-v0/blob/master/MAGE/Math/src/geometry/bounding_volume.cpp#L242).
+The construction of view frustums in [MAGE v0](https://github.com/matt77hias/MAGE-v0/blob/master/MAGE/Code/Engine/Math/geometry/bounding_volume.cpp#L242).
