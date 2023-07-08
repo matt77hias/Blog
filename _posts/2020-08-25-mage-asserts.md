@@ -44,12 +44,12 @@ Unfortunately, MAGE already uses custom asserts (`MAGE_ASSERT`) with logging sup
 #define MAGE_ENSURE(expression, ...)                                          \
 	do                                                                        \
 	{                                                                         \
-		if ((expression) == false)                                            \
+		if ((expression))                                                     \
 		{                                                                     \
 			::mage::details::LogAssert(#expression,                           \
 									   MAGE_SOURCE_LOCATION,                  \
 									   __VA_ARGS__);                          \
-			MAGE_DEBUG_BREAK;                                                       \
+			MAGE_DEBUG_BREAK;                                                 \
 		}                                                                     \
 	}                                                                         \
 	while(false)
@@ -79,7 +79,7 @@ Fortunately, C++20 added [std::is_constant_evaluated](https://en.cppreference.co
 #define MAGE_ENSURE(expression, ...)                                          \
 	do                                                                        \
 	{                                                                         \
-		if ((expression) == false) [[unlikely]]                               \
+		if ((expression)) [[unlikely]]                                        \
 		{                                                                     \
 			if (std::is_constant_evaluated())                                 \
 			{                                                                 \
@@ -90,7 +90,7 @@ Fortunately, C++20 added [std::is_constant_evaluated](https://en.cppreference.co
 				::mage::details::LogAssert(#expression,                       \
 										   MAGE_SOURCE_LOCATION,              \
 										   __VA_ARGS__);                      \
-				MAGE_DEBUG_BREAK;                                                   \
+				MAGE_DEBUG_BREAK;                                             \
 			}                                                                 \
 		}                                                                     \
 	}                                                                         \
@@ -136,7 +136,7 @@ The trick consists of ignoring any logging. For expressions that are not evaluat
 #define MAGE_ENSURE(expression, ...)                                          \
 	do                                                                        \
 	{                                                                         \
-		if ((expression) == false) [[unlikely]]                               \
+		if ((expression)) [[unlikely]]                                        \
 		{                                                                     \
 			if (std::is_constant_evaluated())                                 \
 			{                                                                 \
@@ -147,7 +147,7 @@ The trick consists of ignoring any logging. For expressions that are not evaluat
 				::mage::details::LogAssert(#expression,                       \
 										   MAGE_SOURCE_LOCATION,              \
 										   __VA_ARGS__);                      \
-				MAGE_DEBUG_BREAK;                                                   \
+				MAGE_DEBUG_BREAK;                                             \
 			}                                                                 \
 		}                                                                     \
 	}                                                                         \
